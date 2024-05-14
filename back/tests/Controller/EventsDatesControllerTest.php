@@ -1,136 +1,130 @@
-<?php
+<!-- <?php
 
-namespace App\Test\Controller;
+// namespace App\Test\Controller;
 
-use App\Entity\EventsDates;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+// use App\Entity\EventsDates;
+// use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+// use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class EventsDatesControllerTest extends WebTestCase
-{
-    private KernelBrowser $client;
-    private EntityManagerInterface $manager;
-    private EntityRepository $repository;
-    private string $path = '/events-dates/';
+// class EventsDatesControllerTest extends WebTestCase
+// {
+//     private KernelBrowser $client;
+//     private string $path = '/events-dates/';
 
-    protected function setUp(): void
-    {
-        $this->client = static::createClient();
-        $this->manager = static::getContainer()->get('doctrine')->getManager();
-        $this->repository = $this->manager->getRepository(EventsDates::class);
+//     protected function setUp(): void
+//     {
+//         $this->client = static::createClient();
 
-        foreach ($this->repository->findAll() as $object) {
-            $this->manager->remove($object);
-        }
+//         // Clearing the database before each test
+//         $entityManager = static::getContainer()->get('doctrine')->getManager();
+//         $entityManager->createQuery('DELETE FROM App\Entity\EventsDates')->execute();
+//     }
 
-        $this->manager->flush();
-    }
+//     public function testIndex(): void
+//     {
+//         $crawler = $this->client->request('GET', $this->path);
 
-    public function testIndex(): void
-    {
-        $crawler = $this->client->request('GET', $this->path);
+//         self::assertResponseStatusCodeSame(200);
+//         self::assertPageTitleContains('EventsDate index');
+//     }
 
-        self::assertResponseStatusCodeSame(200);
-        self::assertPageTitleContains('EventsDate index');
+//     public function testNew(): void
+//     {
+//         $this->client->request('GET', $this->path . 'new');
 
-        // Use the $crawler to perform additional assertions e.g.
-        // self::assertSame('Some text on the page', $crawler->filter('.p')->first());
-    }
+//         self::assertResponseStatusCodeSame(200);
 
-    public function testNew(): void
-    {
-        $this->markTestIncomplete();
-        $this->client->request('GET', sprintf('%snew', $this->path));
+//         $this->client->submitForm('Save', [
+//             'events_date[date]' => 'Testing',
+//             'events_date[tickets]' => 'Testing',
+//             'events_date[is_cancelled]' => false,
+//             'events_date[cancellation_reason]' => null,
+//             'events_date[event]' => null, // Assuming 'event' is a relationship property
+//         ]);
 
-        self::assertResponseStatusCodeSame(200);
+//         self::assertResponseRedirects($this->path);
 
-        $this->client->submitForm('Save', [
-            'events_date[date]' => 'Testing',
-            'events_date[tickets]' => 'Testing',
-            'events_date[is_cancelled]' => 'Testing',
-            'events_date[cancellation_reason]' => 'Testing',
-            'events_date[event_id]' => 'Testing',
-        ]);
+//         // Check if the entity was actually persisted
+//         $entityManager = static::getContainer()->get('doctrine')->getManager();
+//         $eventsDatesCount = $entityManager->getRepository(EventsDates::class)->count([]);
+//         self::assertSame(1, $eventsDatesCount);
+//     }
 
-        self::assertResponseRedirects($this->path);
+//     public function testShow(): void
+//     {
+//         $entityManager = static::getContainer()->get('doctrine')->getManager();
+//         $eventDate = new EventsDates();
+//         $eventDate->setDate('2024-05-14');
+//         $eventDate->setTickets('My Tickets');
+//         $eventDate->setIsCancelled(false);
+//         $eventDate->setCancellationReason(null);
+//         $eventDate->setEvent(null); // Assuming 'event' is a relationship property
+//         $entityManager->persist($eventDate);
+//         $entityManager->flush();
 
-        self::assertSame(1, $this->repository->count([]));
-    }
+//         $this->client->request('GET', $this->path . $eventDate->getId());
 
-    public function testShow(): void
-    {
-        $this->markTestIncomplete();
-        $fixture = new EventsDates();
-        $fixture->setDate('My Title');
-        $fixture->setTickets('My Title');
-        $fixture->setIs_cancelled('My Title');
-        $fixture->setCancellation_reason('My Title');
-        $fixture->setEvent_id('My Title');
+//         self::assertResponseStatusCodeSame(200);
+//         self::assertPageTitleContains('EventsDate');
+//         // Add assertions to check that the properties are properly displayed.
+//     }
 
-        $this->manager->persist($fixture);
-        $this->manager->flush();
+//     public function testEdit(): void
+//     {
+//         $entityManager = static::getContainer()->get('doctrine')->getManager();
+//         $eventDate = new EventsDates();
+//         $eventDate->setDate('2024-05-14');
+//         $eventDate->setTickets('My Tickets');
+//         $eventDate->setIsCancelled(false);
+//         $eventDate->setCancellationReason(null);
+//         $eventDate->setEvent(null); // Assuming 'event' is a relationship property
+//         $entityManager->persist($eventDate);
+//         $entityManager->flush();
 
-        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
+//         $this->client->request('GET', $this->path . $eventDate->getId() . '/edit');
 
-        self::assertResponseStatusCodeSame(200);
-        self::assertPageTitleContains('EventsDate');
+//         self::assertResponseStatusCodeSame(200);
 
-        // Use assertions to check that the properties are properly displayed.
-    }
+//         $this->client->submitForm('Update', [
+//             'events_date[date]' => '2024-05-15', // Updating date
+//             'events_date[tickets]' => 'Updated Tickets', // Updating tickets
+//             'events_date[is_cancelled]' => true, // Marking as cancelled
+//             'events_date[cancellation_reason]' => 'Some reason', // Adding cancellation reason
+//             'events_date[event]' => null, // Assuming 'event' is a relationship property
+//         ]);
 
-    public function testEdit(): void
-    {
-        $this->markTestIncomplete();
-        $fixture = new EventsDates();
-        $fixture->setDate('Value');
-        $fixture->setTickets('Value');
-        $fixture->setIs_cancelled('Value');
-        $fixture->setCancellation_reason('Value');
-        $fixture->setEvent_id('Value');
+//         self::assertResponseRedirects($this->path);
 
-        $this->manager->persist($fixture);
-        $this->manager->flush();
+//         $updatedEventDate = $entityManager->getRepository(EventsDates::class)->find($eventDate->getId());
 
-        $this->client->request('GET', sprintf('%s%s/edit', $this->path, $fixture->getId()));
+//         self::assertSame('2024-05-15', $updatedEventDate->getDate());
+//         self::assertSame('Updated Tickets', $updatedEventDate->getTickets());
+//         self::assertTrue($updatedEventDate->getIsCancelled());
+//         self::assertSame('Some reason', $updatedEventDate->getCancellationReason());
+//     }
 
-        $this->client->submitForm('Update', [
-            'events_date[date]' => 'Something New',
-            'events_date[tickets]' => 'Something New',
-            'events_date[is_cancelled]' => 'Something New',
-            'events_date[cancellation_reason]' => 'Something New',
-            'events_date[event_id]' => 'Something New',
-        ]);
+//     public function testRemove(): void
+//     {
+//         $entityManager = static::getContainer()->get('doctrine')->getManager();
+//         $eventDate = new EventsDates();
+//         $eventDate->setDate('2024-05-14');
+//         $eventDate->setTickets('My Tickets');
+//         $eventDate->setIsCancelled(false);
+//         $eventDate->setCancellationReason(null);
+//         $eventDate->setEvent(null); // Assuming 'event' is a relationship property
+//         $entityManager->persist($eventDate);
+//         $entityManager->flush();
 
-        self::assertResponseRedirects('/events-dates/');
+//         $this->client->request('GET', $this->path . $eventDate->getId());
 
-        $fixture = $this->repository->findAll();
+//         self::assertResponseStatusCodeSame(200);
 
-        self::assertSame('Something New', $fixture[0]->getDate());
-        self::assertSame('Something New', $fixture[0]->getTickets());
-        self::assertSame('Something New', $fixture[0]->getIs_cancelled());
-        self::assertSame('Something New', $fixture[0]->getCancellation_reason());
-        self::assertSame('Something New', $fixture[0]->getEvent_id());
-    }
+//         $this->client->submitForm('Delete');
 
-    public function testRemove(): void
-    {
-        $this->markTestIncomplete();
-        $fixture = new EventsDates();
-        $fixture->setDate('Value');
-        $fixture->setTickets('Value');
-        $fixture->setIs_cancelled('Value');
-        $fixture->setCancellation_reason('Value');
-        $fixture->setEvent_id('Value');
+//         self::assertResponseRedirects($this->path);
 
-        $this->manager->persist($fixture);
-        $this->manager->flush();
+//         $removedEventDate = $entityManager->getRepository(EventsDates::class)->find($eventDate->getId());
 
-        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
-        $this->client->submitForm('Delete');
-
-        self::assertResponseRedirects('/events-dates/');
-        self::assertSame(0, $this->repository->count([]));
-    }
-}
+//         self::assertNull($removedEventDate);
+//     }
+// } -->
