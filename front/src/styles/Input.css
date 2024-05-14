@@ -1,0 +1,26 @@
+.custom-input {
+    background-color: #FDFDFD;
+    border: 0.5px solid #C5C5C5;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    padding: 5px 10px;
+};
+
+.custom-input:focus {
+    outline: none;
+    border: 0.5px solid #000000;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+};
+.custom-input::placeholder {
+    color: #C5C5C5;
+};
+
+.custom-input:focus::placeholder {
+    color: transparent;
+};
+
+.custom-label {
+    color: #000000;
+    font-size: 16px;
+};
+

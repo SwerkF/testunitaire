@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import "../styles/Connexion.css";
 
 export default function Connexion() {
     const [showConnexion, setShowConnexion] = useState(false);
@@ -26,7 +27,7 @@ export default function Connexion() {
                 <div className='containerGeneralInscription'>
                     <div className='containerInformationInscription'>
                         <h3>CREER UN COMPTE</h3>
-                        <p>
+                        <p className='mx-w-20'>
                             En créant votre compte, vous accédez à une plateforme exclusive vous permettant de réserver facilement vos billets pour les concerts les plus prisés. Profitez d'une expérience utilisateur fluide et sécurisée, avec la possibilité de consulter les calendriers des événements à venir, choisir vos sièges préférés et recevoir des offres spéciales réservées aux membres. Rejoignez notre communauté passionnée de musique et vivez des moments inoubliables en assistant à vos concerts favoris.
                         </p>
                     </div>
