@@ -2,7 +2,6 @@ import { TextEncoder, TextDecoder } from 'util';
 import { render, screen } from '@testing-library/react';
 import Reservations from '../pages/Reservations';
 import React from 'react';
-import '@testing-library/jest-dom'
 
 describe('Reservations', () => {
     it('should render Reservations', () => {
