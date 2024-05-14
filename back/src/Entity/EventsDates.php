@@ -20,7 +20,7 @@ class EventsDates
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $remaining_tickets = null;
+    private ?int $tickets = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $is_cancelled = null;
@@ -48,14 +48,14 @@ class EventsDates
         return $this;
     }
 
-    public function getRemainingTickets(): ?int
+    public function getTickets(): ?int
     {
-        return $this->remaining_tickets;
+        return $this->tickets;
     }
 
-    public function setRemainingTickets(?int $remaining_tickets): static
+    public function setTickets(?int $tickets): static
     {
-        $this->remaining_tickets = $remaining_tickets;
+        $this->tickets = $tickets;
 
         return $this;
     }
