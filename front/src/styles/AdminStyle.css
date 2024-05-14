@@ -1,5 +1,5 @@
 /* Style général de la page */
-body {
+.container-admin {
     font-family: Arial, sans-serif; /* Police de caractères */
     background-color: #f4f4f4; /* Couleur de fond de la page */
     margin: 0;
