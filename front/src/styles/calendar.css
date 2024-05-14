@@ -47,6 +47,11 @@
   box-shadow: none;
 }
 
+.fc-daygrid-day-number {
+  color: #1A173B;
+  text-decoration: none;
+}
+
 .fc-event {
   background-color: #10b92d;
   border: none;
