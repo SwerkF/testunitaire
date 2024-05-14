@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import Reservations from './pages/Reservations';
-import CardComponent from './components/CardComponent';
 import EventList from './pages/EventList';
 import Connexion from './pages/Connexion';
 import NavbarComponent from './components/NavbarComponent';
@@ -9,6 +8,7 @@ import FooterComponent from './components/FooterComponent';
 import Home from './pages/Home';
 import Admin from './pages/Admin';
 import './App.css';
+import CalendarPage from './pages/CalendarPage';
 
 function App() {
   return (
@@ -18,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home> </Home>} />
             <Route path="/reservations" element={<Reservations></Reservations>} />
+            <Route path ="/calendar" element={<CalendarPage></CalendarPage>} />
             <Route path="/events" element={<EventList></EventList>} />
             <Route path='/login' element={<Connexion/>}></Route>
             <Route path='/admin' element={<Admin/>}></Route>
