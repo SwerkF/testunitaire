@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import "../styles/CardComponent.scss";
 
 const CardComponent = ({ title, description, buttonText, imageUrl }) => {
   return (
@@ -22,5 +23,6 @@ CardComponent.propTypes = {
   buttonText: PropTypes.string.isRequired,
   imageUrl: PropTypes.string.isRequired,
 };
+
 
 export default CardComponent;
