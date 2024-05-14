@@ -1,27 +1,43 @@
-/* Style général de la page */
 body {
-    font-family: Arial, sans-serif; /* Police de caractères */
-    background-color: #f4f4f4; /* Couleur de fond de la page */
+    font-family: Arial, sans-serif; 
+    background-image: url('../assets/stmichel.jpg');
+      background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
     margin: 0;
     padding: 20px;
+
+
+
 }
 
 
-/* Style du tableau */
 table {
-    width: 100%;
+    width: 60%;
     margin-top: 20px;
-    border-collapse: collapse; /* Les bordures des cellules collées */
+    border-collapse: collapse; 
+    background-color: white;
+    
+
+
 }
 
 th, td {
-    border: 1px solid #ddd; /* Gris clair pour les bordures */
+    border: 1px solid #ddd; 
     text-align: left;
     padding: 8px;
+    margin: 5px;
+    background-color: white;
+
+   
+    
+    
+
 }
 
 th {
-    background-color: #666; /* Gris plus foncé pour l'en-tête du tableau */
+    background-color: #666;
     color: white;
 }
 
