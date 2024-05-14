@@ -1,24 +1,25 @@
 import React from 'react';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import '../styles/global.css';
 
 const NavbarComponent = () => {
     return (
-        <Navbar expand="lg" className="bg-body-tertiary">
+        <Navbar expand="lg" className="navBarBg">
         <Container fluid>
-          <Navbar.Brand href="#">Nom du projet</Navbar.Brand>
+          <Link to="/" className="nav-link" ><Navbar.Brand className='fw-semibold text-light fs-3'>LE HARVRE</Navbar.Brand></Link>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav
-              className="me-auto my-2 my-lg-0"
+              className="ms-auto my-2 my-lg-0"
               style={{ maxHeight: '100px' }}
               navbarScroll
             >
-              <Nav.Link href="#action1">Accueil</Nav.Link>
-   
+              <Link to="/" className="nav-link text-light fw-semibold">ACCUEIL</Link>
+              <Link to="/reservations" className="nav-link text-light fw-semibold">EVENEMENTS</Link>
+              <Link to="/events" className="nav-link text-light fw-semibold">CALENDRIER</Link>
+              <Link to="/login" className="nav-link text-light fw-semibold">SE CONNECTER</Link>
             </Nav>
-            <Button variant="btn btn-success me-4">Connexion</Button>
-
-            <Button variant="outline-success">Inscription</Button>
 
           </Navbar.Collapse>
         </Container>
