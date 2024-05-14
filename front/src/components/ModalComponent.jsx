@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import "../styles/ModalComponent.css";
 
-const Modal = ({ title, onClose, imageUrl, id }) => {
+const Modal = ({ title, onClose, imageUrl, id, description }) => {
   const [formData, setFormData] = useState({
     name: '',
     age: '',
@@ -41,6 +41,7 @@ const Modal = ({ title, onClose, imageUrl, id }) => {
         <div className="modal-elements">
             <div className="modal-image">
                 <img src={imageUrl} alt={title}/>
+                <p className='description'>{description}</p>
             </div>
             <form className="modal-form" onSubmit={handleSubmit}>
                 <label htmlFor="name">Nom</label>
@@ -52,7 +53,7 @@ const Modal = ({ title, onClose, imageUrl, id }) => {
                 <label htmlFor="date">Date</label>
                 <input type="date" id="date" name="date" value={formData.date} onChange={handleChange} required />
 
-                <label htmlFor="people">Nomnbre de personne</label>
+                <label htmlFor="people">Nombre de personne</label>
                 <input type="number" id="people" name="people" value={formData.people} onChange={handleChange} required />
             <button type="submit" className="submit-button">Procéder au payement</button>
             </form>
@@ -66,7 +67,8 @@ Modal.propTypes = {
   title: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   imageUrl: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired
+  id: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired
 };
 
 export default Modal;

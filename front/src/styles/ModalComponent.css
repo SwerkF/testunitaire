@@ -13,7 +13,7 @@
   
   .modal-header{
     color: black;
-    font-size: ;
+    font-size: large;
   }
 
   .modal-content {
@@ -80,6 +80,13 @@
     font-size: small;
     text-align: left;
 
+  }
+
+  .description {
+    color: rgba(0, 0, 0, 0.7);
+    text-align: left;
+    font-size: smaller;
+    margin-top: 20px;
   }
   
   .submit-button {

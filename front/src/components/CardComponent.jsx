@@ -10,10 +10,12 @@ const CardComponent = ({ title, description, buttonText, imageUrl, id}) => {
 
   return (
     <div className="card-home">
-      <img src={imageUrl} alt="" className="img-card-home" />
+      <div> 
+        <img src={imageUrl} alt="" className="img-card-home" />
+      </div>
       <div className="card-content-home">
         <h2 className="h2-home">{title}</h2>
-        <p className="p-home">{description}</p>
+        <p className="p-home">{typeof description === 'string' && description.length > 40 ? description.slice(0, 40) + '...' : description}</p>
         <button className="button-home a-home" onClick={() => setModalOpen(true)}>
           {buttonText}
           <span className="material-symbols-outlined">&#10132;</span>
@@ -21,6 +23,7 @@ const CardComponent = ({ title, description, buttonText, imageUrl, id}) => {
       </div>
       {isModalOpen && <Modal
         title= {title}
+        description={description}
         onClose={() => setModalOpen(false)}
         imageUrl={imageUrl}
         id={id}
