@@ -16,9 +16,11 @@ const NavbarComponent = () => {
               navbarScroll
             >
               <Link to="/" className="nav-link text-light fw-semibold">ACCUEIL</Link>
-              <Link to="/reservations" className="nav-link text-light fw-semibold">EVENEMENTS</Link>
-              <Link to="/events" className="nav-link text-light fw-semibold">CALENDRIER</Link>
+              <Link to="/events" className="nav-link text-light fw-semibold">EVENEMENTS</Link>
+              <Link to="/calendar" className="nav-link text-light fw-semibold">CALENDRIER</Link>
+              <Link to="/reservations" className="nav-link text-light fw-semibold">RESERVATIONS (A SUPPRIMER)</Link>
               <Link to="/login" className="nav-link text-light fw-semibold">SE CONNECTER</Link>
+              <Link to="/admin" className="nav-link text-light fw-semibold">ADMIN (A SUPPRIMER)</Link>
             </Nav>
 
           </Navbar.Collapse>

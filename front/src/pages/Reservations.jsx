@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import MyPDF from '../components/MyPDF';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Input from '../components/Input';
 
 const Reservations = () => {
 
@@ -32,22 +33,26 @@ const Reservations = () => {
     }, [])
 
     return (
-        <div>
+        <div className='d-flex flex-column'>
             <h1>Reservations</h1>
-            <ul>
-                {reservations.map((reservation, index) => (
-                    <li key={index}>
-                        <h2>{reservation.name}</h2>
-                        <p>{reservation.date} at {reservation.time}</p>
-                        <p>Guests: {reservation.guests}</p>
-                        <button onClick={() => setSelectedReservation(reservation)}>View QR Code</button>
-                    </li>
+            <Input label="Search" inputstyle="w-50" type="text" placeholder="Search" />
+            <div className="d-flex flex-wrap gap-4">
+                {reservations.map((reservation) => (
+                    <div key={reservation.uuid} className="card" style={{ width: '18rem' }}>
+                        <div className="card-body">
+                            <h5 className="card-title">{reservation.name}</h5>
+                            <p className="card-text">Date: {reservation.date}</p>
+                            <p className="card-text">Time: {reservation.time}</p>
+                            <p className="card-text">Guests: {reservation.guests}</p>
+                            <Button onClick={() => setSelectedReservation(reservation)}>View</Button>
+                        </div>
+                    </div>
                 ))}
-            </ul>
+            </div>
             {selectedReservation && (
                 <Modal show={selectedReservation !== null} onHide={() => setSelectedReservation(null)} size='xl'>
                     <Modal.Header closeButton>
-                        <Modal.Title>Reservation for {selectedReservation?.name}</Modal.Title>
+                        <Modal.Title>Reservation pour {selectedReservation?.name}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <MyPDF uuid={selectedReservation.uuid} />
