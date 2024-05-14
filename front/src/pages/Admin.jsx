@@ -1,6 +1,6 @@
 import React from 'react';
 import EventForm from '../components/EventForm';
-import EventList from '../components/EventList';
+import EventTable from '../components/EventTable';
 import { Container, Row, Col } from 'react-bootstrap';
 
 const Admin = () => {
@@ -10,7 +10,7 @@ const Admin = () => {
         <Col md={8}>
           <h1 className="text-center">Administration Dashboard</h1>
           <EventForm />
-          <EventList />
+          <EventTable />
         </Col>
       </Row>
     </Container>
