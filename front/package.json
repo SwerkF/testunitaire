@@ -12,6 +12,7 @@
     "dotenv": "^16.4.5",
     "jest": "^27.5.1",
     "jest-dom": "^4.0.0",
+    "jsdom": "^24.0.0",
     "qrcode": "^1.5.3",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.2",
