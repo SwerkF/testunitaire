@@ -40,7 +40,7 @@ const Reservations = () => {
                         <h2>{reservation.name}</h2>
                         <p>{reservation.date} at {reservation.time}</p>
                         <p>Guests: {reservation.guests}</p>
-                        <button onClick={() => setSelectedReservation(reservation)}>View QR Code</button>
+                        <button onClick={() => setSelectedReservation(reservation)}>Réservation {reservation.uuid}</button>
                     </li>
                 ))}
             </ul>
