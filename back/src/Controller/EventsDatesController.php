@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/events/dates')]
+#[Route('/events-dates')]
 class EventsDatesController extends AbstractController
 {
     #[Route('/', name: 'app_events_dates_index', methods: ['GET'])]
