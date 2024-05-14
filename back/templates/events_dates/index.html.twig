@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EventsDates index{% endblock %}
+
+{% block body %}
+    <h1>EventsDates index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Remaining_tickets</th>
+                <th>Is_cancelled</th>
+                <th>Cancellation_reason</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for events_date in events_dates %}
+            <tr>
+                <td>{{ events_date.id }}</td>
+                <td>{{ events_date.date ? events_date.date|date('Y-m-d') : '' }}</td>
+                <td>{{ events_date.remainingTickets }}</td>
+                <td>{{ events_date.isCancelled ? 'Yes' : 'No' }}</td>
+                <td>{{ events_date.cancellationReason }}</td>
+                <td>
+                    <a href="{{ path('app_events_dates_show', {'id': events_date.id}) }}">show</a>
+                    <a href="{{ path('app_events_dates_edit', {'id': events_date.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_events_dates_new') }}">Create new</a>
+{% endblock %}
