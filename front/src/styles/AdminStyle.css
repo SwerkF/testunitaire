@@ -1,44 +1,30 @@
-body {
-    font-family: Arial, sans-serif; 
-    background-image: url('../assets/stmichel.jpg');
-      background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-    margin: 0;
-    padding: 20px;
-
-
-
+/* Style général de la page */
+.container-admin {
+  font-family: Arial, sans-serif; /* Police de caractères */
+  background-color: #f4f4f4; /* Couleur de fond de la page */
+  margin: 0;
+  padding: 20px;
 }
-
 
 table {
-    width: 60%;
-    margin-top: 20px;
-    border-collapse: collapse; 
-    background-color: white;
-    
-
-
+  width: 60%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  background-color: white;
 }
 
-th, td {
-    border: 1px solid #ddd; 
-    text-align: left;
-    padding: 8px;
-    margin: 5px;
-    background-color: white;
-
-   
-    
-    
-
+th,
+td {
+  border: 1px solid #ddd;
+  text-align: left;
+  padding: 8px;
+  margin: 5px;
+  background-color: white;
 }
 
 th {
-    background-color: #666;
-    color: white;
+  background-color: #666;
+  color: white;
 }
 
 /* 
@@ -55,5 +41,3 @@ button {
 button:hover {
     background-color: darkblue; 
 } */
-
-

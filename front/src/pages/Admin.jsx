@@ -77,7 +77,7 @@ function Admin() {
 
   return (
     
-    <div>
+    <div className='container-admin'>
       <div className="d-flex justify-content-center" style={{ paddingTop: '20px', width: '100%' }}>
         <h1 >Admin Dashboard</h1>
       </div>

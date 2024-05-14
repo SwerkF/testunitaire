@@ -1,0 +1,94 @@
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-header{
+    color: black;
+  }
+
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .close-button {
+    align-self: flex-end;
+    border: none;
+    background: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .modal-header {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .modal-elements {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    gap: 2rem;
+  }
+  
+  .modal-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .modal-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .modal-form {
+    width: 100%;
+    display: grid;
+    grid-gap: 10px;
+  }
+  
+  input, textarea {
+    padding: 8px; /* Reduced padding */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-width: 300px; /* Maximum width for input fields */
+    max-height: 35px;
+    font-size: small;
+  }
+  label {
+    color:rgba(0, 0, 0, 0.7);
+    font-size: small;
+    text-align: left;
+
+  }
+  
+  .submit-button {
+    background-color: #0056b3;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    max-width: 300px;
+  }
+  
