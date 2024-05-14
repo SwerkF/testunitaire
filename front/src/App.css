@@ -14,7 +14,8 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-image: url("https://images.lonelyplanetitalia.it/static/places/le-havre-4550.jpg?q=80&s=54e98406bc314e21120779fadbde8452");
+  background-size: cover;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -35,4 +36,59 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.containerGenral{
+  display: flex;
+  justify-content: space-evenly;
+  width: 80%;
+}
+
+.containerConnexion, .containerInformationInscription{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: #1A173B;
+  padding: 2%;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.containerInscription{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: #ffffff;
+  padding: 2%;
+}
+
+.containerInformationInscription p{
+  font-size: 16px;
+}
+
+.containerGeneralInscription{
+  display: flex;
+  justify-content: center; 
+  width: 60%;
+  margin: 0 auto;
+}
+
+button{
+  background-color: #1A173B;
+  color: #ffffff;
+  border-radius: 10px;
+}
+
+.containerConnexion input, .containerInscription input {
+  border-radius: 10px;
+}
+
+.containerCondition label{
+  color: black;
+}
+
+.containerInscription a, .containerConnexion a{
+  color: grey;
+  text-decoration: none;
 }
