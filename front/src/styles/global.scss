@@ -1,3 +1,45 @@
 .navBarBg {
     background-color: #1A173B;
 }
+.text-color-yellow {
+    color: #E1BE40;
+}
+
+.btn-color  {
+    background-color: #1A173B;
+    color: #E1BE40;
+    border: #1A173B;
+}
+ .btn-color:hover {
+    background-color: #E1BE40;
+    color: #1A173B;
+    border: #E1BE40;
+}
+
+.bg-blue{
+    background-color: #1A173B;
+}
+
+.btn-outline-yellow {
+    border: none;
+    background-color: transparent;
+    color: #1A173B;
+    font-weight: bold;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background-color: #E1BE40;
+        color: #1A173B;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px #E1BE40;
+    }
+
+    &:active {
+        background-color: #E1BE40 !important;
+        color: #1A173B;
+        border-color: #E1BE40;
+    }
+}
