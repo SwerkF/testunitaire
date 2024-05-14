@@ -10,7 +10,7 @@
             <tr>
                 <th>Id</th>
                 <th>Date</th>
-                <th>Remaining_tickets</th>
+                <th>Tickets</th>
                 <th>Is_cancelled</th>
                 <th>Cancellation_reason</th>
                 <th>actions</th>
@@ -21,7 +21,7 @@
             <tr>
                 <td>{{ events_date.id }}</td>
                 <td>{{ events_date.date ? events_date.date|date('Y-m-d') : '' }}</td>
-                <td>{{ events_date.remainingTickets }}</td>
+                <td>{{ events_date.tickets }}</td>
                 <td>{{ events_date.isCancelled ? 'Yes' : 'No' }}</td>
                 <td>{{ events_date.cancellationReason }}</td>
                 <td>

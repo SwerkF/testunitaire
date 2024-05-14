@@ -17,7 +17,7 @@ class EventsDatesType extends AbstractType
             ->add('date', null, [
                 'widget' => 'single_text',
             ])
-            ->add('remaining_tickets')
+            ->add('tickets')
             ->add('is_cancelled')
             ->add('cancellation_reason')
             ->add('event_id', EntityType::class, [

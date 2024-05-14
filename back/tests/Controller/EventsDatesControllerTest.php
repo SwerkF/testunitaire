@@ -13,7 +13,7 @@ class EventsDatesControllerTest extends WebTestCase
     private KernelBrowser $client;
     private EntityManagerInterface $manager;
     private EntityRepository $repository;
-    private string $path = '/events/dates/';
+    private string $path = '/events-dates/';
 
     protected function setUp(): void
     {
@@ -48,7 +48,7 @@ class EventsDatesControllerTest extends WebTestCase
 
         $this->client->submitForm('Save', [
             'events_date[date]' => 'Testing',
-            'events_date[remaining_tickets]' => 'Testing',
+            'events_date[tickets]' => 'Testing',
             'events_date[is_cancelled]' => 'Testing',
             'events_date[cancellation_reason]' => 'Testing',
             'events_date[event_id]' => 'Testing',
@@ -64,7 +64,7 @@ class EventsDatesControllerTest extends WebTestCase
         $this->markTestIncomplete();
         $fixture = new EventsDates();
         $fixture->setDate('My Title');
-        $fixture->setRemaining_tickets('My Title');
+        $fixture->setTickets('My Title');
         $fixture->setIs_cancelled('My Title');
         $fixture->setCancellation_reason('My Title');
         $fixture->setEvent_id('My Title');
@@ -85,7 +85,7 @@ class EventsDatesControllerTest extends WebTestCase
         $this->markTestIncomplete();
         $fixture = new EventsDates();
         $fixture->setDate('Value');
-        $fixture->setRemaining_tickets('Value');
+        $fixture->setTickets('Value');
         $fixture->setIs_cancelled('Value');
         $fixture->setCancellation_reason('Value');
         $fixture->setEvent_id('Value');
@@ -97,18 +97,18 @@ class EventsDatesControllerTest extends WebTestCase
 
         $this->client->submitForm('Update', [
             'events_date[date]' => 'Something New',
-            'events_date[remaining_tickets]' => 'Something New',
+            'events_date[tickets]' => 'Something New',
             'events_date[is_cancelled]' => 'Something New',
             'events_date[cancellation_reason]' => 'Something New',
             'events_date[event_id]' => 'Something New',
         ]);
 
-        self::assertResponseRedirects('/events/dates/');
+        self::assertResponseRedirects('/events-dates/');
 
         $fixture = $this->repository->findAll();
 
         self::assertSame('Something New', $fixture[0]->getDate());
-        self::assertSame('Something New', $fixture[0]->getRemaining_tickets());
+        self::assertSame('Something New', $fixture[0]->getTickets());
         self::assertSame('Something New', $fixture[0]->getIs_cancelled());
         self::assertSame('Something New', $fixture[0]->getCancellation_reason());
         self::assertSame('Something New', $fixture[0]->getEvent_id());
@@ -119,7 +119,7 @@ class EventsDatesControllerTest extends WebTestCase
         $this->markTestIncomplete();
         $fixture = new EventsDates();
         $fixture->setDate('Value');
-        $fixture->setRemaining_tickets('Value');
+        $fixture->setTickets('Value');
         $fixture->setIs_cancelled('Value');
         $fixture->setCancellation_reason('Value');
         $fixture->setEvent_id('Value');
@@ -130,7 +130,7 @@ class EventsDatesControllerTest extends WebTestCase
         $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
         $this->client->submitForm('Delete');
 
-        self::assertResponseRedirects('/events/dates/');
+        self::assertResponseRedirects('/events-dates/');
         self::assertSame(0, $this->repository->count([]));
     }
 }
