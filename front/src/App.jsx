@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Reservations from './pages/Reservations';
@@ -14,7 +13,7 @@ function App() {
           <Routes>
             <Route path="/" element={<h1>Home</h1>} />
             <Route path="/reservations" element={<Reservations></Reservations>} />
-            <Route path="/events/:id" element={<EventList></EventList>} />
+            <Route path="/events" element={<EventList></EventList>} />
             <Route path='/login' element={<Connexion/>}></Route>
           </Routes>
         </BrowserRouter>
