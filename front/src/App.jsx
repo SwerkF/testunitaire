@@ -7,6 +7,7 @@ import NavbarComponent from './components/NavbarComponent';
 import Reservation from './components/Reservation';
 import FooterComponent from './components/FooterComponent';
 import Home from './pages/Home';
+import Admin from './pages/Admin';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/reservations" element={<Reservations></Reservations>} />
             <Route path="/events" element={<EventList></EventList>} />
             <Route path='/login' element={<Connexion/>}></Route>
+            <Route path='/admin' element={<Admin/>}></Route>
           </Routes>
         {/* <CardComponent /> */}
         <FooterComponent />
