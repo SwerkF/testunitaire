@@ -22,7 +22,7 @@ const Modal = ({ title, onClose, imageUrl, id, description }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('/api/submit-form', {
+      const response = await axios.post('/api/reservations', {
         ...formData,
         id
       });

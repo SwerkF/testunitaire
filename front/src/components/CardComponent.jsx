@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from "prop-types";
-import Modal from './ModalComponent.jsx'; // Import the Modal component
+import Modal from './ModalComponent.jsx';
+
 import "../styles/CardComponent.scss";
 
 
@@ -27,7 +28,8 @@ const CardComponent = ({ title, description, buttonText, imageUrl, id}) => {
         onClose={() => setModalOpen(false)}
         imageUrl={imageUrl}
         id={id}
-      />}
+      />
+      }
     </div>
   );
 };
