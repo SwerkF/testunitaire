@@ -5,11 +5,15 @@ import Reservations from './pages/Reservations';
 import CardComponent from './components/CardComponent';
 import EventList from './pages/EventList';
 import Connexion from './pages/Connexion';
+import NavbarComponent from './components/NavbarComponent';
+import Reservation from './components/Reservation';
+import FooterComponent from './components/FooterComponent';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <NavbarComponent />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<h1>Home</h1>} />
@@ -19,6 +23,8 @@ function App() {
           </Routes>
         </BrowserRouter>
         <CardComponent />
+        <Reservation />
+        <FooterComponent />
       </header>
     </div>
   );
