@@ -40,9 +40,4 @@ button:hover {
     background-color: darkblue; 
 } */
 
-/* Responsive design pour les petits écrans */
-@media (max-width: 600px) {
-    nav {
-        flex-direction: column;
-    }
-}
+
