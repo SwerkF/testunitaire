@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import FooterComponent from "./components/FooterComponent";
+import NavbarComponent from "./components/NavbarComponent";
+import Reservation from "./components/Reservation";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <NavbarComponent/>
+
+      <Reservation
+  eventName="Summer Festival"
+  initialDate="2023-06-15"
+  userBirthDate="2000-05-22"
+  evenAge="18"
+  onSignupSuccess={(date, numPeople) => {
+
+  }}
+  />
+
+
+
+      <FooterComponent/>
     </div>
   );
 }
