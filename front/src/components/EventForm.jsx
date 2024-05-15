@@ -10,8 +10,8 @@ function EventForm({ show, handleClose, handleSubmit, event, mode }) {
         </Modal.Header>
         <Modal.Body>
           <Form.Group>
-            <Form.Label>Nom</Form.Label>
-            <Form.Control type="text" name="name" defaultValue={event ? event.name : ''} required />
+            <Form.Label>Titre</Form.Label>
+            <Form.Control type="text" name="title" defaultValue={event ? event.title : ''} required />
           </Form.Group>
           <Form.Group>
             <Form.Label>Description</Form.Label>
@@ -27,12 +27,13 @@ function EventForm({ show, handleClose, handleSubmit, event, mode }) {
             </Form.Control>
           </Form.Group>
           <Form.Group>
-            <Form.Label>Date</Form.Label>
-            <Form.Control type="date" name="date" defaultValue={event ? event.date : ''} required />
-          </Form.Group>
+  <Form.Label>Image URL</Form.Label>
+  <Form.Control type="text" name="imageUrl" placeholder="Enter image URL" defaultValue={event ? event.imageUrl : ''} required />
+</Form.Group>
+
           <Form.Group>
             <Form.Label>Age Minimum</Form.Label>
-            <Form.Control type="number" name="ageMinimum" defaultValue={event ? event.ageMinimum : ''} required />
+            <Form.Control type="number" name="minimumAge" defaultValue={event ?  event.minimumAge : ''} required />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
