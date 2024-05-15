@@ -6,9 +6,10 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -155,5 +156,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->birthday = $birthday;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function hashPassword(): void
+    {
+        // Check if password is set and not already hashed
+        if ($this->password && strpos($this->password, '$argon2id') === false) {
+            $this->password = password_hash($this->password, PASSWORD_ARGON2ID);
+        }
     }
 }
