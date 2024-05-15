@@ -7,7 +7,6 @@ import Reservation from './components/Reservation';
 import FooterComponent from './components/FooterComponent';
 import Home from './pages/Home';
 import Admin from './pages/Admin';
-import './App.css';
 import CalendarPage from './pages/CalendarPage';
 
 function App() {
