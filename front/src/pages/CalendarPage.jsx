@@ -4,71 +4,82 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import "../styles/calendar.css";
+import axios from "axios";
 
 const CalendarPage = () => {
-  const eventsData = [
-    {
-      title: "Armada 2024",
-      image_url:
-        "https://i-de.unimedias.fr/2023/12/07/dt158lehavrevuemerbr-6571e2b88e9bb.jpg?auto=format%2Ccompress&crop=faces&cs=tinysrgb&fit=crop&h=501&w=890",
-      date: "2024-05-24T18:00:00",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam, reprehenderit aperiam impedit illo commodi?",
-      status: "Complet",
-      is_canceled: false,
-      minimum_age: "18 ans et plus",
-    },
-    {
-      title: "Festival de Musique",
-      image_url:
-        "https://cdn.sortiraparis.com/images/80/77153/422736-festival-de-films-courts-de-maisons-laffitte-2019.jpg",
-      date: "2024-05-15T20:00:00",
-      description: "Un festival de musique avec des artistes du monde entier.",
-      status: "Annulé",
-      is_canceled: true,
-      minimum_age: "12 ans et plus",
-    },
-    {
-      title: "Exposition de peinture",
-      image_url:
-        "https://eurofilmfest-lille.com/wp-content/uploads/2023/02/Carton-infos-1-1400x788.png",
-      date: "2024-05-01T10:00:00",
-      description: "Une exposition de peinture avec des artistes locaux.",
-      status: "",
-      is_canceled: false,
-      minimum_age: "Tout public",
-    },
-  ];
-
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const formattedEvents = eventsData.map((event, index) => ({
-      title: event.title + (event.status ? ` (${event.status})` : ""),
-      start: event.date,
-      end: event.endDate || event.date,
-      extendedProps: {
-        description: event.description,
-        image: event.image_url,
-        age: event.minimum_age,
-      },
-      classNames: [
-        event.status ? `fc-event-${event.status.toLowerCase()}` : "",
-      ],
-      id: index,
-    }));
+    const fetchEvents = async () => {
+      try {
+        const [eventsResponse, eventsDatesResponse] = await Promise.all([
+          axios.get("http://127.0.0.1:8000/api/eventss"),
+          axios.get("http://127.0.0.1:8000/api/events_datess"),
+        ]);
+
+        const eventsData = eventsResponse.data["hydra:member"];
+        const eventsDatesData = eventsDatesResponse.data["hydra:member"];
+
+        // Fusionner les données des deux requêtes
+        const mergedData = eventsData.map((event) => {
+          const eventDates = eventsDatesData.filter((date) => {
+            const eventId = date.event.split("/").pop();
+            return parseInt(eventId) === event.id;
+          });
+          return {
+            ...event,
+            date: eventDates[0].date,
+            tickets: eventDates[0].tickets,
+            status : eventDates[0].is_cancelled,
+          };
+        });
+
+        setEvents(mergedData);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  console.log(events);
+
+  useEffect(() => {
+    const formattedEvents =
+      events &&
+      events.map((event, index) => ({
+        title: event.title,
+        start: event.date,
+        end: event.date,
+        extendedProps: {
+          description: event.description,
+          image_url: event.image_url,
+          age: event.minimum_age,
+          type: event.type,
+          tickets: event.tickets,
+        },
+        classNames: [
+          event.status ? `fc-event-${event.status.toLowerCase()}` : "",
+        ],
+        id: index,
+      }));
     setEvents(formattedEvents);
   }, []);
 
   const handleEventClick = (clickInfo) => {
     const { title, extendedProps, start } = clickInfo.event;
-    const { description, image, age } = extendedProps;
+    const { description, image_url, age } = extendedProps;
 
     console.log(`Title: ${title}
 Description: ${description}
 Date: ${start.toISOString()}
 Age: ${age}
-Image URL: ${image}`);
+Image URL: ${image_url}`);
   };
 
   return (
@@ -92,14 +103,20 @@ Image URL: ${image}`);
 };
 
 function renderEventContent(eventInfo) {
+  console.log(eventInfo);
   return (
     <div className="d-flex">
       <div className="ms-auto">
-        <i>{eventInfo.event.title}</i>
+        <i className="d-flex">
+          <span>{eventInfo.event.title}</span>{" "}
+          <span className="ms-auto fw-semibold">
+            {eventInfo.event.extendedProps.type}
+          </span>
+        </i>
         <br />
 
         <img
-          src={eventInfo.event.extendedProps.image}
+          src={eventInfo.event.extendedProps.image_url}
           alt={eventInfo.event.title}
           className="rounded-2"
           style={{ width: "100%" }}
@@ -109,7 +126,12 @@ function renderEventContent(eventInfo) {
             <b>{eventInfo.timeText}</b>{" "}
           </span>
 
-          <span className="ms-auto">{eventInfo.event.extendedProps.age}</span>
+          <div className="d-flex">
+            <span className="me-3">{eventInfo.event.extendedProps.age}</span>
+            <span className="ms-5">
+              {eventInfo.event.extendedProps.tickets} Restant(s)
+            </span>
+          </div>
         </div>
       </div>
     </div>

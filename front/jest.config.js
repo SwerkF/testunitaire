@@ -5,6 +5,6 @@ module.exports = {
     moduleNameMapper: {
       '\\.(css|scss|less)$': '<rootDir>/src/__mocks__/styleMock.js',
     },
-    transformIgnorePatterns: ["node_modules/(?!axios)"],
+    transformIgnorePatterns:["node_modules/(?!(axios)/)"],
   };
   

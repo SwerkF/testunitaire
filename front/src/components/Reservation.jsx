@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 const Reservation = ({
   eventName,
@@ -24,7 +25,7 @@ const Reservation = ({
     setAgeConfirmation(event.target.checked);
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     try {
@@ -53,6 +54,18 @@ const Reservation = ({
     } catch (error) {
       console.error(error.message);
     }
+
+    try {
+      const response = await axios.post('http://localhost/api/reservations', {
+        eventDate,
+        numberOfPeople,
+        ageConfirmation,
+      
+      });
+      console.log('Form submitted:', response.data);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
 
   function calculateAge(birthDate, minAge) {
@@ -70,6 +83,7 @@ const Reservation = ({
 
     return age >= minAge;
   }
+
 
   return (
     <div>

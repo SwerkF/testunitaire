@@ -34,6 +34,7 @@ main {
     transition: opacity 0.2s ease-out;
     object-fit: cover;
     object-position: center;
+    filter: brightness(50%);
 }
 
   .h2-home {

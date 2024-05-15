@@ -80,4 +80,28 @@ class Reservation
 
         return $this;
     }
+    public function setNumber_of_tickets(?int $number_of_tickets): self
+{
+    $this->number_of_tickets = $number_of_tickets;
+    return $this;
+}
+
+public function setReservation_date(?\DateTimeInterface $reservation_date): self
+{
+    $this->reservation_date = $reservation_date;
+    return $this;
+}
+
+public function setUser(?User $user_id): self
+{
+    $this->user_id = $user_id;
+    return $this;
+}
+
+public function setEventDate(?EventsDates $event_date_id): self
+{
+    $this->event_date_id = $event_date_id;
+    return $this;
+}
+
 }
