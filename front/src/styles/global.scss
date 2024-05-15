@@ -2,7 +2,7 @@
     background-color: #1A173B;
 }
 .text-color-yellow {
-    color: #E1BE40;
+    color: #E1BE40 !important;
 }
 
 .btn-color  {
@@ -42,4 +42,15 @@
         color: #1A173B;
         border-color: #E1BE40;
     }
+}
+
+.btn-color-yellow  {
+    background-color: #E1BE40;
+    color: #1A173B;
+    border: #E1BE40;
+}
+ .btn-color-yellow:hover {
+    background-color: #1A173B;
+    color: #E1BE40;
+    border: #1A173B;
 }

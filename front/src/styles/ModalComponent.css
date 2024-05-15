@@ -13,13 +13,14 @@
   
   .modal-header{
     color: black;
+    font-size: large;
   }
 
   .modal-content {
     background-color: white;
     padding: 20px;
     border-radius: 10px;
-    width: 90%;
+    width: 80%;
     display: flex;
     flex-direction: column;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -33,6 +34,7 @@
     background: none;
     font-size: 24px;
     cursor: pointer;
+    color: rgba(0, 0, 0, 0.7);
   }
   
   .modal-header {
@@ -52,6 +54,7 @@
     width: 100%;
     height: auto;
     border-radius: 8px;
+  
   }
   
   .modal-image img {
@@ -59,6 +62,8 @@
     height: 100%;
     object-fit: cover;
   }
+  
+  
   
   .modal-form {
     width: 100%;
@@ -79,6 +84,13 @@
     font-size: small;
     text-align: left;
 
+  }
+
+  .description {
+    color: rgba(0, 0, 0, 0.7);
+    text-align: left;
+    font-size: smaller;
+    margin-top: 20px;
   }
   
   .submit-button {

@@ -3,29 +3,21 @@
 namespace App\Test\Controller;
 
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class UserControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
-    private EntityManagerInterface $manager;
-    private EntityRepository $repository;
     private string $path = '/user/';
 
     protected function setUp(): void
     {
         $this->client = static::createClient();
-        $this->manager = static::getContainer()->get('doctrine')->getManager();
-        $this->repository = $this->manager->getRepository(User::class);
 
-        foreach ($this->repository->findAll() as $object) {
-            $this->manager->remove($object);
-        }
-
-        $this->manager->flush();
+        // Clearing the database before each test
+        $entityManager = static::getContainer()->get('doctrine')->getManager();
+        $entityManager->createQuery('DELETE FROM App\Entity\User')->execute();
     }
 
     public function testIndex(): void
@@ -34,109 +26,104 @@ class UserControllerTest extends WebTestCase
 
         self::assertResponseStatusCodeSame(200);
         self::assertPageTitleContains('User index');
-
-        // Use the $crawler to perform additional assertions e.g.
-        // self::assertSame('Some text on the page', $crawler->filter('.p')->first());
     }
 
     public function testNew(): void
     {
-        $this->markTestIncomplete();
-        $this->client->request('GET', sprintf('%snew', $this->path));
+        $this->client->request('GET', $this->path . 'new');
 
         self::assertResponseStatusCodeSame(200);
 
         $this->client->submitForm('Save', [
-            'user[email]' => 'Testing',
-            'user[roles]' => 'Testing',
-            'user[password]' => 'Testing',
-            'user[firstname]' => 'Testing',
-            'user[name]' => 'Testing',
-            'user[birthday]' => 'Testing',
+            'user[email]' => 'Sarah@example.com',
+            'user[password]' => 'Sarah_password',
+            'user[firstname]' => 'Sarah',
+            'user[name]' => 'Faye',
+            'user[birthday]' => '2001-01-01',
         ]);
 
         self::assertResponseRedirects($this->path);
 
-        self::assertSame(1, $this->repository->count([]));
+        // Check if the entity was actually persisted
+        $entityManager = static::getContainer()->get('doctrine')->getManager();
+        $usersCount = $entityManager->getRepository(User::class)->count([]);
+        self::assertSame(1, $usersCount);
     }
 
     public function testShow(): void
     {
-        $this->markTestIncomplete();
-        $fixture = new User();
-        $fixture->setEmail('My Title');
-        $fixture->setRoles('My Title');
-        $fixture->setPassword('My Title');
-        $fixture->setFirstname('My Title');
-        $fixture->setName('My Title');
-        $fixture->setBirthday('My Title');
+        $entityManager = static::getContainer()->get('doctrine')->getManager();
+        $user = new User();
+        $user->setEmail('Sarah@example.com');
+        $user->setPassword('Sarah_password');
+        $user->setFirstname('Sarah');
+        $user->setName('Faye');
+        $user->setBirthday(new \DateTime('2001-01-01'));
+        $entityManager->persist($user);
+        $entityManager->flush();
 
-        $this->manager->persist($fixture);
-        $this->manager->flush();
-
-        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
+        $this->client->request('GET', $this->path . $user->getId());
 
         self::assertResponseStatusCodeSame(200);
         self::assertPageTitleContains('User');
-
-        // Use assertions to check that the properties are properly displayed.
     }
 
     public function testEdit(): void
     {
-        $this->markTestIncomplete();
-        $fixture = new User();
-        $fixture->setEmail('Value');
-        $fixture->setRoles('Value');
-        $fixture->setPassword('Value');
-        $fixture->setFirstname('Value');
-        $fixture->setName('Value');
-        $fixture->setBirthday('Value');
+        $entityManager = static::getContainer()->get('doctrine')->getManager();
+        $user = new User();
+        $user->setEmail('Sarah@example.com');
+        $user->setPassword('Sarah_password');
+        $user->setFirstname('Sarah');
+        $user->setName('Faye');
+        $user->setBirthday(new \DateTime('2001-01-01'));
+        $entityManager->persist($user);
+        $entityManager->flush();
 
-        $this->manager->persist($fixture);
-        $this->manager->flush();
+        $this->client->request('GET', $this->path . $user->getId() . '/edit');
 
-        $this->client->request('GET', sprintf('%s%s/edit', $this->path, $fixture->getId()));
+        self::assertResponseStatusCodeSame(200);
 
         $this->client->submitForm('Update', [
-            'user[email]' => 'Something New',
-            'user[roles]' => 'Something New',
-            'user[password]' => 'Something New',
-            'user[firstname]' => 'Something New',
-            'user[name]' => 'Something New',
-            'user[birthday]' => 'Something New',
+            'user[email]' => 'Nvx_Sarah@example.com',
+            'user[password]' => 'NvxSarah_password',
+            'user[firstname]' => 'NVxSarah',
+            'user[name]' => 'NvxFaye',
+            'user[birthday]' => '2005-01-01',
         ]);
 
-        self::assertResponseRedirects('/user/');
+        self::assertResponseRedirects($this->path);
 
-        $fixture = $this->repository->findAll();
+        $updatedUser = $entityManager->getRepository(User::class)->find($user->getId());
 
-        self::assertSame('Something New', $fixture[0]->getEmail());
-        self::assertSame('Something New', $fixture[0]->getRoles());
-        self::assertSame('Something New', $fixture[0]->getPassword());
-        self::assertSame('Something New', $fixture[0]->getFirstname());
-        self::assertSame('Something New', $fixture[0]->getName());
-        self::assertSame('Something New', $fixture[0]->getBirthday());
+        self::assertSame('Nvx_Sarah@example.com', $updatedUser->getEmail());
+        self::assertSame('NVxSarah', $updatedUser->getFirstname());
+        self::assertSame('NvxFaye', $updatedUser->getName());
+        self::assertEquals(new \DateTime('2005-01-01'), $updatedUser->getBirthday());
     }
 
     public function testRemove(): void
     {
-        $this->markTestIncomplete();
-        $fixture = new User();
-        $fixture->setEmail('Value');
-        $fixture->setRoles('Value');
-        $fixture->setPassword('Value');
-        $fixture->setFirstname('Value');
-        $fixture->setName('Value');
-        $fixture->setBirthday('Value');
+        $entityManager = static::getContainer()->get('doctrine')->getManager();
+        $user = new User();
+        $user->setEmail('Sarah@example.com');
+        $user->setPassword('Sarah_password');
+        $user->setFirstname('Sarah');
+        $user->setName('Faye');
+        $user->setBirthday(new \DateTime('1990-01-01'));
+        $entityManager->persist($user);
+        $entityManager->flush();
 
-        $this->manager->persist($fixture);
-        $this->manager->flush();
+        $this->client->request('GET', $this->path . $user->getId());
 
-        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
+        self::assertResponseStatusCodeSame(200);
+
         $this->client->submitForm('Delete');
 
-        self::assertResponseRedirects('/user/');
-        self::assertSame(0, $this->repository->count([]));
+        self::assertResponseRedirects($this->path);
+
+        $removedUser = $entityManager->getRepository(User::class)->find($user->getId());
+
+        self::assertNull($removedUser);
     }
 }
