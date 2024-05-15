@@ -7,7 +7,6 @@ use App\Entity\Reservation;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType; // Import DateTimeType
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,20 +16,18 @@ class ReservationType extends AbstractType
     {
         $builder
             ->add('number_of_tickets')
-            ->add('reservation_date', DateTimeType::class, [
+            ->add('reservation_date', null, [
                 'widget' => 'single_text',
-                'html5' => false, // Disable HTML5 rendering
-                'format' => 'yyyy-MM-dd HH:mm', // Specify the format here
             ])
-            
-            ->add('user', EntityType::class, [
+            ->add('user_id', EntityType::class, [
                 'class' => User::class,
-                'choice_label' => 'id', // Adjust based on your User entity property
+                'choice_label' => 'id',
             ])
-            ->add('eventDate', EntityType::class, [
+            ->add('event_date_id', EntityType::class, [
                 'class' => EventsDates::class,
-                'choice_label' => 'id', // Or adjust to a meaningful property of EventsDates
-            ]);
+                'choice_label' => 'id',
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

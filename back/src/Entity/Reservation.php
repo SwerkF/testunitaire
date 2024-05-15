@@ -1,11 +1,14 @@
 <?php
+
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
+#[ApiResource]
 class Reservation
 {
     #[ORM\Id]
@@ -14,16 +17,16 @@ class Reservation
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $numberOfTickets = null;
+    private ?int $number_of_tickets = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $reservationDate = null;
+    private ?\DateTimeInterface $reservation_date = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    private ?User $user = null;
+    #[ORM\ManyToOne]
+    private ?User $user_id = null;
 
-    #[ORM\ManyToOne(targetEntity: EventsDates::class)]
-    private ?EventsDates $eventDate = null;
+    #[ORM\ManyToOne]
+    private ?EventsDates $event_date_id = null;
 
     public function getId(): ?int
     {
@@ -32,45 +35,73 @@ class Reservation
 
     public function getNumberOfTickets(): ?int
     {
-        return $this->numberOfTickets;
+        return $this->number_of_tickets;
     }
 
-    public function setNumberOfTickets(?int $numberOfTickets): self
+    public function setNumberOfTickets(?int $number_of_tickets): static
     {
-        $this->numberOfTickets = $numberOfTickets;
+        $this->number_of_tickets = $number_of_tickets;
+
         return $this;
     }
 
     public function getReservationDate(): ?\DateTimeInterface
     {
-        return $this->reservationDate;
+        return $this->reservation_date;
     }
 
-    public function setReservationDate(?\DateTimeInterface $reservationDate): self
+    public function setReservationDate(?\DateTimeInterface $reservation_date): static
     {
-        $this->reservationDate = $reservationDate;
+        $this->reservation_date = $reservation_date;
+
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUserId(): ?User
     {
-        return $this->user;
+        return $this->user_id;
     }
 
-    public function setUser(?User $user): self
+    public function setUserId(?User $user_id): static
     {
-        $this->user = $user;
+        $this->user_id = $user_id;
+
         return $this;
     }
 
-    public function getEventDate(): ?EventsDates
+    public function getEventDateId(): ?EventsDates
     {
-        return $this->eventDate;
+        return $this->event_date_id;
     }
 
-    public function setEventDate(?EventsDates $eventDate): self
+    public function setEventDateId(?EventsDates $event_date_id): static
     {
-        $this->eventDate = $eventDate;
+        $this->event_date_id = $event_date_id;
+
         return $this;
     }
+    public function setNumber_of_tickets(?int $number_of_tickets): self
+{
+    $this->number_of_tickets = $number_of_tickets;
+    return $this;
+}
+
+public function setReservation_date(?\DateTimeInterface $reservation_date): self
+{
+    $this->reservation_date = $reservation_date;
+    return $this;
+}
+
+public function setUser(?User $user_id): self
+{
+    $this->user_id = $user_id;
+    return $this;
+}
+
+public function setEventDate(?EventsDates $event_date_id): self
+{
+    $this->event_date_id = $event_date_id;
+    return $this;
+}
+
 }
