@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "../styles/Connexion.css";
 import axios from "axios";
 import bcrypt from "bcryptjs";
@@ -8,14 +8,19 @@ import {
 } from "../services/authenticationValidation";
 import "../styles/global.css";
 import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 export default function Connexion() {
+  const navigate = useNavigate();
+
   const [showConnexion, setShowConnexion] = useState(false);
+  
   const [nom, setNom] = useState("");
   const [prenom, setPrenom] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [dateNaissance, setDateNaissance] = useState("");
   const [error, setError] = useState("");
 
   const handleRegister = async (e) => {
@@ -40,22 +45,32 @@ export default function Connexion() {
       const salt = bcrypt.genSaltSync(10);
       const hashedPassword = bcrypt.hashSync(password, salt);
 
-      // const response = await axios.post('http://localhost:8000/api/signup', {
-      //     username,
-      //     email,
-      //     password: hashedPassword,
-      // });
-
-      const response = {
-        data: {
-          nom: "Jean",
-          email: "kidd@gmail.com",
-          password: hashedPassword,
-          vraiPassword: password,
-        },
+      const userData = {
+        email: email,
+        roles: ["user"], // Rôle par défaut
+        password: hashedPassword,
+        firstname: prenom,
+        name: nom,
+        birthday: dateNaissance,
       };
 
+      const response = await axios.post('http://localhost:8000/api/users', userData);
+
       console.log("Signup successful:", response.data);
+
+      // Mettre à jour le contexte utilisateur avec les informations de l'utilisateur enregistré
+
+      localStorage.setItem("user", JSON.stringify({
+        id: response.data.id,
+        email: response.data.email,
+        firstname: response.data.firstname,
+        name: response.data.name,
+        birthday: response.data.birthday,
+        role: response.data.roles[0],
+      }));
+
+      navigate("/");
+
     } catch (error) {
       console.error("Error signing up:", error);
       setError("Erreur lors de la création du compte");
@@ -71,27 +86,35 @@ export default function Connexion() {
     }
 
     try {
-      // const response = await axios.post('http://localhost:8000/api/login', {
-      //     email,
-      // });
-      const response = {
-        data: {
-          password:
-            "$2a$10$8WwXLBsYu9bjlvIeWaEwWuQaicmmGscIcCGFPbfnYyuJrQhBIhLFm",
-        },
-      };
+      // Effectuer une requête GET pour récupérer les informations de l'utilisateur avec l'email 
+      const response = await axios.post(`http://localhost:8000/api/users/email`, {
+        email: email
+      });
+      console.log(response.data);
+      const user = response.data;
 
-      console.log("Login response:", response.data);
+      if(!user) return setError("Utilisateur non trouvé");
 
-      const hashedPassword = response.data.password;
-      const isMatch = bcrypt.compareSync(password, hashedPassword);
+      // Vérifier le mot de passe
+      if (bcrypt.compareSync(password, user.password)) {
+        console.log("Login successful:", user);
 
-      if (isMatch) {
-        console.log("Login successful");
+        // Mettre à jour le contexte utilisateur avec les informations de l'utilisateur connecté
+        localStorage.setItem("user", JSON.stringify({
+          id: user.id,
+          email: user.email,
+          firstname: user.firstname,
+          name: user.name,
+          birthday: user.birthday,
+          role: user.roles[0],
+        }));
+
+        navigate("/");
       } else {
         console.error("Email ou mot de passe invalide");
         setError("Email ou mot de passe invalide");
       }
+     
     } catch (error) {
       console.error("Error logging in:", error);
       setError("Erreur lors de la connexion");
@@ -189,8 +212,7 @@ export default function Connexion() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <label>Confirmation du ot de passe</label>
-
+            <label>Confirmation du mot de passe</label>
             <input
               type="password"
               placeholder="*******"
@@ -199,12 +221,15 @@ export default function Connexion() {
               required
             />
             <label>Date de naissance</label>
-            <input type="date" required />
+            <input 
+              type="date" 
+              value={dateNaissance}
+              onChange={(e) => setDateNaissance(e.target.value)}
+              required 
+            />
 
             <div className="containerCondition">
-              <input type="checkbox" 
-                required 
-              />
+              <input type="checkbox" required />
               <label>Accepter les conditions d'utilisation</label>
             </div>
             <Button type="submit" className="btn-color">Créer votre compte</Button>

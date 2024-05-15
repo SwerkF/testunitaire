@@ -1,33 +1,31 @@
-/*import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-*/
 import CardComponent from "../components/CardComponent";
 import "../styles/EventList.css";
-
 const EventList = () => {
-  /*const [events, setEvents] = useState([]);
-    const { id } = useParams();
+  const [events, setEvents] = useState([]);
     
-    useEffect(() => {
-        axios.get(`http://localhost:3000/events`)
+useEffect(() => {
+    axios.get('http://localhost:8000/api/eventss')
         .then((response) => {
-            setEvents(response.data);
+            setEvents(response.data['hydra:member']);
+        })
+        .catch((error) => {
+            console.error('There was an error fetching the events!', error);
         });
-    }, [id]);
-    */
+}, []);
+
+    
+
     return (
-        <div>
-        <h1 class="title-h1">Event List</h1>
-        <ul class= "event-container">
-            <CardComponent title="title" description="description brève de l'évènement" buttonText="plus d'info" imageUrl="https://img.freepik.com/photos-gratuite/lumiere-scene-rougeoyante-illumine-fans-rock-liesse-generes-par-ia_188544-37983.jpg" id="1"/>
-            <CardComponent title="title" description="description brève de l'évènement" buttonText="plus d'info" imageUrl="https://img.freepik.com/photos-gratuite/lumiere-scene-rougeoyante-illumine-fans-rock-liesse-generes-par-ia_188544-37983.jpg" id="3"/>
-            <CardComponent title="title" description="description brève de l'évènement" buttonText="plus d'info" imageUrl="https://img.freepik.com/photos-gratuite/lumiere-scene-rougeoyante-illumine-fans-rock-liesse-generes-par-ia_188544-37983.jpg" id="4"/>
-            <CardComponent title="title" description="description brève de l'évènement" buttonText="plus d'info" imageUrl="https://img.freepik.com/photos-gratuite/lumiere-scene-rougeoyante-illumine-fans-rock-liesse-generes-par-ia_188544-37983.jpg" id="5"/>
-            <CardComponent title="title" description="description brève de l'évènement" buttonText="plus d'info" imageUrl="https://img.freepik.com/photos-gratuite/lumiere-scene-rougeoyante-illumine-fans-rock-liesse-generes-par-ia_188544-37983.jpg" id="6" />
-            <CardComponent title="title" description="description brève de l'évènement" buttonText="plus d'info" imageUrl="https://img.freepik.com/photos-gratuite/lumiere-scene-rougeoyante-illumine-fans-rock-liesse-generes-par-ia_188544-37983.jpg" id="7"/>
-        </ul>
-        </div>
+            <div>
+            <h1 class="title-h1">Event List</h1>
+            <ul class= "event-container">
+                    {events.map((event) => (
+                            <CardComponent title={event.title} description={event.description} buttonText="plus d'info" imageUrl={event.imageUrl} id={event.id}/>
+                    ))}
+            </ul>
+            </div>
     );
 }
 
