@@ -13,7 +13,7 @@
   
   }
   
-  .containerConnexion, .containerInformationInscription{
+.containerInformationInscription{
     display: flex;
     flex-direction: column;
     border: 1px solid black;
@@ -23,6 +23,22 @@
     align-items: center;
     justify-content: space-evenly;
   }
+
+  .containerConnexion{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: #ffffff;
+    padding: 2%;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  .containerConnexion h1{
+    color: black;
+  }
+
   .containerInscription{
     display: flex;
     flex-direction: column;
