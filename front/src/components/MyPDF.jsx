@@ -20,11 +20,11 @@ const MyPDF = (props) => {
       <Document>
         <Page>
           <Text>Hello, this is my PDF!</Text>
-          <Image src={qrCodeImage} style={{ width: 128, height: 128 }} />
+          <Image src={qrCodeImage} />
         </Page>
       </Document>
     </PDFViewer>
-  ) : null;
+  ) : "Loading...";
 };
 
 export default MyPDF;
