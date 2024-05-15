@@ -11,7 +11,7 @@ describe('Reservations', () => {
     });
 })
 
-// should open modal
+// should open modal 
 
 describe('Reservations', () => {
     it('should open modal', async () => {
