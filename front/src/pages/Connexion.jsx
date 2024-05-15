@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "../styles/Connexion.css";
 import axios from "axios";
 import bcrypt from "bcryptjs";
@@ -8,11 +8,13 @@ import {
 } from "../services/authenticationValidation";
 import "../styles/global.css";
 import { Button } from "react-bootstrap";
-import { UserContext } from "../contexts/UserContext"; // Importer le contexte utilisateur
+import { useNavigate } from "react-router-dom";
 
 export default function Connexion() {
-  const { setUser } = useContext(UserContext); // Utiliser le contexte pour mettre à jour l'utilisateur
+  const navigate = useNavigate();
+
   const [showConnexion, setShowConnexion] = useState(false);
+  
   const [nom, setNom] = useState("");
   const [prenom, setPrenom] = useState("");
   const [email, setEmail] = useState("");
@@ -57,12 +59,17 @@ export default function Connexion() {
       console.log("Signup successful:", response.data);
 
       // Mettre à jour le contexte utilisateur avec les informations de l'utilisateur enregistré
-      setUser({
-        email,
-        firstname: prenom,
-        name: nom,
-        birthday: dateNaissance,
-      });
+
+      localStorage.setItem("user", JSON.stringify({
+        id: response.data.id,
+        email: response.data.email,
+        firstname: response.data.firstname,
+        name: response.data.name,
+        birthday: response.data.birthday,
+        role: response.data.roles[0],
+      }));
+
+      navigate("/");
 
     } catch (error) {
       console.error("Error signing up:", error);
@@ -79,34 +86,35 @@ export default function Connexion() {
     }
 
     try {
-      // Effectuer une requête GET pour récupérer tous les utilisateurs
-      const response = await axios.get('http://localhost:8000/api/users');
+      // Effectuer une requête GET pour récupérer les informations de l'utilisateur avec l'email 
+      const response = await axios.post(`http://localhost:8000/api/users/email`, {
+        email: email
+      });
+      console.log(response.data);
+      const user = response.data;
 
-      // Filtrer pour trouver l'utilisateur avec l'email correspondant
-      const user = response.data['hydra:member'].find(u => u.email === email);
-
-      if (!user) {
-        setError("Email ou mot de passe invalide");
-        return;
-      }
+      if(!user) return setError("Utilisateur non trouvé");
 
       // Vérifier le mot de passe
-      const isMatch = bcrypt.compareSync(password, user.password);
-
-      if (isMatch) {
-        console.log("Login successful");
+      if (bcrypt.compareSync(password, user.password)) {
+        console.log("Login successful:", user);
 
         // Mettre à jour le contexte utilisateur avec les informations de l'utilisateur connecté
-        setUser({
+        localStorage.setItem("user", JSON.stringify({
+          id: user.id,
           email: user.email,
           firstname: user.firstname,
           name: user.name,
           birthday: user.birthday,
-        });
+          role: user.roles[0],
+        }));
+
+        navigate("/");
       } else {
         console.error("Email ou mot de passe invalide");
         setError("Email ou mot de passe invalide");
       }
+     
     } catch (error) {
       console.error("Error logging in:", error);
       setError("Erreur lors de la connexion");
