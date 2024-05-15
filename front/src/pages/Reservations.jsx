@@ -3,6 +3,7 @@ import MyPDF from '../components/MyPDF';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Input from '../components/Input';
+import axios from 'axios';
 
 const Reservations = () => {
 
@@ -12,7 +13,7 @@ const Reservations = () => {
     const [show, setShow] = useState(false);
 
     useEffect(() => {
-        setReservations([
+        /*setReservations([
             {
                 uuid: "1",
                 name: "John Doe",
@@ -27,9 +28,17 @@ const Reservations = () => {
                 time: "12:00",
                 guests: 2
             }
+        ])*/
 
-        
-        ])
+        axios.get('http://127.0.0.1:8000/api/reservation/users/1')
+            .then((response) => {
+                console.log(response.data)
+                setReservations(response.data)
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+
     }, [])
 
     return (

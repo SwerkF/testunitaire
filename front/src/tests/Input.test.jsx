@@ -1,35 +1,35 @@
-import { TextEncoder, TextDecoder } from 'util';
-import { render, screen } from '@testing-library/react';
-import React from 'react';
-import '@testing-library/jest-dom';
-import Input from '../components/Input';
+import { render, screen, fireEvent } from '@testing-library/react';
+import Input from './Input';
 
-describe('Input', () => {
-    it('should render Input', () => {
-        test('should render Input', () => {
-            render(<Input />);
-            const input = screen.getByRole('textbox');
-            expect(input).toBeInTheDocument();
-        });
-    });
-
-    it('should render Input with label', () => {
-        render(<Input label="Name" />);
-        const label = screen.getByText('Name');
-        expect(label).toBeInTheDocument();
-    });
-
-    it('should render Input with placeholder', () => {
-        render(<Input placeholder="Enter your name" />);
-        const input = screen.getByPlaceholderText('Enter your name');
-        expect(input).toBeInTheDocument();
-    });
-
-    it('should render Input with type', () => {
+describe('Input Component', () => {
+    test('renders without crashing', () => {
         render(<Input type="text" />);
-        const input = screen.getByRole('textbox');
-        expect(input).toBeInTheDocument();
+        expect(screen.getByRole('textbox')).toBeInTheDocument();
+    });
+
+    test('renders a label when label prop is provided', () => {
+        const label = 'Test Label';
+        render(<Input label={label} />);
+        expect(screen.getByText(label)).toBeInTheDocument();
+    });
+
+    test('does not render a label when label prop is not provided', () => {
+        render(<Input />);
+        expect(screen.queryByLabelText(/label/i)).toBeNull();
+    });
+
+    test('applies custom styles when inputstyle and labelstyle are provided', () => {
+        const inputstyle = 'test-input-style';
+        const labelstyle = 'test-label-style';
+        render(<Input inputstyle={inputstyle} labelstyle={labelstyle} label="Test Label" />);
+        expect(screen.getByLabelText('Test Label')).toHaveClass('test-label-style');
+        expect(screen.getByRole('textbox')).toHaveClass('test-input-style');
+    });
+
+    test('calls onChange when the input value is changed', () => {
+        const handleChange = jest.fn();
+        render(<Input onChange={handleChange} />);
+        fireEvent.change(screen.getByRole('textbox'), { target: { value: 'new value' } });
+        expect(handleChange).toHaveBeenCalledTimes(1);
     });
 });
-
-

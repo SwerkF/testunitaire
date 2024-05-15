@@ -6,9 +6,18 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Controller\ReservationController;
+use ApiPlatform\Metadata\Get;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
-#[ApiResource]
+#[ApiResource(operations:[
+    new Get(
+        name:"get user reservation",
+        uriTemplate:"/reservation/users/{id}",
+        controller: ReservationController::class,
+    )
+])]
+
 class Reservation
 {
     #[ORM\Id]
