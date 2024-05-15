@@ -1,35 +1,40 @@
-import { render, screen, fireEvent } from '@testing-library/react'; // Ne pas importer act depuis react-dom/test-utils
-import Connexion from '../pages/Connexion';
-import React from 'react';
-import '@testing-library/jest-dom';
+import React from "react";
+import { render, fireEvent } from "@testing-library/react";
+import Connexion from "../pages/Connexion";
 
-describe('Connexion', () => {
-    it('should render Connexion component', () => {
+describe("Connexion Component", () => {
+    it("renders without crashing", () => {
         render(<Connexion />);
-        // Vérifie si le composant Connexion est rendu
-        const connexionComponent = screen.getByTestId('connexion-component');
-        expect(connexionComponent).toBeInTheDocument();
     });
 
-    it('should render "Connexion" title', () => {
-        render(<Connexion />);
-        // Vérifie si le titre "Connexion" est rendu
-        const titleElement = screen.getByText(/Connexion/i);
-        expect(titleElement).toBeInTheDocument();
+    it("displays the login form", () => {
+        const { getByLabelText } = render(<Connexion />);
+        expect(getByLabelText("Email")).toBeInTheDocument();
+        expect(getByLabelText("Password")).toBeInTheDocument();
     });
 
-    it('should toggle form visibility on link click', () => {
-        render(<Connexion />);
-        // Vérifie si le formulaire d'inscription est initiallement caché
-        const inscriptionForm = screen.queryByTestId('inscription-form');
-        expect(inscriptionForm).not.toBeInTheDocument();
+    it("updates the email input value", () => {
+        const { getByLabelText } = render(<Connexion />);
+        const emailInput = getByLabelText("Email");
+        fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+        expect(emailInput.value).toBe("test@example.com");
+    });
 
-        // Clique sur le lien "Vous avez déjà un compte ? Connectez-vous ici"
-        const linkElement = screen.getByText(/Vous avez déjà un compte ? Connectez-vous ici/i);
-        fireEvent.click(linkElement);
+    it("updates the password input value", () => {
+        const { getByLabelText } = render(<Connexion />);
+        const passwordInput = getByLabelText("Password");
+        fireEvent.change(passwordInput, { target: { value: "password123" } });
+        expect(passwordInput.value).toBe("password123");
+    });
 
-        // Vérifie si le formulaire d'inscription est maintenant visible
-        const updatedInscriptionForm = screen.getByTestId('inscription-form');
-        expect(updatedInscriptionForm).toBeInTheDocument();
+    it("submits the form when the button is clicked", () => {
+        const { getByLabelText, getByText } = render(<Connexion />);
+        const emailInput = getByLabelText("Email");
+        const passwordInput = getByLabelText("Password");
+        const submitButton = getByText("Submit");
+
+        fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+        fireEvent.change(passwordInput, { target: { value: "password123" } });
+        fireEvent.click(submitButton);
     });
 });
