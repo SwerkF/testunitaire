@@ -11,9 +11,10 @@ jest.mock('@react-pdf/renderer', () => ({
   Image: jest.fn().mockImplementation(({ src }) => <img src={src} />)
 }));
 
+let container;
+
 describe('MyPDF', () => {
     test('should render component', async () => {
-        let container;
         act(() => {
             container = render(<MyPDF id={1}/>);
             //const { firstChild } = container;
@@ -31,7 +32,6 @@ describe('MyPDF', () => {
 describe('MyPDF', () => {
     // img src should be set to qrCodeImage
     test('should set img src to qrCodeImage', async () => {
-        let container;
         act(() => {
             container = render(<MyPDF id={1}/>);
         })  
