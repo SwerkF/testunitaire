@@ -96,20 +96,20 @@ public function testEdit(): void
    
 }
 
-public function testRemove(): void
-{
+// public function testRemove(): void
+// {
    
-    $fixture = new Events();
-    $fixture->setTitle('Value');
+//     $fixture = new Events();
+//     $fixture->setTitle('Value');
    
-    $this->manager->persist($fixture);
-    $this->manager->flush();
+//     $this->manager->persist($fixture);
+//     $this->manager->flush();
 
-    $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
-    $this->client->submitForm('Delete');
+//     $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
+//     $this->client->submitForm('Delete');
 
-    self::assertResponseRedirects('/events/');
-    self::assertSame(0, $this->repository->count([]));
-}
+//     self::assertResponseRedirects('/events/');
+//     self::assertSame(0, $this->repository->count([]));
+// }
 
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
@@ -23,14 +22,14 @@ class EventsDates
     private ?int $tickets = null;
     
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $cancellation_reason = null;
+    private ?string $cancellationReason = null;
 
-    #[ORM\OneToOne(targetEntity: Events::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: Events::class)]
     #[ORM\JoinColumn(name: "event_id", referencedColumnName: "id")]
     private ?Events $event = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $is_cancelled = null;
+    private ?bool $isCancelled = null;
 
     public function getId(): ?int
     {
@@ -63,12 +62,12 @@ class EventsDates
 
     public function getCancellationReason(): ?string
     {
-        return $this->cancellation_reason;
+        return $this->cancellationReason;
     }
 
-    public function setCancellationReason(?string $cancellation_reason): static
+    public function setCancellationReason(?string $cancellationReason): static
     {
-        $this->cancellation_reason = $cancellation_reason;
+        $this->cancellationReason = $cancellationReason;
 
         return $this;
     }
@@ -85,14 +84,14 @@ class EventsDates
         return $this;
     }
 
-    public function getIsCancelled(): ?string
+    public function getIsCancelled(): ?bool
     {
-        return $this->is_cancelled;
+        return $this->isCancelled;
     }
 
-    public function setIsCancelled(?string $is_cancelled): static
+    public function setIsCancelled(?bool $isCancelled): static
     {
-        $this->is_cancelled = $is_cancelled;
+        $this->isCancelled = $isCancelled;
 
         return $this;
     }
