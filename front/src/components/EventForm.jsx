@@ -10,7 +10,7 @@ function EventForm({ show, handleClose, handleSubmit, event, mode }) {
         </Modal.Header>
         <Modal.Body>
           <Form.Group>
-            <Form.Label>Name</Form.Label>
+            <Form.Label>Nom</Form.Label>
             <Form.Control type="text" name="name" defaultValue={event ? event.name : ''} required />
           </Form.Group>
           <Form.Group>
@@ -37,7 +37,7 @@ function EventForm({ show, handleClose, handleSubmit, event, mode }) {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>Close</Button>
-          <Button variant="primary" type="submit">Save Changes</Button>
+          <Button variant="primary" type="submit">Enregistrer</Button>
         </Modal.Footer>
       </Form>
     </Modal>

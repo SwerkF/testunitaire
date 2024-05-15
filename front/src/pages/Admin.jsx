@@ -86,7 +86,7 @@ function Admin() {
         setModalType('create');
         setCurrentEvent(null);
         setShowEventModal(true);
-      }}>Add New Event</Button> </div>
+      }}>Ajoutez un nouveau événement</Button> </div>
 
       <EventTable events={events} handleEdit={handleEdit} handleCancel={handleCancel} />
 

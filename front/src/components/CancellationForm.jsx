@@ -6,17 +6,17 @@ function CancellationForm({ show, handleClose, handleCancel, event }) {
     <Modal show={show} onHide={handleClose}>
       <Form onSubmit={(e) => handleCancel(e, event.id)}>
         <Modal.Header closeButton>
-          <Modal.Title>Cancel Event</Modal.Title>
+          <Modal.Title>Annuler l'événement</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group>
-            <Form.Label>Cancellation Reason</Form.Label>
+            <Form.Label>Raison d'annulation</Form.Label>
             <Form.Control as="textarea" name="cancelReason" required />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>Close</Button>
-          <Button type="submit" variant="danger">Cancel Event</Button>
+          <Button variant="secondary" onClick={handleClose}>Fermer</Button>
+          <Button type="submit" variant="danger">Annuler</Button>
         </Modal.Footer>
       </Form>
     </Modal>

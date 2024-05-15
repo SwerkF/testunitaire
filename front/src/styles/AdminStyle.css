@@ -1,28 +1,30 @@
 /* Style général de la page */
 .container-admin {
-    font-family: Arial, sans-serif; /* Police de caractères */
-    background-color: #f4f4f4; /* Couleur de fond de la page */
-    margin: 0;
-    padding: 20px;
+  font-family: Arial, sans-serif; /* Police de caractères */
+  background-color: #f4f4f4; /* Couleur de fond de la page */
+  margin: 0;
+  padding: 20px;
 }
 
-
-/* Style du tableau */
 table {
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse; /* Les bordures des cellules collées */
+  width: 60%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  background-color: white;
 }
 
-th, td {
-    border: 1px solid #ddd; /* Gris clair pour les bordures */
-    text-align: left;
-    padding: 8px;
+th,
+td {
+  border: 1px solid #ddd;
+  text-align: left;
+  padding: 8px;
+  margin: 5px;
+  background-color: white;
 }
 
 th {
-    background-color: #666; /* Gris plus foncé pour l'en-tête du tableau */
-    color: white;
+  background-color: #666;
+  color: white;
 }
 
 /* 
@@ -39,10 +41,3 @@ button {
 button:hover {
     background-color: darkblue; 
 } */
-
-/* Responsive design pour les petits écrans */
-@media (max-width: 600px) {
-    nav {
-        flex-direction: column;
-    }
-}

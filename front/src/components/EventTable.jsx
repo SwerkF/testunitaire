@@ -12,7 +12,7 @@ function EventTable({ events, handleEdit, handleCancel }) {
         <tr>
           <th>ID</th>
           <th>Image</th>
-          <th>Name</th>       
+          <th>Nom</th>       
           <th>Description</th>
           <th>Type</th>
           <th>Age Minimum</th>
