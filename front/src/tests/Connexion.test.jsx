@@ -1,40 +1,35 @@
-import React from "react";
-import { render, fireEvent } from "@testing-library/react";
-import Connexion from "../pages/Connexion";
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import Connexion from '../pages/Connexion';
 
-describe("Connexion Component", () => {
-    it("renders without crashing", () => {
+describe('Connexion', () => {
+    it('should toggle to login form when "Vous avez déjà un compte ? Connectez-vous ici" link is clicked', () => {
         render(<Connexion />);
-    });
-
-    it("displays the login form", () => {
-        const { getByLabelText } = render(<Connexion />);
-        expect(getByLabelText("Email")).toBeInTheDocument();
-        expect(getByLabelText("Password")).toBeInTheDocument();
-    });
-
-    it("updates the email input value", () => {
-        const { getByLabelText } = render(<Connexion />);
-        const emailInput = getByLabelText("Email");
-        fireEvent.change(emailInput, { target: { value: "test@example.com" } });
-        expect(emailInput.value).toBe("test@example.com");
-    });
-
-    it("updates the password input value", () => {
-        const { getByLabelText } = render(<Connexion />);
-        const passwordInput = getByLabelText("Password");
-        fireEvent.change(passwordInput, { target: { value: "password123" } });
-        expect(passwordInput.value).toBe("password123");
-    });
-
-    it("submits the form when the button is clicked", () => {
-        const { getByLabelText, getByText } = render(<Connexion />);
-        const emailInput = getByLabelText("Email");
-        const passwordInput = getByLabelText("Password");
-        const submitButton = getByText("Submit");
-
-        fireEvent.change(emailInput, { target: { value: "test@example.com" } });
-        fireEvent.change(passwordInput, { target: { value: "password123" } });
-        fireEvent.click(submitButton);
+        
+        // Vérifie que le formulaire d'inscription est affiché initialement
+        const nameInput = screen.getByLabelText('Nom');
+        const firstNameInput = screen.getByLabelText('Prenom');
+        const emailInput = screen.getByLabelText('Email');
+        const passwordInput = screen.getByLabelText('Mot de passe');
+        const dateOfBirthInput = screen.getByLabelText('Date de naissance');
+        const acceptCheckbox = screen.getByLabelText('Accepter les conditions d\'utilisation');
+        const createAccountButton = screen.getByText('Créer votre compte');
+        expect(nameInput).toBeInTheDocument();
+        expect(firstNameInput).toBeInTheDocument();
+        expect(emailInput).toBeInTheDocument();
+        expect(passwordInput).toBeInTheDocument();
+        expect(dateOfBirthInput).toBeInTheDocument();
+        expect(acceptCheckbox).toBeInTheDocument();
+        expect(createAccountButton).toBeInTheDocument();
+        
+        // Clique sur le lien pour basculer vers le formulaire de connexion
+        const loginLink = screen.getByText("Vous avez déjà un compte ? Connectez-vous ici");
+        fireEvent.click(loginLink);
+        
+        // Vérifie que le formulaire de connexion est affiché après le clic
+        const emailInput2 = screen.getByLabelText('Email');
+        const passwordInput2 = screen.getByLabelText('Mot de passe');
+        expect(emailInput2).toBeInTheDocument();
+        expect(passwordInput2).toBeInTheDocument();
     });
 });
