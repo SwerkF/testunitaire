@@ -6,14 +6,14 @@ const MyPDF = (props) => {
   const [qrCodeImage, setQRCodeImage] = useState('');
 
   useEffect(() => {
-    QRCode.toDataURL(props.uuid, { width: 128, margin: 1 })
+    QRCode.toDataURL(JSON.stringify(props), { width: 128, margin: 1 })
       .then(url => {
         setQRCodeImage(url);
       })
       .catch(err => {
         console.error('Error generating QR code', err);
       });
-  }, [props.uuid]);
+  }, [props.id]);
 
   return qrCodeImage ? (
     <PDFViewer style={{ width: '100%', height: '100vh' }}>

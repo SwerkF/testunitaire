@@ -48,7 +48,7 @@ const Reservations = () => {
             <Input label="Search" inputstyle="w-50" type="text" placeholder="Search" />
             <div className="d-flex flex-wrap gap-4">
                 {reservations.map((reservation) => (
-                    <CardReservation reservation={reservation} onClick={() => console.log(reservation)} />
+                    <CardReservation reservation={reservation} onClick={() => setSelectedReservation(reservation)} />
                 ))}
             </div>
             {selectedReservation && (
@@ -57,7 +57,7 @@ const Reservations = () => {
                         <Modal.Title>Reservation pour {selectedReservation?.name}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <MyPDF uuid={selectedReservation.uuid} />
+                        <MyPDF id={selectedReservation.id} />
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => setSelectedReservation(null)}>

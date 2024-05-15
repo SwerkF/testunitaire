@@ -8,6 +8,10 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Controller\ReservationController;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 #[ApiResource(operations:[
@@ -15,7 +19,12 @@ use ApiPlatform\Metadata\Get;
         name:"get user reservation",
         uriTemplate:"/reservation/users/{id}",
         controller: ReservationController::class,
-    )
+    ),
+    new Get(),
+    new Put(),
+    new Patch(),
+    new Post(),
+    new Delete(),
 ])]
 
 class Reservation
