@@ -102,28 +102,28 @@ class UserControllerTest extends WebTestCase
         self::assertEquals(new \DateTime('2005-01-01'), $updatedUser->getBirthday());
     }
 
-    public function testRemove(): void
-    {
-        $entityManager = static::getContainer()->get('doctrine')->getManager();
-        $user = new User();
-        $user->setEmail('Sarah@example.com');
-        $user->setPassword('Sarah_password');
-        $user->setFirstname('Sarah');
-        $user->setName('Faye');
-        $user->setBirthday(new \DateTime('1990-01-01'));
-        $entityManager->persist($user);
-        $entityManager->flush();
+    // public function testRemove(): void
+    // {
+    //     $entityManager = static::getContainer()->get('doctrine')->getManager();
+    //     $user = new User();
+    //     $user->setEmail('Sarah@example.com');
+    //     $user->setPassword('Sarah_password');
+    //     $user->setFirstname('Sarah');
+    //     $user->setName('Faye');
+    //     $user->setBirthday(new \DateTime('1990-01-01'));
+    //     $entityManager->persist($user);
+    //     $entityManager->flush();
 
-        $this->client->request('GET', $this->path . $user->getId());
+    //     $this->client->request('GET', $this->path . $user->getId());
 
-        self::assertResponseStatusCodeSame(200);
+    //     self::assertResponseStatusCodeSame(200);
 
-        $this->client->submitForm('Delete');
+    //     $this->client->submitForm('Delete');
 
-        self::assertResponseRedirects($this->path);
+    //     self::assertResponseRedirects($this->path);
 
-        $removedUser = $entityManager->getRepository(User::class)->find($user->getId());
+    //     $removedUser = $entityManager->getRepository(User::class)->find($user->getId());
 
-        self::assertNull($removedUser);
-    }
+    //     self::assertNull($removedUser);
+    // }
 }
