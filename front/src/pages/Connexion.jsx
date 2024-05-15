@@ -130,25 +130,27 @@ export default function Connexion() {
       {showConnexion ? (
         <form className="containerConnexion" onSubmit={handleLogin}>
           <h1>Connexion</h1>
-          <label className="text-light fs-6">Email</label>
+          <label htmlFor="Email" className="text-light fs-6">Email</label>
           <input
             type="email"
+            id="Email"
             className="w-100"
             placeholder="votreemail@gmail.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <label className="mt-3 text-light fs-6">Mot de passe</label>
+          <label htmlFor="Password" className="mt-3 text-light fs-6">Mot de passe</label>
           <input
             type="password"
+            id="Password"
             className="w-100"
             placeholder="*****"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <Button type="submit" className="mt-3 w-100 btn-color-yellow">Se connecter</Button>
+          <Button htmlFor="Connection" type="submit" className="mt-3 w-100 btn-color-yellow">Se connecter</Button>
           <p>
             <a href="#" onClick={toggleForm} className="fs-6 pb-3 text-color-yellow">
               Vous n'avez pas de compte ? Inscrivez-vous ici
@@ -180,33 +182,37 @@ export default function Connexion() {
             <a href="#" onClick={toggleForm} className="fs-6 pb-3 text-color-yellow">
               Vous avez déjà un compte ? Connectez-vous ici
             </a>
-            <label>Nom</label>
+            <label htmlFor="Nom">Nom</label>
             <input
               type="text"
+              id="Nom"
               placeholder="Dupont"
               value={nom}
               onChange={(e) => setNom(e.target.value)}
               required
             />
-            <label>Prenom</label>
+            <label htmlFor="Prenom">Prenom</label>
             <input
               type="text"
+              id="Prenom"
               placeholder="Jean"
               value={prenom}
               onChange={(e) => setPrenom(e.target.value)}
               required
             />
-            <label>Email</label>
+            <label htmlFor="Email">Email</label>
             <input
               type="email"
+              id="Email"
               placeholder="votreemail@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <label>Mot de passe</label>
+            <label htmlFor="Mot de passe">Mot de passe</label>
             <input
               type="password"
+              id="Mot de passe"
               placeholder="*******"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -216,6 +222,7 @@ export default function Connexion() {
             <input
               type="password"
               placeholder="*******"
+              id="confirmationPassword"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
@@ -232,7 +239,7 @@ export default function Connexion() {
               <input type="checkbox" required />
               <label>Accepter les conditions d'utilisation</label>
             </div>
-            <Button type="submit" className="btn-color">Créer votre compte</Button>
+            <Button htmlFor="buttonCreation" type="submit" className="btn-color">Créer votre compte</Button>
             {error && (
               <span style={{ fontSize: "0.8rem" }} className="text-danger">
                 {error}
