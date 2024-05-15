@@ -28,8 +28,9 @@ class EventsDates
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $cancellation_reason = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Events $event_id = null;
+    #[ORM\OneToOne(targetEntity: Events::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: "event_id", referencedColumnName: "id")]
+    private ?Events $event = null;
 
     public function getId(): ?int
     {
@@ -60,12 +61,12 @@ class EventsDates
         return $this;
     }
 
-    public function isCancelled(): ?bool
+    public function getIsCancelled(): ?bool
     {
         return $this->is_cancelled;
     }
 
-    public function setCancelled(?bool $is_cancelled): static
+    public function setIsCancelled(?bool $is_cancelled): static
     {
         $this->is_cancelled = $is_cancelled;
 
@@ -84,14 +85,14 @@ class EventsDates
         return $this;
     }
 
-    public function getEventId(): ?Events
+    public function getEvent(): ?Events
     {
-        return $this->event_id;
+        return $this->event;
     }
 
-    public function setEventId(?Events $event_id): static
+    public function setEvent(?Events $event): static
     {
-        $this->event_id = $event_id;
+        $this->event = $event;
 
         return $this;
     }
