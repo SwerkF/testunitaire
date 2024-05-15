@@ -6,13 +6,14 @@ import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 
 function EventTable({ events, handleEdit, handleCancel }) {
+ console.log(events); 
   return (
     <Table striped bordered hover>
       <thead>
         <tr>
           <th>ID</th>
           <th>Image</th>
-          <th>Name</th>       
+          <th>Titre</th>       
           <th>Description</th>
           <th>Type</th>
           <th>Age Minimum</th>
@@ -21,11 +22,12 @@ function EventTable({ events, handleEdit, handleCancel }) {
         </tr>
       </thead>
       <tbody>
-        {events.map(event => (
+
+         {events && events.map(event => (
           <tr key={event.id}>
             <td>{event.id}</td>
             <td>{event.imageUrl ? <img src={event.imageUrl} alt="Event" style={{ width: "100px", height: "auto" }} /> : 'No Image'}</td>
-            <td>{event.name}</td>
+            <td>{event.titre}</td>
     
             <td>{event.description}</td>
             <td>{event.type}</td>
