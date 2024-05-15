@@ -43,13 +43,34 @@ class ReservationRepository extends ServiceEntityRepository
 
     public function findReservationsByUser($user_id) : array
     {
-        // inner join events dates and events
+        // select * from reservation, inner join events dates and events
+       /*
+       #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $number_of_tickets = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $reservation_date = null;
+
+    #[ORM\ManyToOne]
+    private ?User $user_id = null;
+
+    #[ORM\ManyToOne]
+    private ?EventsDates $event_date_id = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }*/
+
         $qb = $this->createQueryBuilder('r')
-            ->innerJoin('r.event_date_id', 'ed')
-            ->innerJoin('ed.event_id', 'e')
-            ->where('r.user_id = :user_id')
+            ->innerJoin('r.user_id', 'u')
+            ->where('u.id = :user_id')
             ->setParameter('user_id', $user_id)
-            ->orderBy('r.reservation_date', 'DESC')
             ->getQuery();
 
         return $qb->getResult();

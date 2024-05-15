@@ -37,6 +37,11 @@ class ReservationController extends AbstractController
         }
     }
 
+    public function createNewReservation($data): JsonResponse
+    {
+      return $this->json($data);
+    }
+
     #[Route('/', name: 'app_reservation_index', methods: ['GET'])]
     public function index(ReservationRepository $reservationRepository): Response
     {

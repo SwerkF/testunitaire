@@ -4,6 +4,6 @@ controllers:
         namespace: App\Controller
     type: attribute
 get_user_resources:
-    path: '/api/ressources/user/{id}'
+    path: '/api/reservation/user/{id}'
     controller: 'App\Controller\ReservationController::__invoke'
     methods: ['GET']
