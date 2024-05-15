@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Input from '../components/Input';
 import axios from 'axios';
+import CardReservation from '../components/CardReservation';
 
 const Reservations = () => {
 
@@ -47,15 +48,7 @@ const Reservations = () => {
             <Input label="Search" inputstyle="w-50" type="text" placeholder="Search" />
             <div className="d-flex flex-wrap gap-4">
                 {reservations.map((reservation) => (
-                    <div key={reservation.uuid} className="card" style={{ width: '18rem' }}>
-                        <div className="card-body">
-                            <h5 className="card-title">{reservation.name}</h5>
-                            <p className="card-text">Date: {reservation.date}</p>
-                            <p className="card-text">Time: {reservation.time}</p>
-                            <p className="card-text">Guests: {reservation.guests}</p>
-                            <Button onClick={() => setSelectedReservation(reservation)}>View</Button>
-                        </div>
-                    </div>
+                    <CardReservation reservation={reservation} onClick={() => console.log(reservation)} />
                 ))}
             </div>
             {selectedReservation && (

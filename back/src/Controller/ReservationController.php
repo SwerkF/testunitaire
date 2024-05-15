@@ -32,7 +32,7 @@ class ReservationController extends AbstractController
         if (!$user) {
             throw $this->createNotFoundException();
         } else {
-            $reservations = $this->reservationRepository->findBy(['user_id'=> $user->getId()]);
+            $reservations = $this->reservationRepository->findReservationsByUser($user->getId());
             return $this->json($reservations);
         }
     }
