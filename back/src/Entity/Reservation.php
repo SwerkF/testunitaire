@@ -6,9 +6,27 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Controller\ReservationController;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
-#[ApiResource]
+#[ApiResource(operations:[
+    new Get(
+        name:"get user reservation",
+        uriTemplate:"/reservation/users/{id}",
+        controller: ReservationController::class,
+    ),
+    new Get(),
+    new Put(),
+    new Patch(),
+    new Post(),
+    new Delete(),
+])]
+
 class Reservation
 {
     #[ORM\Id]
@@ -22,10 +40,12 @@ class Reservation
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $reservation_date = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\OneToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
     private ?User $user_id = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\OneToOne(targetEntity: EventsDates::class)]
+    #[ORM\JoinColumn(name: "event_date_id", referencedColumnName: "id")]
     private ?EventsDates $event_date_id = null;
 
     public function getId(): ?int

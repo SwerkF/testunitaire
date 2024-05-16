@@ -3,6 +3,10 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+get_user_resources:
+    path: '/api/reservation/user/{id}'
+    controller: 'App\Controller\ReservationController::__invoke'
+    methods: ['GET']
 get_user_by_email:
     path: '/api/users/email'
     controller: 'App\Controller\UserController::__invoke'
