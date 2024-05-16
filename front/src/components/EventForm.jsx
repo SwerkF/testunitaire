@@ -64,7 +64,7 @@ function EventForm({ show, handleClose, handleSubmit, event, mode }) {
           </Form.Group>
           <Form.Group>
             <Form.Label>Âge minimum</Form.Label>
-            <Form.Control type="number" name="minimumAge" defaultValue={event ? event.minimumAge : ''} required />
+            <Form.Control type="number" name="minimumAge" defaultValue={event ? parseInt(event.minimumAge) : 0} required />
           </Form.Group>
           <Form.Label>Dates de l'événement</Form.Label>
           {dates.map((date, index) => (

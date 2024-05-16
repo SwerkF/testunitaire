@@ -20,8 +20,8 @@ function Admin() {
   const fetchEvents = async () => {
     try {
       const response = await axios.get("http://127.0.0.1:8000/api/eventss");
-     setEvents(response.data["hydra:member"]);
-     setEvents(response.data); 
+      console.log(response.data["hydra:member"]);
+      setEvents(response.data["hydra:member"]);
     } catch (error) {
       console.error("Error fetching events:", error);
     }
@@ -48,13 +48,17 @@ function Admin() {
 
   const handleEventFormSubmit = async (eventData) => {
     const { dates, ...eventDetails } = eventData; // Séparer les dates des autres détails de l'événement
-  
+    console.log(eventData);
     try {
       let savedEvent = null;
+      console.log("Event details", eventDetails);
+      console.log("modal type", modalType);
       if (modalType === "create") {
         // Créer l'événement principal sans les dates
-        const eventResponse = await axios.post("http://127.0.0.1:8000/api/events_datess", eventDetails);
+        eventDetails.minimumAge = parseInt(eventDetails.minimumAge);
+        const eventResponse = await axios.post("http://127.0.0.1:8000/api/eventss", eventDetails);
         savedEvent = eventResponse.data;
+        console.log("Event response", eventResponse);
       } else {
         // Mettre à jour l'événement principal sans les dates
         const eventResponse = await axios.put(`http://127.0.0.1:8000/api/eventss/{id}`, eventDetails);
@@ -64,9 +68,10 @@ function Admin() {
       // Enregistrer les dates dans l'endpoint /api/events_date
       if (savedEvent && savedEvent.id) {
         await Promise.all(dates.map(date => 
-          axios.post("http://127.0.0.1:8000/api/events_datess/{id}", {
-            event_id: savedEvent.id,
-            date: date
+          axios.post("http://127.0.0.1:8000/api/events_datess", {
+            event: savedEvent.id,
+            date: date,
+            tickets: 7000
           })
         ));
       }
