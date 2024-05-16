@@ -64,3 +64,20 @@ describe('Reservations redirection', () => {
         })
     });
 });
+
+describe('Reservations axios', () => {
+    test('should call axios', async () => {
+        jest.mock('axios', () => ({
+            get: () => Promise.reject()
+        }));
+
+        act(() => {
+            container = render(<Reservations />);
+        })  
+
+        // expect user to be set
+        await waitFor(() => {
+            expect(container.getByText('Reservations')).toBeInTheDocument();
+        })
+    });
+});

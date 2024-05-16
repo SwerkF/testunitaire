@@ -41,7 +41,6 @@ const CardReservation = ({ reservation, onClick }) => {
     const [event, setEvent] = useState(null)
 
     useEffect(() => {
-        //http://127.0.0.1:8000/api/
         setReservations(reservation);
         axios.get('http://localhost:8000' + reservation.eventDateId)  
             .then((response) => {
