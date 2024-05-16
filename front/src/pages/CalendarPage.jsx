@@ -19,7 +19,7 @@ const CalendarPage = () => {
             axios.get("http://127.0.0.1:8000/api/reservations"),
           ]);
 
-        const eventsData = eventsResponse.data["hydra:member"];
+        const eventsData = eventsResponse.data["hydra:member"] || "Aucun événement disponible";
         const eventsDatesData = eventsDatesResponse.data["hydra:member"];
         const reservationsData = reservationsResponse.data["hydra:member"];
 
@@ -63,7 +63,7 @@ const CalendarPage = () => {
 
         setEvents(mergedData);
       } catch (err) {
-        setError(err.message);
+        setError("Une erreur s'est produite. Veuillez réessayer.");
       } 
     };
 
@@ -120,6 +120,7 @@ Image URL: ${image_url}`);
         eventClick={handleEventClick}
         locale="fr"
       />
+      {error && <div className="alert alert-danger">{error}</div>}
     </div>
   );
 };
