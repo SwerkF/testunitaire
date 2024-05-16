@@ -7,6 +7,7 @@ use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,6 +15,15 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/user')]
 class UserController extends AbstractController
 {
+
+   // post /users/email
+   public function __invoke(Request $request, UserRepository $userRepository): JsonResponse
+    {
+         $email = $request->getPayload()->get('email');
+         $user = $userRepository->findOneBy(['email' => $email]);
+         return $this->json($user);
+    }
+
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {

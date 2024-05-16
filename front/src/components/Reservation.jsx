@@ -5,17 +5,13 @@ const Reservation = ({
   eventName,
   initialDate,
   userBirthDate,
+  userId,
   evenAge,
-  onSignupSuccess,
+  event_date_id
 }) => {
-  const [eventDate, setEventDate] = React.useState(initialDate);
   const [numberOfPeople, setNumberOfPeople] = React.useState(1);
   const [ageConfirmation, setAgeConfirmation] = React.useState(false);
   const [isAgeVerified, setIsAgeVerified] = React.useState(false);
-
-  const handleDateChange = (event) => {
-    setEventDate(event.target.value);
-  };
 
   const handleNumberChange = (event) => {
     setNumberOfPeople(parseInt(event.target.value));
@@ -33,7 +29,6 @@ const Reservation = ({
         if (calculateAge(userBirthDate, evenAge)) {
           console.log(`Vous avez plus de ${evenAge} ans.`);
           setIsAgeVerified(true);
-          onSignupSuccess(eventDate, numberOfPeople);
         } else {
           setIsAgeVerified(false);
           throw new Error(
@@ -43,7 +38,6 @@ const Reservation = ({
       } else {
         if (ageConfirmation) {
           setIsAgeVerified(true);
-          onSignupSuccess(eventDate, numberOfPeople);
         } else {
           setIsAgeVerified(false);
           throw new Error(
@@ -56,13 +50,16 @@ const Reservation = ({
     }
 
     try {
-      const response = await axios.post('http://localhost/api/reservations', {
-        eventDate,
-        numberOfPeople,
-        ageConfirmation,
+      const date = new Date();
+      const response = await axios.post('http://localhost:8000/api/reservations', {
+        "user": "/api/users/" + userId,
+        "eventDate": "/api/events_dates/" + event_date_id,
+        "numberOfTickets": numberOfPeople,
+        "reservationDate": date,
       
       });
       console.log('Form submitted:', response.data);
+      alert('Votre réservation a été enregistrée.');
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -89,16 +86,6 @@ const Reservation = ({
     <div>
       <h1>Sign Up for {eventName}</h1>
       <form onSubmit={handleFormSubmit}>
-        <div>
-          <label htmlFor="event-date">Date de l'événement:</label>
-          <input
-            type="date"
-            id="event-date"
-            value={eventDate}
-            onChange={handleDateChange}
-            required
-          />
-        </div>
         <div>
           <label htmlFor="number-of-people">Nombre de places:</label>
           <input
@@ -130,7 +117,7 @@ const Reservation = ({
       {isAgeVerified && (
         <p>
           Enregistré pour {numberOfPeople} personne(s) à l'événement du{" "}
-          {eventDate}.
+          {initialDate}.
         </p>
       )}
     </div>

@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 class EventsDates
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(type: "integer")]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
@@ -25,10 +25,10 @@ class EventsDates
     private ?string $cancellationReason = null;
 
     #[ORM\OneToOne(targetEntity: Events::class)]
-    #[ORM\JoinColumn(name: "event_id", referencedColumnName: "id")]
+    #[ORM\JoinColumn(name: "event_id_id", referencedColumnName: "id")]
     private ?Events $event = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type: "boolean", nullable: true)]
     private ?bool $isCancelled = null;
 
     public function getId(): ?int
