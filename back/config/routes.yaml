@@ -11,3 +11,8 @@ get_user_by_email:
     path: '/api/users/email'
     controller: 'App\Controller\UserController::__invoke'
     methods: ['POST']
+
+get_reservation_by_date:
+    path: '/api/reservation/date/{id}'
+    controller: 'App\Controller\ReservationController::getByDate'
+    methods: ['GET']
