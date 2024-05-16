@@ -40,4 +40,20 @@ class ReservationRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+
+    public function getEventDatesById($id)
+    {
+ 
+        $qb = $this->createQueryBuilder('r')
+            ->where('r.event_date_id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+
+
+        return $qb;
+
+
+    }
 }

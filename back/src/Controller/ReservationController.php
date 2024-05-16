@@ -6,6 +6,7 @@ use App\Entity\Reservation;
 use App\Form\ReservationType;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,15 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/reservation')]
 class ReservationController extends AbstractController
 {
+
+    // get events dates with reservations id
+    public function getByDate(Request $request, ReservationRepository $reservationRepository): JsonResponse
+    {
+        $id = $request->get('id');
+        $reservations = $reservationRepository->getEventDatesById($id);
+        return $this->json($reservations);
+    }
+
     #[Route('/', name: 'app_reservation_index', methods: ['GET'])]
     public function index(ReservationRepository $reservationRepository): Response
     {
