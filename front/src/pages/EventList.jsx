@@ -6,23 +6,22 @@ const EventList = () => {
   const [events, setEvents] = useState([]);
     
 useEffect(() => {
-    axios.get('http://localhost:8000/api/eventss')
+    axios.get('http://localhost:8000/api/events_dates')
         .then((response) => {
             setEvents(response.data['hydra:member']);
         })
         .catch((error) => {
             console.error('There was an error fetching the events!', error);
         });
+        
 }, []);
-
-    
 
     return (
             <div>
-            <h1 class="title-h1">Event List</h1>
+            <h1 class="title-h1">Liste des évènements</h1>
             <ul class= "event-container">
                     {events.map((event) => (
-                            <CardComponent title={event.title} description={event.description} buttonText="plus d'info" imageUrl={event.imageUrl} id={event.id}/>
+                            <CardComponent event_date_id={event.id} event_id={event.event} ticket={event.tickets} date={event.date}/>
                     ))}
             </ul>
             </div>

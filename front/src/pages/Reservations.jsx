@@ -22,7 +22,7 @@ const Reservations = () => {
         if (!user) {
            return navigate('/login')
         } 
-        axios.get('http://127.0.0.1:8000/api/reservation/users/'+user.id)
+        axios.get('http://localhost:8000/api/reservations/users/'+user.id)
             .then((response) => {
                 setReservations(response.data)
                 setFilteredReservations(response.data)

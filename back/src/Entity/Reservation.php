@@ -13,20 +13,27 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Delete;
 
+
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 #[ApiResource(operations:[
     new Get(
         name:"get user reservation",
-        uriTemplate:"/reservation/users/{id}",
+        uriTemplate:"/reservations/users/{id}",
         controller: ReservationController::class,
     ),
+    new Get(
+        name:"get_reservation_by_date",
+        uriTemplate:"/reservations/date/{id}",
+        controller: ReservationController::class,
+    ),
+    // get all
     new Get(),
     new Put(),
     new Patch(),
     new Post(),
     new Delete(),
+ 
 ])]
-
 class Reservation
 {
     #[ORM\Id]
