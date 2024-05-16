@@ -7,6 +7,7 @@ const Reservation = ({
   userBirthDate,
   userId,
   evenAge,
+  event_date_id
 }) => {
   const [numberOfPeople, setNumberOfPeople] = React.useState(1);
   const [ageConfirmation, setAgeConfirmation] = React.useState(false);
@@ -50,14 +51,15 @@ const Reservation = ({
 
     try {
       const date = new Date();
-      const response = await axios.post('http://localhost/api/reservations', {
-        user_id_id: {userId},
-        event_date_id: {initialDate},
-        number_of_ticket: {numberOfPeople},
-        reservatuon_date: {date},
+      const response = await axios.post('http://localhost:8000/api/reservations', {
+        "user": "/api/users/" + userId,
+        "eventDate": "/api/events_dates/" + event_date_id,
+        "numberOfTickets": numberOfPeople,
+        "reservationDate": date,
       
       });
       console.log('Form submitted:', response.data);
+      alert('Votre réservation a été enregistrée.');
     } catch (error) {
       console.error('Error submitting form:', error);
     }

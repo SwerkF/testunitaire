@@ -6,7 +6,7 @@ const EventList = () => {
   const [events, setEvents] = useState([]);
     
 useEffect(() => {
-    axios.get('http://localhost:8000/api/events_datess')
+    axios.get('http://localhost:8000/api/events_dates')
         .then((response) => {
             setEvents(response.data['hydra:member']);
         })

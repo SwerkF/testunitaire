@@ -10,8 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\JsonResponse; 
+use Symfony\Component\Routing\Attribute\Route; 
 // user repository and entity
 use App\Entity\User;
 use App\Repository\UserRepository;
@@ -41,6 +40,13 @@ class ReservationController extends AbstractController
     public function createNewReservation($data): JsonResponse
     {
       return $this->json($data);
+    }
+
+    // get all reservations
+    public function getAll(): JsonResponse
+    {
+        $reservations = $this->reservationRepository->findAll();
+        return $this->json($reservations);
     }
 
 

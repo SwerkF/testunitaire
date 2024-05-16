@@ -11,6 +11,7 @@ const CardComponent = ({ event_date_id, event_id, ticket, date}) => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
+    console.log(event_id);
     axios.get('http://localhost:8000' + event_id)
       .then((response) => {
         setEvent(response.data);
@@ -25,7 +26,7 @@ const CardComponent = ({ event_date_id, event_id, ticket, date}) => {
   return (
     <div className="card-home">
       <div> 
-        <img src={event.imageUrl} alt="" className="img-card-home" />
+        {event.imageUrl ? <img className="img-card-home" src={event.imageUrl} alt={event.title} /> : <img className="img-card-home" src="https://placehold.co/600x400" alt={event.title} />}
       </div>
       <div className="card-content-home">
         <h2 className="h2-home">{event.title}</h2>
@@ -43,6 +44,7 @@ const CardComponent = ({ event_date_id, event_id, ticket, date}) => {
         id={event}
         eventAge={event.minimum_age}
         date= {date}
+        event_date_id={event_date_id}
       />
       }
     </div>

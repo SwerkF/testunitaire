@@ -6,13 +6,12 @@ import Reservation from './Reservation';
 
 
 
-  const Modal = ({ title, onClose, imageUrl, description, date, eventAge}) => {
+  const Modal = ({ title, onClose, imageUrl, description, date, eventAge, event_date_id}) => {
 
     const [userId, setUserId] = useState(null);
     const [userBirthday, setUserBirthday] = useState(null);
     
     const user = JSON.parse(localStorage.getItem('user'));
-    
     
 
     console.log(eventAge);
@@ -31,8 +30,8 @@ import Reservation from './Reservation';
           <button onClick={onClose} className="close-button">&#10005;</button>
           <div className="modal-header">{title}</div>
           <div className="modal-elements">
-            <div className="modal-image">
-              <img src={imageUrl} alt={title} />
+            <div className="">
+              {imageUrl ? <img src={imageUrl} alt={title} width={"500px"}/> : <img src="https://placehold.co/100x100" width={"500px"} alt={title} />}
               <p className='description'>{description}</p>
             </div>
             <Reservation
@@ -41,6 +40,7 @@ import Reservation from './Reservation';
                 initialDate={date}
                 userBirthDate={userBirthday}
                 evenAge={eventAge}
+                event_date_id={event_date_id}
               />
           </div>
         </div>

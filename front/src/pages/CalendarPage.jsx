@@ -14,14 +14,16 @@ const CalendarPage = () => {
     const fetchEvents = async () => {
       try {
         const [eventsResponse, eventsDatesResponse, reservationsResponse] = await Promise.all([
-            axios.get("http://127.0.0.1:8000/api/eventss"),
-            axios.get("http://127.0.0.1:8000/api/events_datess"),
+            axios.get("http://127.0.0.1:8000/api/events"),
+            axios.get("http://127.0.0.1:8000/api/events_dates"),
             axios.get("http://127.0.0.1:8000/api/reservations"),
           ]);
 
         const eventsData = eventsResponse.data["hydra:member"] || "Aucun événement disponible";
         const eventsDatesData = eventsDatesResponse.data["hydra:member"];
-        const reservationsData = reservationsResponse.data["hydra:member"];
+        const reservationsData = reservationsResponse.data;
+
+        console.log(eventsData, eventsDatesData, reservationsData);
 
         const ticketsReservedPerEventDate = reservationsData.reduce(
           (acc, reservation) => {
@@ -63,6 +65,7 @@ const CalendarPage = () => {
 
         setEvents(mergedData);
       } catch (err) {
+        console.log(err)
         setError("Une erreur s'est produite. Veuillez réessayer.");
       } 
     };
@@ -137,12 +140,21 @@ function renderEventContent(eventInfo) {
         </i>
         <br />
 
-        <img
+        {eventInfo.event.extendedProps.image_url ? (
+          <img
           src={eventInfo.event.extendedProps.image_url}
           alt={eventInfo.event.title}
           className="rounded-2"
           style={{ width: "100%" }}
         />
+        ) : (
+          <img
+            src="https://placehold.co/600x400"
+            alt={eventInfo.event.title}
+            className="rounded-2"
+            style={{ width: "100%" }}
+          />
+        )}
         <div className="d-flex">
           <span>
             <b>{eventInfo.timeText}</b>{" "}
