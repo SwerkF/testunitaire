@@ -53,7 +53,7 @@ const Reservation = ({
       const date = new Date();
       const response = await axios.post('http://localhost:8000/api/reservations', {
         "user": "/api/users/" + userId,
-        "eventDate": "/api/events_dates/" + event_date_id,
+        "eventDate": "/api/events_datess/" + event_date_id,
         "numberOfTickets": numberOfPeople,
         "reservationDate": date,
       

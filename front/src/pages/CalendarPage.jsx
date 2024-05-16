@@ -14,8 +14,8 @@ const CalendarPage = () => {
     const fetchEvents = async () => {
       try {
         const [eventsResponse, eventsDatesResponse, reservationsResponse] = await Promise.all([
-            axios.get("http://127.0.0.1:8000/api/events"),
-            axios.get("http://127.0.0.1:8000/api/events_dates"),
+            axios.get("http://127.0.0.1:8000/api/eventss"),
+            axios.get("http://127.0.0.1:8000/api/events_datess"),
             axios.get("http://127.0.0.1:8000/api/reservations"),
           ]);
 
