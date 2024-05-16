@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
@@ -21,15 +20,16 @@ class EventsDates
 
     #[ORM\Column(nullable: true)]
     private ?int $tickets = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?bool $is_cancelled = null;
-
+    
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $cancellation_reason = null;
+    private ?string $cancellationReason = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Events $event_id = null;
+    #[ORM\OneToOne(targetEntity: Events::class)]
+    #[ORM\JoinColumn(name: "event_id", referencedColumnName: "id")]
+    private ?Events $event = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?bool $isCancelled = null;
 
     public function getId(): ?int
     {
@@ -60,38 +60,38 @@ class EventsDates
         return $this;
     }
 
-    public function isCancelled(): ?bool
-    {
-        return $this->is_cancelled;
-    }
-
-    public function setCancelled(?bool $is_cancelled): static
-    {
-        $this->is_cancelled = $is_cancelled;
-
-        return $this;
-    }
-
     public function getCancellationReason(): ?string
     {
-        return $this->cancellation_reason;
+        return $this->cancellationReason;
     }
 
-    public function setCancellationReason(?string $cancellation_reason): static
+    public function setCancellationReason(?string $cancellationReason): static
     {
-        $this->cancellation_reason = $cancellation_reason;
+        $this->cancellationReason = $cancellationReason;
 
         return $this;
     }
 
-    public function getEventId(): ?Events
+    public function getEvent(): ?Events
     {
-        return $this->event_id;
+        return $this->event;
     }
 
-    public function setEventId(?Events $event_id): static
+    public function setEvent(?Events $event): static
     {
-        $this->event_id = $event_id;
+        $this->event = $event;
+
+        return $this;
+    }
+
+    public function getIsCancelled(): ?bool
+    {
+        return $this->isCancelled;
+    }
+
+    public function setIsCancelled(?bool $isCancelled): static
+    {
+        $this->isCancelled = $isCancelled;
 
         return $this;
     }

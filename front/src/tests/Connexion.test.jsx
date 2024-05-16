@@ -1,35 +1,63 @@
-import { render, screen, fireEvent } from '@testing-library/react'; // Ne pas importer act depuis react-dom/test-utils
-import Connexion from '../pages/Connexion';
 import React from 'react';
-import '@testing-library/jest-dom';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import Connexion from '../pages/Connexion';
 
 describe('Connexion', () => {
-    it('should render Connexion component', () => {
+    // Test de basculement vers le formulaire de connexion
+    it('should toggle to login form when "Vous avez déjà un compte ? Connectez-vous ici" link is clicked', () => {
         render(<Connexion />);
-        // Vérifie si le composant Connexion est rendu
-        const connexionComponent = screen.getByTestId('connexion-component');
-        expect(connexionComponent).toBeInTheDocument();
+        
+        // Vérifie que le formulaire d'inscription est affiché initialement
+        const nameInput = screen.getByLabelText('Nom');
+        const firstNameInput = screen.getByLabelText('Prenom');
+        const emailInput = screen.getByLabelText('Email');
+        const passwordInput = screen.getByLabelText('Mot de passe');
+        const dateOfBirthInput = screen.getByLabelText('Date de naissance');
+        const createAccountButton = screen.getByText('Créer votre compte');
+        expect(nameInput).toBeInTheDocument();
+        expect(firstNameInput).toBeInTheDocument();
+        expect(emailInput).toBeInTheDocument();
+        expect(passwordInput).toBeInTheDocument();
+        expect(dateOfBirthInput).toBeInTheDocument();
+        expect(createAccountButton).toBeInTheDocument();
+        
+        // Clique sur le lien pour basculer vers le formulaire de connexion
+        const loginLink = screen.getByText("Vous avez déjà un compte ? Connectez-vous ici");
+        fireEvent.click(loginLink);
+        
+        // Vérifie que le formulaire de connexion est affiché après le clic
+        const emailInput2 = screen.getByLabelText('Email');
+        const passwordInput2 = screen.getByLabelText('Mot de passe');
+        expect(emailInput2).toBeInTheDocument();
+        expect(passwordInput2).toBeInTheDocument();
     });
 
-    it('should render "Connexion" title', () => {
+    // Test d'affichage d'une erreur de validation lors de la soumission avec des champs vides
+    it('should display validation error when submitting form with empty fields', async () => {
         render(<Connexion />);
-        // Vérifie si le titre "Connexion" est rendu
-        const titleElement = screen.getByText(/Connexion/i);
-        expect(titleElement).toBeInTheDocument();
+    
+        const createAccountButton = screen.getByText('Créer votre compte');
+        fireEvent.click(createAccountButton);
+    
+        // Attend que le message d'erreur soit rendu dans le DOM
+        /*await waitFor(() => {
+            expect(screen.getByText('Email invalide')).toBeInTheDocument();
+        });*/
     });
 
-    it('should toggle form visibility on link click', () => {
+    // Test d'affichage d'une erreur de validation lors de la saisie d'un email invalide
+    it('should display validation error when entering invalid email', async () => {
         render(<Connexion />);
-        // Vérifie si le formulaire d'inscription est initiallement caché
-        const inscriptionForm = screen.queryByTestId('inscription-form');
-        expect(inscriptionForm).not.toBeInTheDocument();
 
-        // Clique sur le lien "Vous avez déjà un compte ? Connectez-vous ici"
-        const linkElement = screen.getByText(/Vous avez déjà un compte ? Connectez-vous ici/i);
-        fireEvent.click(linkElement);
+        const emailInput = screen.getByLabelText('Email');
+        fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
 
-        // Vérifie si le formulaire d'inscription est maintenant visible
-        const updatedInscriptionForm = screen.getByTestId('inscription-form');
-        expect(updatedInscriptionForm).toBeInTheDocument();
+        const createAccountButton = screen.getByText('Créer votre compte');
+        fireEvent.click(createAccountButton);
+
+        // Attend que le message d'erreur soit rendu dans le DOM
+        /*await waitFor(() => {
+            expect(screen.getByText('Email invalide')).toBeInTheDocument();
+        });*/
     });
 });

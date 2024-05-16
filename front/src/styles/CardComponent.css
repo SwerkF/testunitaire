@@ -9,15 +9,20 @@ main {
 
 .card-home {
   width: 20rem;
-  height: 36rem;
+  height: 20rem;
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
   position: relative;
-  color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
   box-shadow: 0 10px 30px 5px rgba(0, 0, 0, 0.2);
   padding-top: 20px;
 }
+
+.img-card-home:hover {
+  filter: brightness(50%)
+}
+
 .card-home .card-content-home {
   padding: 20px;
 }
@@ -29,6 +34,8 @@ main {
   left: 0;
   opacity: 0.9;
   transition: opacity 0.2s ease-out;
+  object-fit: cover;
+  object-position: center;
 }
 .card-home .h2-home {
   position: relative;
@@ -44,7 +51,9 @@ main {
   position: relative;
   opacity: 0;
   transition: opacity 0.3s ease-out;
-  max-width: 80%;
+  max-width: 100%;
+  background: none;
+  border: none;
 }
 .card-home .p-home {
   margin-top: 20px;
@@ -61,7 +70,7 @@ main {
   opacity: 1;
   transition-delay: 0.1s;
 }
-.card-home:hover .img-card-home {
+.card-home:hover .p-home:hover .img-card-home, .card-home:hover .a-home:hover .img-card-home {
   opacity: 0;
 }
 

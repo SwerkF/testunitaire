@@ -40,10 +40,12 @@ class Reservation
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $reservation_date = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\OneToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
     private ?User $user_id = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\OneToOne(targetEntity: EventsDates::class)]
+    #[ORM\JoinColumn(name: "event_date_id", referencedColumnName: "id")]
     private ?EventsDates $event_date_id = null;
 
     public function getId(): ?int
@@ -98,4 +100,28 @@ class Reservation
 
         return $this;
     }
+    public function setNumber_of_tickets(?int $number_of_tickets): self
+{
+    $this->number_of_tickets = $number_of_tickets;
+    return $this;
+}
+
+public function setReservation_date(?\DateTimeInterface $reservation_date): self
+{
+    $this->reservation_date = $reservation_date;
+    return $this;
+}
+
+public function setUser(?User $user_id): self
+{
+    $this->user_id = $user_id;
+    return $this;
+}
+
+public function setEventDate(?EventsDates $event_date_id): self
+{
+    $this->event_date_id = $event_date_id;
+    return $this;
+}
+
 }

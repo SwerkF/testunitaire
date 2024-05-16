@@ -45,13 +45,11 @@ const CardReservation = ({ reservation, onClick }) => {
         setReservations(reservation);
         axios.get('http://localhost:8000' + reservation.eventDateId)  
             .then((response) => {
-                console.log(response.data)
                 setEventDates(response.data)
-
-                axios.get('http://localhost:8000' + response.data.eventId)
+                axios.get('http://localhost:8000' + response.data.event)
                     .then((response) => {
-                        console.log(response.data)
                         setEvent(response.data)
+                        console.log(response.data)
                     })
                     .catch((error) => {
                         console.error(error)
@@ -62,16 +60,33 @@ const CardReservation = ({ reservation, onClick }) => {
             })
     }, [])
 
+    const handleDate = (date) => {
+        const newDate = new Date(date)
+        return newDate.toDateString()
+
+    }
+
     return (
         (event && eventDates) ? (
-            <div className="card" style={{ width: '18rem' }}>
-            <div className="card-body">
-                <h5 className="card-title">{event?.title}</h5>
-                <p className="card-text">Date: {eventDates?.date}</p>
-                <p className="card-text">Number of tickets: {reservations?.number_of_tickets}</p>
-                <button onClick={() => onClick(reservation)} className="btn btn-primary">More details</button>
+            <div className="card w-50">
+                <div className="card-body">
+                   <div className='d-flex flex-column gap-2 justify-content-between'>
+                        <div className='d-flex flex-row align-items-center gap-2'>
+                            {event.imageUrl !== 'string' && event.imageUrl !== '' ? (
+                                <img src={event.imageUrl} alt={event.title} style={{ objectFit: 'cover', width: '100px', height: '100px' }} />
+                            ) : (
+                                <img src='https://picsum.photos/100/100' alt={event.title} style={{ objectFit: 'cover', width: '100px', height: '100px' }} />
+                            )}
+                            <div className='d-flex flex-column'>
+                                <h5 className="card-title">{event.title} - <span className='fs-6'>{handleDate(eventDates.date)}</span></h5>
+                                <p className="card-text">{event.description}</p>
+                                <p className='card-text'>{reservation.number_of_tickets} {reservation.number_of_tickets > 1 ? "places" : "place"}</p>
+                            </div>
+                        </div>
+                        <button className='btn btn-primary' onClick={() => { onClick(reservation, event, eventDates)}}>Details</button>
+                    </div>
+                </div>
             </div>
-        </div>
         ) : ('Loading...')
     )
 }

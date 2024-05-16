@@ -1,10 +1,8 @@
 <?php
-
 namespace App\Test\Controller;
-
+use App\Entity\Events;
 use App\Entity\EventsDates;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -12,8 +10,8 @@ class EventsDatesControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
     private EntityManagerInterface $manager;
-    private EntityRepository $repository;
     private string $path = '/events-dates/';
+    private $repository; // Add repository property
 
     protected function setUp(): void
     {
@@ -33,41 +31,38 @@ class EventsDatesControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', $this->path);
 
         self::assertResponseStatusCodeSame(200);
-        self::assertPageTitleContains('EventsDate index');
-
-        // Use the $crawler to perform additional assertions e.g.
-        // self::assertSame('Some text on the page', $crawler->filter('.p')->first());
+        self::assertPageTitleContains('EventsDates index');
     }
 
     public function testNew(): void
     {
-        $this->markTestIncomplete();
         $this->client->request('GET', sprintf('%snew', $this->path));
-
+        
         self::assertResponseStatusCodeSame(200);
-
+    
+        // Fetch an existing Events entity from the database
+        $event = $this->manager->getRepository(Events::class)->findOneBy([]);
+    
         $this->client->submitForm('Save', [
-            'events_date[date]' => 'Testing',
-            'events_date[tickets]' => 'Testing',
-            'events_date[is_cancelled]' => 'Testing',
-            'events_date[cancellation_reason]' => 'Testing',
-            'events_date[event_id]' => 'Testing',
+            'events_dates[date]' => (new \DateTime('2024-05-14'))->format('Y-m-d'), // Format DateTime object as string
+            'events_dates[tickets]' => '34',
+            'events_dates[is_cancelled]' => false,
+            'events_dates[cancellation_reason]' => null,
+            'events_dates[event]' => $event->getId(), // Set the event ID
         ]);
-
+    
         self::assertResponseRedirects($this->path);
-
+    
         self::assertSame(1, $this->repository->count([]));
     }
+    
+    
 
     public function testShow(): void
     {
-        $this->markTestIncomplete();
         $fixture = new EventsDates();
-        $fixture->setDate('My Title');
-        $fixture->setTickets('My Title');
-        $fixture->setIs_cancelled('My Title');
-        $fixture->setCancellation_reason('My Title');
-        $fixture->setEvent_id('My Title');
+        $fixture->setDate(new \DateTime('2024-05-14'));
+        $fixture->setTickets(34);
 
         $this->manager->persist($fixture);
         $this->manager->flush();
@@ -76,53 +71,47 @@ class EventsDatesControllerTest extends WebTestCase
 
         self::assertResponseStatusCodeSame(200);
         self::assertPageTitleContains('EventsDate');
-
-        // Use assertions to check that the properties are properly displayed.
     }
 
     public function testEdit(): void
     {
-        $this->markTestIncomplete();
+        // Assuming there's an existing event entity in the database
+        $event = $this->manager->getRepository(Events::class)->findOneBy([]);
+        
         $fixture = new EventsDates();
-        $fixture->setDate('Value');
-        $fixture->setTickets('Value');
-        $fixture->setIs_cancelled('Value');
-        $fixture->setCancellation_reason('Value');
-        $fixture->setEvent_id('Value');
-
+        $fixture->setDate(new \DateTime('2024-05-14'));
+        $fixture->setTickets(34);
+        $fixture->setEvent($event); 
+    
         $this->manager->persist($fixture);
         $this->manager->flush();
-
+    
         $this->client->request('GET', sprintf('%s%s/edit', $this->path, $fixture->getId()));
-
+    
         $this->client->submitForm('Update', [
-            'events_date[date]' => 'Something New',
-            'events_date[tickets]' => 'Something New',
-            'events_date[is_cancelled]' => 'Something New',
-            'events_date[cancellation_reason]' => 'Something New',
-            'events_date[event_id]' => 'Something New',
+            'events_dates[date]' => (new \DateTime('2024-05-15'))->format('Y-m-d'),
+            'events_dates[tickets]' => 14,
+            'events_dates[is_cancelled]' => true,
+            'events_dates[cancellation_reason]' => 'COVID',
+            'events_dates[event]' => $event->getId(), 
         ]);
-
-        self::assertResponseRedirects('/events-dates/');
-
-        $fixture = $this->repository->findAll();
-
-        self::assertSame('Something New', $fixture[0]->getDate());
-        self::assertSame('Something New', $fixture[0]->getTickets());
-        self::assertSame('Something New', $fixture[0]->getIs_cancelled());
-        self::assertSame('Something New', $fixture[0]->getCancellation_reason());
-        self::assertSame('Something New', $fixture[0]->getEvent_id());
+    
+        self::assertResponseRedirects($this->path);
+    
+        $updatedFixture = $this->repository->find($fixture->getId());
+    
+        self::assertSame('2024-05-15', $updatedFixture->getDate()->format('Y-m-d'));
+        self::assertSame(14, $updatedFixture->getTickets());
+        self::assertTrue($updatedFixture->getIsCancelled());
+        self::assertSame('COVID', $updatedFixture->getCancellationReason());
     }
+    
 
     public function testRemove(): void
     {
-        $this->markTestIncomplete();
         $fixture = new EventsDates();
-        $fixture->setDate('Value');
-        $fixture->setTickets('Value');
-        $fixture->setIs_cancelled('Value');
-        $fixture->setCancellation_reason('Value');
-        $fixture->setEvent_id('Value');
+        $fixture->setDate(new \DateTime('2024-05-14'));
+        $fixture->setTickets(34);
 
         $this->manager->persist($fixture);
         $this->manager->flush();
@@ -130,7 +119,7 @@ class EventsDatesControllerTest extends WebTestCase
         $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
         $this->client->submitForm('Delete');
 
-        self::assertResponseRedirects('/events-dates/');
+        self::assertResponseRedirects($this->path);
         self::assertSame(0, $this->repository->count([]));
     }
 }

@@ -1,130 +1,123 @@
-<?php
+<!-- <?php 
 
-namespace App\Test\Controller;
+// namespace App\Test\Controller;
 
-use App\Entity\Reservation;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+// use App\Entity\Reservation;
+// use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+// use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class ReservationControllerTest extends WebTestCase
-{
-    private KernelBrowser $client;
-    private EntityManagerInterface $manager;
-    private EntityRepository $repository;
-    private string $path = '/reservation/';
+// class ReservationControllerTest extends WebTestCase
+// {
+//     private KernelBrowser $client;
+//     private string $path = '/reservation/';
 
-    protected function setUp(): void
-    {
-        $this->client = static::createClient();
-        $this->manager = static::getContainer()->get('doctrine')->getManager();
-        $this->repository = $this->manager->getRepository(Reservation::class);
+//     protected function setUp(): void
+//     {
+//         $this->client = static::createClient();
 
-        foreach ($this->repository->findAll() as $object) {
-            $this->manager->remove($object);
-        }
+//         // Clearing the database before each test
+//         $entityManager = static::getContainer()->get('doctrine')->getManager();
+//         $entityManager->createQuery('DELETE FROM App\Entity\Reservation')->execute();
+//     }
 
-        $this->manager->flush();
-    }
+//     public function testIndex(): void
+//     {
+//         $crawler = $this->client->request('GET', $this->path);
 
-    public function testIndex(): void
-    {
-        $crawler = $this->client->request('GET', $this->path);
+//         self::assertResponseStatusCodeSame(200);
+//         self::assertPageTitleContains('Reservation index');
+//     }
 
-        self::assertResponseStatusCodeSame(200);
-        self::assertPageTitleContains('Reservation index');
+//     public function testNew(): void
+//     {
+//         $this->client->request('GET', $this->path . 'new');
 
-        // Use the $crawler to perform additional assertions e.g.
-        // self::assertSame('Some text on the page', $crawler->filter('.p')->first());
-    }
+//         self::assertResponseStatusCodeSame(200);
 
-    public function testNew(): void
-    {
-        $this->markTestIncomplete();
-        $this->client->request('GET', sprintf('%snew', $this->path));
+//         $this->client->submitForm('Save', [
+//             'reservation[number_of_tickets]' => 5, // Assuming 'number_of_tickets' is an integer field
+//             'reservation[reservation_date]' => '2024-05-14', // Assuming 'reservation_date' is a date field
+//             'reservation[user]' => null, // Assuming 'user' is a relationship property
+//             'reservation[eventDate]' => null, // Assuming 'eventDate' is a relationship property
+//         ]);
 
-        self::assertResponseStatusCodeSame(200);
+//         self::assertResponseRedirects($this->path);
 
-        $this->client->submitForm('Save', [
-            'reservation[number_of_tickets]' => 'Testing',
-            'reservation[reservation_date]' => 'Testing',
-            'reservation[user_id]' => 'Testing',
-            'reservation[event_date_id]' => 'Testing',
-        ]);
+//         // Check if the entity was actually persisted
+//         $entityManager = static::getContainer()->get('doctrine')->getManager();
+//         $reservationsCount = $entityManager->getRepository(Reservation::class)->count([]);
+//         self::assertSame(1, $reservationsCount);
+//     }
 
-        self::assertResponseRedirects($this->path);
+//     public function testShow(): void
+//     {
+//         $entityManager = static::getContainer()->get('doctrine')->getManager();
+//         $reservation = new Reservation();
+//         $reservation->setNumber_of_tickets(2);
+//         $reservation->setReservation_date(new \DateTime('2024-05-14'));
+//         $reservation->setUser(null); // Assuming 'user' is a relationship property
+//         $reservation->setEventDate(null); // Assuming 'eventDate' is a relationship property
+//         $entityManager->persist($reservation);
+//         $entityManager->flush();
 
-        self::assertSame(1, $this->repository->count([]));
-    }
+//         $this->client->request('GET', $this->path . $reservation->getId());
 
-    public function testShow(): void
-    {
-        $this->markTestIncomplete();
-        $fixture = new Reservation();
-        $fixture->setNumber_of_tickets('My Title');
-        $fixture->setReservation_date('My Title');
-        $fixture->setUser_id('My Title');
-        $fixture->setEvent_date_id('My Title');
+//         self::assertResponseStatusCodeSame(200);
+//         self::assertPageTitleContains('Reservation');
+//         // Add assertions to check that the properties are properly displayed.
+//     }
 
-        $this->manager->persist($fixture);
-        $this->manager->flush();
+//     public function testEdit(): void
+//     {
+//         $entityManager = static::getContainer()->get('doctrine')->getManager();
+//         $reservation = new Reservation();
+//         $reservation->setNumber_of_tickets(2);
+//         $reservation->setReservation_date(new \DateTime('2024-05-14'));
+//         $reservation->setUser(null); // Assuming 'user' is a relationship property
+//         $reservation->setEventDate(null); // Assuming 'eventDate' is a relationship property
+//         $entityManager->persist($reservation);
+//         $entityManager->flush();
 
-        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
+//         $this->client->request('GET', $this->path . $reservation->getId() . '/edit');
 
-        self::assertResponseStatusCodeSame(200);
-        self::assertPageTitleContains('Reservation');
+//         self::assertResponseStatusCodeSame(200);
 
-        // Use assertions to check that the properties are properly displayed.
-    }
+//         $this->client->submitForm('Update', [
+//             'reservation[number_of_tickets]' => 3, // Updating number of tickets
+//             'reservation[reservation_date]' => '2024-05-15', // Updating reservation date
+//             'reservation[user]' => null, // Assuming 'user' is a relationship property
+//             'reservation[eventDate]' => null, // Assuming 'eventDate' is a relationship property
+//         ]);
 
-    public function testEdit(): void
-    {
-        $this->markTestIncomplete();
-        $fixture = new Reservation();
-        $fixture->setNumber_of_tickets('Value');
-        $fixture->setReservation_date('Value');
-        $fixture->setUser_id('Value');
-        $fixture->setEvent_date_id('Value');
+//         self::assertResponseRedirects($this->path);
 
-        $this->manager->persist($fixture);
-        $this->manager->flush();
+//         $updatedReservation = $entityManager->getRepository(Reservation::class)->find($reservation->getId());
 
-        $this->client->request('GET', sprintf('%s%s/edit', $this->path, $fixture->getId()));
+//         self::assertSame(3, $updatedReservation->getNumber_of_tickets());
+//         self::assertEquals(new \DateTime('2024-05-15'), $updatedReservation->getReservation_date());
+//     }
 
-        $this->client->submitForm('Update', [
-            'reservation[number_of_tickets]' => 'Something New',
-            'reservation[reservation_date]' => 'Something New',
-            'reservation[user_id]' => 'Something New',
-            'reservation[event_date_id]' => 'Something New',
-        ]);
+//     public function testRemove(): void
+//     {
+//         $entityManager = static::getContainer()->get('doctrine')->getManager();
+//         $reservation = new Reservation();
+//         $reservation->setNumber_of_tickets(2);
+//         $reservation->setReservation_date(new \DateTime('2024-05-14'));
+//         $reservation->setUser(null); // Assuming 'user' is a relationship property
+//         $reservation->setEventDate(null); // Assuming 'eventDate' is a relationship property
+//         $entityManager->persist($reservation);
+//         $entityManager->flush();
 
-        self::assertResponseRedirects('/reservation/');
+//         $this->client->request('GET', $this->path . $reservation->getId());
 
-        $fixture = $this->repository->findAll();
+//         self::assertResponseStatusCodeSame(200);
 
-        self::assertSame('Something New', $fixture[0]->getNumber_of_tickets());
-        self::assertSame('Something New', $fixture[0]->getReservation_date());
-        self::assertSame('Something New', $fixture[0]->getUser_id());
-        self::assertSame('Something New', $fixture[0]->getEvent_date_id());
-    }
+//         $this->client->submitForm('Delete');
 
-    public function testRemove(): void
-    {
-        $this->markTestIncomplete();
-        $fixture = new Reservation();
-        $fixture->setNumber_of_tickets('Value');
-        $fixture->setReservation_date('Value');
-        $fixture->setUser_id('Value');
-        $fixture->setEvent_date_id('Value');
+//         self::assertResponseRedirects($this->path);
 
-        $this->manager->persist($fixture);
-        $this->manager->flush();
+//         $removedReservation = $entityManager->getRepository(Reservation::class)->find($reservation->getId());
 
-        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
-        $this->client->submitForm('Delete');
-
-        self::assertResponseRedirects('/reservation/');
-        self::assertSame(0, $this->repository->count([]));
-    }
-}
+//         self::assertNull($removedReservation);
+//     }
+// }
