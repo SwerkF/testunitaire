@@ -37,6 +37,6 @@ describe("Admin component", () => {
       expect(screen.getByText("A fun festival")).toBeInTheDocument();
     });
 
-    expect(axios.get).toHaveBeenCalledWith("http://localhost:8000/api/eventss");
+    expect(axios.get).toHaveBeenCalledWith("http://127.0.0.1:8000/api/eventss");
   });
 });

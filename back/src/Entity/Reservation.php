@@ -18,7 +18,7 @@ use ApiPlatform\Metadata\Delete;
 #[ApiResource(operations:[
     new Get(
         name:"get reservation by date",
-        uriTemplate:"/reservations/date/{id}",
+        uriTemplate:"/reservations/dates/{id}",
         controller: ReservationController::class,
     ),
     new Get(

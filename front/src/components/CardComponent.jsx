@@ -23,7 +23,7 @@ const CardComponent = ({ event_date_id, event_id, ticket, isCancelled, cancellat
         console.error('There was an error fetching the events!', error);
       });
 
-    axios.get('http://localhost:8000/api/reservations/dates/'+event_date_id)
+    axios.get('http://localhost:8000/api/reservations/date/'+event_date_id)
       .then((response) => {
         console.log("RESPONSE HERE", response.data);
         let reserv = response.data;
@@ -36,7 +36,9 @@ const CardComponent = ({ event_date_id, event_id, ticket, isCancelled, cancellat
         setNbPlacesRestantes(ticketRestant);
       })
       .catch((error) => {
-        console.error('There was an error fetching the events!', error);
+        if(error.response.status === 404){
+          setNbPlacesRestantes(ticket);
+        }
       });
   }, []);
   

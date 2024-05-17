@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import Modal from './Modal';
+import '@testing-library/jest-dom';
+import ModalEvent from '../components/ModalComponent';
 
 describe('Modal Component', () => {
   const mockProps = {
@@ -28,7 +28,7 @@ describe('Modal Component', () => {
   });
 
   test('renders Modal component', () => {
-    render(<Modal {...mockProps} />);
+    render(<ModalEvent {...mockProps} />);
 
     expect(screen.getByText('Réservez vos billets')).toBeInTheDocument();
     expect(screen.getByText(mockProps.description)).toBeInTheDocument();
@@ -36,27 +36,27 @@ describe('Modal Component', () => {
   });
 
   test('calls onClose when close button is clicked', () => {
-    render(<Modal {...mockProps} />);
+    render(<ModalEvent {...mockProps} />);
 
     fireEvent.click(screen.getByText('✕'));
     expect(mockProps.onClose).toHaveBeenCalledTimes(1);
   });
 
   test('displays placeholder image when imageUrl is not provided', () => {
-    render(<Modal {...mockProps} imageUrl={null} />);
+    render(<ModalEvent {...mockProps} imageUrl={null} />);
 
     expect(screen.getByAltText(mockProps.title)).toHaveAttribute('src', 'https://placehold.co/100x100');
   });
 
   test('sets user ID and birthday from localStorage', () => {
-    render(<Modal {...mockProps} />);
+    render(<ModalEvent {...mockProps} />);
 
     expect(screen.getByText(mockProps.description)).toBeInTheDocument();
     // Verify internal state by inspecting props passed to the Reservation component
   });
 
   test('renders Reservation component with correct props', () => {
-    //const { container } = render(<Modal {...mockProps} />);
+    //const { container } = render(<ModalEvent {...mockProps} />);
 
     const reservationComponent = screen.getByRole('Reservation');
     expect(reservationComponent).toBeInTheDocument();

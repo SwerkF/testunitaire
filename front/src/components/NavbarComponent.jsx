@@ -10,7 +10,7 @@ const NavbarComponent = () => {
     const [userState, setUserState] = useState(null);
 
     useEffect(() => {
-      const user =JSON.parse(localStorage.getItem('user'));
+      const user = localStorage.getItem('user');
       if (user) {
         setUserState(user);
       } else {
@@ -44,7 +44,7 @@ const NavbarComponent = () => {
               {userState && (
                 <React.Fragment> 
                   <Link to="/reservations" className="nav-link text-light fw-semibold">RESERVATIONS</Link>
-                  <button onClick={() => handleLogout()} className="fw-semibold btn btn-danger ms-4"><i className="bi bi-box-arrow-right"></i></button>
+                  <button onClick={() => handleLogout()} className="fw-semibold btn btn-danger ms-4">DECONNEXION</button>
                 </React.Fragment>
               )}
               {userState && user.role == "admin" && <Link to="/admin" className="nav-link text-light fw-semibold">ADMIN</Link>}
