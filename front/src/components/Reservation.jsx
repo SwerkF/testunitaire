@@ -56,7 +56,8 @@ const Reservation = ({
       console.error(error.message);
     }
     if (!userId) {
-      setError("Vous devez être connecté pour réserver un événement.");
+      setError('');
+      toast.error("Vous devez être connecté pour réserver un événement.");
       return;
     }
 

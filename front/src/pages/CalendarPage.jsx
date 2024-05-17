@@ -119,7 +119,7 @@ const CalendarPage = () => {
     if (message) {
       return toast.info(message);
     }
-    
+
     const { title, extendedProps, start } = clickInfo.event;
     setModalContent({
       title,
