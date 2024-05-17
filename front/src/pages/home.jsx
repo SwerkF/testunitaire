@@ -78,7 +78,7 @@ const Home = () => {
         </div>
       </div>
       <div className="text-center mt-4 ">
-        <Link className="nav-link fw-bolder "> <Button className="btn-outline-yellow"> Tous les événements...</Button></Link>
+        <Link className="nav-link fw-bolder " to="/events"> <Button className="btn-outline-yellow"> Tous les événements...</Button></Link>
       </div>
 
       <div className=" pt-5 bg-blue mt-5 pb-5">

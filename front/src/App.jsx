@@ -5,7 +5,7 @@ import Connexion from './pages/Connexion';
 import NavbarComponent from './components/NavbarComponent';
 //import Reservation from './components/Reservation';
 import FooterComponent from './components/FooterComponent';
-import Home from './pages/Home';
+import Home from './pages/home';
 import Admin from './pages/Admin';
 import CalendarPage from './pages/CalendarPage';
 import { useContext, createContext, useState, useEffect } from 'react';
