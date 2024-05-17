@@ -17,9 +17,8 @@ import Reservation from './Reservation';
     console.log(eventAge);
       
     useEffect(() => {
-      setUserBirthday(user.birthday);
-      setUserId(user.id);
-      console.log(user.birthday, user.id);
+      setUserBirthday(user && user.birthday);
+      setUserId(user && user.id);
     }, []);
 
 
