@@ -49,11 +49,11 @@ const Home = () => {
           </div>
           <Form className="d-flex ">
             <Form.Group className="w-100 pe-3">
-              <Form.Label>Date à partir de :</Form.Label>
+              <Form.Label className="text-light">Date à partir de :</Form.Label>
               <Form.Control type="date" placeholder="" />
             </Form.Group>
             <Form.Group className="w-100  ms-auto">
-              <Form.Label>Jusqu'au</Form.Label>
+              <Form.Label className="text-light">Jusqu'au</Form.Label>
               <Form.Control type="date" placeholder="" />
             </Form.Group>
           </Form>

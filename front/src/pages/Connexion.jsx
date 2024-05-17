@@ -70,10 +70,11 @@ export default function Connexion() {
       }));
 
       navigate("/");
+      window.location.reload();
 
     } catch (error) {
-      console.error("Error signing up:", error);
-      setError("Erreur lors de la création du compte");
+      console.log("Error signing up:", error);
+      setError(error.response && error.response.data && error.response.data.status === 422 ? error.response.data.detail : "Erreur lors de la création du compte");
     }
   };
 
@@ -117,7 +118,7 @@ export default function Connexion() {
      
     } catch (error) {
       console.error("Error logging in:", error);
-      setError("Erreur lors de la connexion");
+      setError( "Erreur lors de la connexion");
     }
   };
 
