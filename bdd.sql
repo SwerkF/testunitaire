@@ -126,7 +126,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `email`, `roles`, `password`, `firstname`, `name`, `birthday`) VALUES
 (2, 'user@test.com', '[\"user\"]', '$2a$10$8dKhXiXxs/Zhu4DqifSDc.UkfQph2T8amFMD3stLMTSHASe0EQOIK', 'Test', 'User', '2024-01-17'),
-(3, 'admin@test.com', '[\"user\"]', '$2a$10$CEVB4csKf4jlgxiTbfG0SebpqbqTQClogg2TBHN0hmGEjHcxiUo1K', 'Test', 'Admin', '2024-05-24'),
+(3, 'admin@test.com', '[\"admin\"]', '$2a$10$CEVB4csKf4jlgxiTbfG0SebpqbqTQClogg2TBHN0hmGEjHcxiUo1K', 'Test', 'Admin', '2024-05-24'),
 (4, 'user2@test.com', '[\"user\"]', '$2a$10$iNh80yI.um.iOtQjF9EjOe3qaq3IrP1.GjO3G7nsSS76A4/gx0.u2', 'Test2', 'User', '1999-01-14');
 
 --
