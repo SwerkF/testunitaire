@@ -11,7 +11,7 @@ function Admin() {
   const [showEventModal, setShowEventModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
-  const [modalType, setModalType] = useState("create"); 
+  const [modalType, setModalType] = useState("create");
 
   useEffect(() => {
     fetchEvents();
@@ -19,7 +19,7 @@ function Admin() {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/events");
+      const response = await axios.get("http://localhost:8000/api/eventss");
       console.log(response.data["hydra:member"]);
       setEvents(response.data["hydra:member"]);
     } catch (error) {
@@ -56,40 +56,49 @@ function Admin() {
       if (modalType === "create") {
         // Créer l'événement principal sans les dates
         eventDetails.minimumAge = parseInt(eventDetails.minimumAge);
-        const eventResponse = await axios.post("http://127.0.0.1:8000/api/events", eventDetails);
+        const eventResponse = await axios.post(
+          "http://localhost:8000/api/eventss",
+          eventDetails
+        );
         savedEvent = eventResponse.data;
         console.log("Event response", eventResponse);
       } else {
         // Mettre à jour l'événement principal sans les dates
-        const eventResponse = await axios.put(`http://127.0.0.1:8000/api/events/{id}`, eventDetails);
+        const eventResponse = await axios.put(
+          `http://localhost:8000/api/eventss/${eventDetails.id}`,
+          eventDetails
+        );
         savedEvent = eventResponse.data;
       }
-  
+
       // Enregistrer les dates dans l'endpoint /api/events_date
       if (savedEvent && savedEvent.id) {
-        await Promise.all(dates.map(date => 
-          axios.post("http://127.0.0.1:8000/api/events_dates", {
-            event: "/api/events/"+savedEvent.id,
-            date: date,
-            tickets: 7000
-          })
-        ));
+        await Promise.all(
+          dates.map((date) =>
+            axios.post("http://localhost:8000/api/events_datess", {
+              event: "/api/events/" + savedEvent.id,
+              date: date,
+              tickets: 7000,
+            })
+          )
+        );
       }
-  
+
       fetchEvents();
     } catch (error) {
       console.error("Error saving event and dates:", error);
     }
     setShowEventModal(false);
   };
-  
 
   const handleCancellationFormSubmit = async (reason) => {
     try {
       await axios.patch(
-        `http://localhost:8000/api/events_datess/{id}`,
-        { cancellationReason: reason, isCancelled: true }
+        `http://localhost:8000/api/events_datess/${currentEvent.id}`,
+        { cancellationReason: reason,
+           isCancelled: true }
       );
+
       fetchEvents();
     } catch (error) {
       console.error("Error cancelling event:", error);
@@ -99,15 +108,23 @@ function Admin() {
 
   return (
     <div className="container-admin">
-      <div className="d-flex justify-content-center" style={{ paddingTop: "20px", width: "100%" }}>
+      <div
+        className="d-flex justify-content-center"
+        style={{ paddingTop: "20px", width: "100%" }}
+      >
         <h1>Admin Dashboard</h1>
       </div>
-      <div className="d-flex justify-content-center" style={{ paddingTop: "20px", width: "100%" }}>
-        <Button onClick={() => {
-          setModalType("create");
-          setCurrentEvent(null);
-          setShowEventModal(true);
-        }}>
+      <div
+        className="d-flex justify-content-center"
+        style={{ paddingTop: "20px", width: "100%" }}
+      >
+        <Button
+          onClick={() => {
+            setModalType("create");
+            setCurrentEvent(null);
+            setShowEventModal(true);
+          }}
+        >
           Ajoutez un nouveau événement
         </Button>{" "}
       </div>
