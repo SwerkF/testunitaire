@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Button } from "react-bootstrap";
 import EventForm from "../components/EventForm";
 import EventTable from "../components/EventTable";
 import CancellationForm from "../components/CancellationForm";
 import "../styles/AdminStyle.css";
+import { UserContext } from "../App";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Admin() {
+
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+
   const [events, setEvents] = useState([]);
   const [showEventModal, setShowEventModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -14,6 +20,7 @@ function Admin() {
   const [modalType, setModalType] = useState("create");
 
   useEffect(() => {
+    if (!user || !user.role == "admin") { return navigate("/");}
     fetchEvents();
   }, []);
 

@@ -5,6 +5,79 @@ import axios from "axios";
 
 jest.mock("axios");
 
+// set useContext in for Reservation
+jest.mock('react', () => ({
+  ...jest.requireActual('react'),
+  useContext: () => ({ user: { id: 1, email:"admin@gmail.com" } })
+}));
+
+
+// set useNavigate in for Reservation
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => () => {}
+}));
+
+// transofrm to html 
+/*
+import { Button } from "react-bootstrap";
+import EventForm from "../components/EventForm";
+import EventTable from "../components/EventTable";
+*/
+jest.mock("react-bootstrap", () => ({
+  Button: jest.fn(({ children, onClick }) => (
+    <button onClick={onClick}>{children}</button>
+  )),
+}));
+
+jest.mock("../components/EventForm", () => jest.fn(() => <div>MockedEventForm</div>));
+jest.mock("../components/EventTable", () => jest.fn(({ events }) => (
+  <div>
+    {events.map((event) => (
+      <div key={event.id}>
+        <div>{event.title}</div>
+        <div>{event.description}</div>
+      </div>
+    ))}
+  </div>
+)));
+
+jest.mock('@fullcalendar/react', () => ({
+  __esModule: true,
+  default: jest.fn(({ events }) => (
+    <div>
+      MockedCalendar
+      {events.map((event, index) => (
+        <div key={index}>
+          <div>{event.title}</div>
+          <div>{event.extendedProps?.type}</div>
+          <div>{event.extendedProps?.totalTickets - event.extendedProps?.reservedTickets} Restant(s)</div>
+        </div>
+      ))}
+    </div>
+  ))
+}));
+
+
+jest.mock('@fullcalendar/daygrid', () => ({
+  __esModule: true,
+  namedExport: jest.fn(),
+  default: jest.fn()
+}));
+
+jest.mock('@fullcalendar/timegrid', () => ({
+  __esModule: true,
+  namedExport: jest.fn(),
+  default: jest.fn()
+}));
+
+jest.mock('@fullcalendar/interaction', () => ({
+  __esModule: true,
+  namedExport: jest.fn(),
+  default: jest.fn()
+}));
+
+
 describe("Admin component", () => {
   it("fetches and displays events", async () => {
     axios.get.mockResolvedValueOnce({

@@ -34,14 +34,14 @@ import Reservation from './Reservation';
               <p className='description'>{description}</p>
             </div>
             <Reservation
-                eventName={title}
-                userId={userId}
-                initialDate={date}
-                userBirthDate={userBirthday}
-                evenAge={eventAge}
-                event_date_id={event_date_id}
-                ticketRestant={ticketRestant}
-              />
+                  eventName={title}
+                  userId={userId}
+                  initialDate={date}
+                  userBirthDate={userBirthday}
+                  evenAge={eventAge}
+                  event_date_id={event_date_id}
+                  ticketRestant={ticketRestant}
+                />
           </div>
         </div>
       </div>

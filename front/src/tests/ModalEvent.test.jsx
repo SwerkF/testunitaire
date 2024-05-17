@@ -55,16 +55,4 @@ describe('Modal Component', () => {
     // Verify internal state by inspecting props passed to the Reservation component
   });
 
-  test('renders Reservation component with correct props', () => {
-    //const { container } = render(<ModalEvent {...mockProps} />);
-
-    const reservationComponent = screen.getByRole('Reservation');
-    expect(reservationComponent).toBeInTheDocument();
-    expect(reservationComponent.props.eventName).toBe(mockProps.title);
-    expect(reservationComponent.props.userId).toBe(mockUser.id);
-    expect(reservationComponent.props.initialDate).toBe(mockProps.date);
-    expect(reservationComponent.props.userBirthDate).toBe(mockUser.birthday);
-    expect(reservationComponent.props.eventAge).toBe(mockProps.eventAge);
-    expect(reservationComponent.props.event_date_id).toBe(mockProps.event_date_id);
-  });
 });

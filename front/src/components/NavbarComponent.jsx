@@ -17,7 +17,7 @@ const NavbarComponent = () => {
         setUserState(null);
       }
     }
-    , []);
+    , [user]);
     
     console.log(userState);
 

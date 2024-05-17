@@ -41,6 +41,9 @@ const Reservation = ({
           setError(
             `Vous devez avoir plus de ${evenAge} ans pour participer à cet événement.`
           );
+          throw new Error(
+            `Vous devez avoir plus de ${evenAge} ans pour participer à cet événement.`
+          );
         }
       } else {
         if (ageConfirmation) {
@@ -50,14 +53,17 @@ const Reservation = ({
           setError(
             `Vous devez confirmer que tous les participants ont plus de 18 ans.`
           );
+          throw new Error(
+            `Vous devez confirmer que tous les participants ont plus de 18 ans.`
+          );
         }
       }
     } catch (error) {
       console.error(error.message);
     }
+console.log("userId", userId);
     if (!userId) {
-      setError('');
-      toast.error("Vous devez être connecté pour réserver un événement.");
+      setError("Vous devez être connecté pour réserver un événement.");
       return;
     }
 
@@ -105,8 +111,8 @@ const Reservation = ({
         className="border p-4 shadow-sm rounded"
       >
         <div className="form-group mb-3">
-          <p className="text-black">Il reste {ticketRestant} {ticketRestant > 1 ? "places" : "place"}. </p>
-          <label htmlFor="number-of-people">Nombre de places:</label>
+          <p className="text-black">Nombres de places {ticketRestant}</p>
+          <label htmlFor="number-of-people">Nombre de places</label>
           <input
             type="number"
             id="number-of-people"
@@ -132,15 +138,14 @@ const Reservation = ({
           </div>
         )}
         <div>
-        <Button
-  type="submit"
-  disabled={succesSend ? true : false}
-  className="btn-color btn-block"
->
-  Réserver maintenant <i className="bi bi-cash-stack"></i>
-</Button>
-
-
+          <Button
+            type="submit"
+            disabled={succesSend ? true : false}
+            className="btn-color btn-block"
+            data-testid="submit-button"
+          >
+            Réserver maintenant <i className="bi bi-cash-stack"></i>
+          </Button>
         </div>
         {error && <div className="text-danger mt-4">{error}</div>}
       </form>

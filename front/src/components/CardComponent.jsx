@@ -23,16 +23,14 @@ const CardComponent = ({ event_date_id, event_id, ticket, isCancelled, cancellat
         console.error('There was an error fetching the events!', error);
       });
 
-    axios.get('http://localhost:8000/api/reservations/date/'+event_date_id)
+      console.log("EVENT DATE ID", event_date_id);
+    axios.get('http://localhost:8000/api/reservations/dates/'+event_date_id)
       .then((response) => {
-        console.log("RESPONSE HERE", response.data);
         let reserv = response.data;
         let ticketRestant = ticket
         reserv.forEach((reserv) => {
-          console.log("RES", reserv.number_of_tickets);
           ticketRestant = ticketRestant - reserv.number_of_tickets;
         })
-        console.log("TICKET RESTANT", ticketRestant);
         setNbPlacesRestantes(ticketRestant);
       })
       .catch((error) => {
