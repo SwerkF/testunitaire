@@ -56,6 +56,7 @@ function EventForm({ show, handleClose, handleSubmit, event, mode }) {
               <option value="festival">Festival</option>
               <option value="brocante">Brocante</option>
               <option value="video games">Jeux vidéo</option>
+              <option value="theatre">Exposition</option>
             </Form.Control>
           </Form.Group>
           <Form.Group>

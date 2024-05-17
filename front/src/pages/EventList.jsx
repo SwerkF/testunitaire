@@ -9,6 +9,7 @@ useEffect(() => {
     axios.get('http://localhost:8000/api/events_datess')
         .then((response) => {
             setEvents(response.data['hydra:member']);
+            console.log("EVEBNT DATES", response.data['hydra:member']);
         })
         .catch((error) => {
             console.error('There was an error fetching the events!', error);
@@ -21,7 +22,7 @@ useEffect(() => {
             <h1 class="title-h1">Liste des évènements</h1>
             <ul class= "event-container">
                     {events.map((event) => (
-                            <CardComponent event_date_id={event.id} event_id={event.event} ticket={event.tickets} date={event.date}/>
+                        <CardComponent event_date_id={event.id} event_id={event.event} isCancelled={event.isCancelled} cancellationReason={event.cancellationReason} ticket={event.tickets} date={event.date}/>
                     ))}
             </ul>
             </div>
