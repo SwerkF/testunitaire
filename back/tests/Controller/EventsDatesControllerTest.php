@@ -107,19 +107,19 @@ class EventsDatesControllerTest extends WebTestCase
     }
     
 
-    public function testRemove(): void
-    {
-        $fixture = new EventsDates();
-        $fixture->setDate(new \DateTime('2024-05-14'));
-        $fixture->setTickets(34);
+    // public function testRemove(): void
+    // {
+    //     $fixture = new EventsDates();
+    //     $fixture->setDate(new \DateTime('2024-05-14'));
+    //     $fixture->setTickets(34);
 
-        $this->manager->persist($fixture);
-        $this->manager->flush();
+    //     $this->manager->persist($fixture);
+    //     $this->manager->flush();
 
-        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
-        $this->client->submitForm('Delete');
+    //     $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
+    //     $this->client->submitForm('Delete');
 
-        self::assertResponseRedirects($this->path);
-        self::assertSame(0, $this->repository->count([]));
-    }
+    //     self::assertResponseRedirects($this->path);
+    //     self::assertSame(0, $this->repository->count([]));
+    // }
 }

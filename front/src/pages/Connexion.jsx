@@ -150,7 +150,7 @@ export default function Connexion() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <Button htmlFor="Connection" type="submit" className="mt-3 w-100 btn-color-yellow">Se connecter</Button>
+          <Button htmlFor="Connection" type="submit" className="mt-3 w-100 btn-color-yellow">Créer votre compte</Button>
           <p>
             <a href="#" onClick={toggleForm} className="fs-6 pb-3 text-color-yellow">
               Vous n'avez pas de compte ? Inscrivez-vous ici
@@ -227,7 +227,7 @@ export default function Connexion() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
-            <label>Date de naissance</label>
+            <label htmlFor="Date de naissance">Date de naissance</label>
             <input 
               type="date" 
               value={dateNaissance}

@@ -10,11 +10,45 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Attribute\Route; 
+// user repository and entity
+use App\Entity\User;
+use App\Repository\UserRepository;
 
 #[Route('/reservation')]
 class ReservationController extends AbstractController
 {
+    public function __construct(
+        private ReservationRepository $reservationRepository, 
+        private EntityManagerInterface $entityManager,
+        private UserRepository $userRepository)
+    {
+
+    }
+
+    public function __invoke(Reservation $data): JsonResponse
+    {
+        $user = $this->userRepository->findOneBy(['id' => $data->getId()]);
+        if (!$user) {
+            throw $this->createNotFoundException();
+        } else {
+            $reservations = $this->reservationRepository->findReservationsByUser($user->getId());
+            return $this->json($reservations);
+        }
+    }
+
+    public function createNewReservation($data): JsonResponse
+    {
+      return $this->json($data);
+    }
+
+    // get all reservations
+    public function getAll(): JsonResponse
+    {
+        $reservations = $this->reservationRepository->findAll();
+        return $this->json($reservations);
+    }
+
 
     // get events dates with reservations id
     public function getByDate(Request $request, ReservationRepository $reservationRepository): JsonResponse
@@ -88,4 +122,13 @@ class ReservationController extends AbstractController
 
         return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    // get reservations with user id 
+    #[Route('/user/{id}', name:'app_reservation_user_get', methods: ['GET'])]
+    public function getReservation(Reservation $reservation, EntityManagerInterface $entityManager): Response
+    {
+        $reservation = $entityManager->getRepository(Reservation::class)->findBy(['user' => $reservation->getUserId()]);
+        return $this->json($reservation);
+    }
+    
 }

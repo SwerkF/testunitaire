@@ -17,10 +17,16 @@ use ApiPlatform\Metadata\Delete;
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 #[ApiResource(operations:[
     new Get(
-        name:"get_reservation_by_date",
-        uriTemplate:"/reservation/date/{id}",
+        name:"get user reservation",
+        uriTemplate:"/reservations/users/{id}",
         controller: ReservationController::class,
     ),
+    new Get(
+        name:"get_reservation_by_date",
+        uriTemplate:"/reservations/date/{id}",
+        controller: ReservationController::class,
+    ),
+    // get all
     new Get(),
     new Put(),
     new Patch(),
@@ -28,7 +34,6 @@ use ApiPlatform\Metadata\Delete;
     new Delete(),
  
 ])]
-
 class Reservation
 {
     #[ORM\Id]
@@ -42,10 +47,12 @@ class Reservation
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $reservation_date = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\OneToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
     private ?User $user_id = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\OneToOne(targetEntity: EventsDates::class)]
+    #[ORM\JoinColumn(name: "event_date_id", referencedColumnName: "id")]
     private ?EventsDates $event_date_id = null;
 
     public function getId(): ?int
