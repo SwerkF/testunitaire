@@ -24,7 +24,7 @@ class EventsDates
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $cancellationReason = null;
 
-    #[ORM\OneToOne(targetEntity: Events::class)]
+    #[ORM\ManyToOne(targetEntity: Events::class)]
     #[ORM\JoinColumn(name: "event_id_id", referencedColumnName: "id")]
     private ?Events $event = null;
 

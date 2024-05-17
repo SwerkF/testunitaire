@@ -25,10 +25,10 @@ import Reservation from './Reservation';
 
 
     return (
-      <div className="modal-backdrop">
+      <div className="modal-backdrop modal-dialog-scrollable">
         <div className="modal-content">
           <button onClick={onClose} className="close-button">&#10005;</button>
-          <div className="modal-header">{title}</div>
+          <div className="modal-header">Réservez vos billets</div>
           <div className="modal-elements">
             <div className="">
               {imageUrl ? <img src={imageUrl} alt={title} width={"500px"}/> : <img src="https://placehold.co/100x100" width={"500px"} alt={title} />}

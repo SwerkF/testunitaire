@@ -19,6 +19,42 @@ jest.mock('axios', () => ({
     get: () => Promise.resolve({ data: [] })
 }));
 
+jest.mock('@fullcalendar/react', () => ({
+    __esModule: true,
+    default: jest.fn(({ events }) => (
+      <div>
+        MockedCalendar
+        {events.map((event, index) => (
+          <div key={index}>
+            <div>{event.title}</div>
+            <div>{event.extendedProps?.type}</div>
+            <div>{event.extendedProps?.totalTickets - event.extendedProps?.reservedTickets} Restant(s)</div>
+          </div>
+        ))}
+      </div>
+    ))
+  }));
+  
+  
+  jest.mock('@fullcalendar/daygrid', () => ({
+    __esModule: true,
+    namedExport: jest.fn(),
+    default: jest.fn()
+  }));
+  
+  jest.mock('@fullcalendar/timegrid', () => ({
+    __esModule: true,
+    namedExport: jest.fn(),
+    default: jest.fn()
+  }));
+  
+  jest.mock('@fullcalendar/interaction', () => ({
+    __esModule: true,
+    namedExport: jest.fn(),
+    default: jest.fn()
+  }));
+  
+
 let container;
 
 describe('Reservations redner', () => {

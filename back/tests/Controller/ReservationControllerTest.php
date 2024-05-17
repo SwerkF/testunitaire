@@ -1,71 +1,98 @@
-<!-- <?php 
+<?php 
 
-// namespace App\Test\Controller;
+namespace App\Test\Controller;
+use App\Entity\User;
+use App\Entity\EventsDates;
+use App\Entity\Reservation;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
-// use App\Entity\Reservation;
-// use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-// use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+class ReservationControllerTest extends WebTestCase
+{
+    private KernelBrowser $client;
+    private string $path = '/reservation/';
 
-// class ReservationControllerTest extends WebTestCase
-// {
-//     private KernelBrowser $client;
-//     private string $path = '/reservation/';
+    protected function setUp(): void
+    {
+        $this->client = static::createClient();
 
-//     protected function setUp(): void
-//     {
-//         $this->client = static::createClient();
+        // Clearing the database before each test
+        $entityManager = static::getContainer()->get('doctrine')->getManager();
+        $entityManager->createQuery('DELETE FROM App\Entity\Reservation')->execute();
+    }
 
-//         // Clearing the database before each test
-//         $entityManager = static::getContainer()->get('doctrine')->getManager();
-//         $entityManager->createQuery('DELETE FROM App\Entity\Reservation')->execute();
-//     }
+    public function testIndex(): void
+    {
+        $crawler = $this->client->request('GET', $this->path);
 
-//     public function testIndex(): void
-//     {
-//         $crawler = $this->client->request('GET', $this->path);
+        self::assertResponseStatusCodeSame(200);
+        self::assertPageTitleContains('Reservation index');
+    }
 
-//         self::assertResponseStatusCodeSame(200);
-//         self::assertPageTitleContains('Reservation index');
-//     }
+   
 
-//     public function testNew(): void
-//     {
-//         $this->client->request('GET', $this->path . 'new');
 
-//         self::assertResponseStatusCodeSame(200);
+    public function testNew(): void
+    {
+        $this->client->request('GET', $this->path . 'new');
+    
+        // Create a DateTime object from the string date
+        $reservationDate = new \DateTime('2024-05-14');
+    
+        self::assertResponseStatusCodeSame(200);
+    
+        // Fetch an existing User and EventsDates entity from the database
+        $entityManager = static::getContainer()->get('doctrine')->getManager();
+        $user = $entityManager->getRepository(User::class)->findOneBy([]); // Fetch any user
+        $eventDate = $entityManager->getRepository(EventsDates::class)->findOneBy([]); // Fetch any event date
+    
+        $this->client->submitForm('Save', [
+            'reservation[number_of_tickets]' => 5,
+            'reservation[reservation_date]' => (new \DateTime('2024-05-14'))->format('Y-m-d'), // Format the date
+            'reservation[user]' => $user->getId(),
+            'reservation[eventDate]' => $eventDate->getId(),
+        ]);
+    
+        self::assertResponseRedirects($this->path);
+    
+        // Check if the entity was actually persisted
+        $reservationsCount = $entityManager->getRepository(Reservation::class)->count([]);
+        self::assertSame(1, $reservationsCount);
+    }
+    
+    
 
-//         $this->client->submitForm('Save', [
-//             'reservation[number_of_tickets]' => 5, // Assuming 'number_of_tickets' is an integer field
-//             'reservation[reservation_date]' => '2024-05-14', // Assuming 'reservation_date' is a date field
-//             'reservation[user]' => null, // Assuming 'user' is a relationship property
-//             'reservation[eventDate]' => null, // Assuming 'eventDate' is a relationship property
-//         ]);
+    
+    // public function testShow(): void
+    // {
+    //     $entityManager = static::getContainer()->get('doctrine')->getManager();
+    //     $reservation = new Reservation();
+    //     $reservation->setNumberOfTickets(2);
+    //     $reservation->setReservationDate(new \DateTime('2024-05-14'));
+        
+    //     // Assuming 'user' and 'eventDate' are relationship properties, set them using the correct method names
+    //     $user = new User();
+    //     // Fetch any existing user or create a new one
+    //     // $user = $entityManager->getRepository(User::class)->findOneBy([]);
+    //     $reservation->setUser($user);
+        
+    //     $eventDate = new EventsDates();
+    //     // Fetch any existing event date or create a new one
+    //     // $eventDate = $entityManager->getRepository(EventsDates::class)->findOneBy([]);
+    //     $reservation->setEventDate($eventDate);
+        
+    //     $entityManager->persist($reservation);
+    //     $entityManager->flush();
+    
+    //     $this->client->request('GET', $this->path . $reservation->getId());
+    
+    //     self::assertResponseStatusCodeSame(200);
+    //     self::assertPageTitleContains('Reservation');
+    // }
+    
 
-//         self::assertResponseRedirects($this->path);
-
-//         // Check if the entity was actually persisted
-//         $entityManager = static::getContainer()->get('doctrine')->getManager();
-//         $reservationsCount = $entityManager->getRepository(Reservation::class)->count([]);
-//         self::assertSame(1, $reservationsCount);
-//     }
-
-//     public function testShow(): void
-//     {
-//         $entityManager = static::getContainer()->get('doctrine')->getManager();
-//         $reservation = new Reservation();
-//         $reservation->setNumber_of_tickets(2);
-//         $reservation->setReservation_date(new \DateTime('2024-05-14'));
-//         $reservation->setUser(null); // Assuming 'user' is a relationship property
-//         $reservation->setEventDate(null); // Assuming 'eventDate' is a relationship property
-//         $entityManager->persist($reservation);
-//         $entityManager->flush();
-
-//         $this->client->request('GET', $this->path . $reservation->getId());
-
-//         self::assertResponseStatusCodeSame(200);
-//         self::assertPageTitleContains('Reservation');
-//         // Add assertions to check that the properties are properly displayed.
-//     }
+    
 
 //     public function testEdit(): void
 //     {
@@ -120,4 +147,4 @@
 
 //         self::assertNull($removedReservation);
 //     }
-// }
+}
