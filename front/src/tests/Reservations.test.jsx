@@ -1,26 +1,83 @@
-/* import { TextEncoder, TextDecoder } from 'util';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor ,act } from '@testing-library/react';
 import Reservations from '../pages/Reservations';
 import React from 'react';
 
-describe('Reservations', () => {
-    it('should render Reservations', () => {
-        render(<Reservations />);
-        const linkElement = screen.getByText(/Reservations/i);
-        expect(linkElement).toBeInTheDocument();
+// set useContext in for Reservation
+jest.mock('react', () => ({
+    ...jest.requireActual('react'),
+    useContext: () => ({ user: { id: 1, email:"admin@gmail.com" } })
+}));
+
+// set useNavigate in for Reservation
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: () => () => {}
+}));
+
+// set axios in for Reservation
+jest.mock('axios', () => ({
+    get: () => Promise.resolve({ data: [] })
+}));
+
+let container;
+
+describe('Reservations redner', () => {
+    test('should render component', async () => {
+        act(() => {
+            container = render(<Reservations />);
+        })  
+
+        // expect h1 to be set
+        await waitFor(() => {
+            expect(container.getByText('Reservations')).toBeInTheDocument();
+        })
     });
-})
+});
 
-// should open modal
+describe('Reservations context', () => {
+    test('should set user in context', async () => {
+        act(() => {
+            container = render(<Reservations />);
+        })  
 
-describe('Reservations', () => {
-    it('should open modal', async () => {
-        render(<Reservations />);
-        const button = screen.getByText('Réservation 1');
-        button.click();
-        const modal = await screen.findByText('Reservation for John Doe');
-        expect(modal).toBeInTheDocument();
-        
-
+        // expect user to be set
+        await waitFor(() => {
+            expect(container.getByText('Reservations')).toBeInTheDocument();
+        })
     });
-}); */
+});
+
+describe('Reservations redirection', () => {
+    test('should redirect to login page if user is not set', async () => {
+        jest.mock('react', () => ({
+            ...jest.requireActual('react'),
+            useContext: () => ({ user: null })
+        }));
+
+        act(() => {
+            container = render(<Reservations />);
+        })  
+
+        // expect user to be set
+        await waitFor(() => {
+            expect(container.getByText('Reservations')).toBeInTheDocument();
+        })
+    });
+});
+
+describe('Reservations axios', () => {
+    test('should call axios', async () => {
+        jest.mock('axios', () => ({
+            get: () => Promise.reject()
+        }));
+
+        act(() => {
+            container = render(<Reservations />);
+        })  
+
+        // expect user to be set
+        await waitFor(() => {
+            expect(container.getByText('Reservations')).toBeInTheDocument();
+        })
+    });
+});

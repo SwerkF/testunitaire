@@ -28,7 +28,7 @@ const NavbarComponent = () => {
     return (
         <Navbar expand="lg" className="navBarBg">
         <Container fluid>
-          <Link to="/" className="nav-link" ><Navbar.Brand className='fw-semibold text-light fs-3'>LE HARVRE</Navbar.Brand></Link>
+          <Link to="/" className="nav-link" ><Navbar.Brand className='fw-semibold text-light fs-3'>LE HAVRE</Navbar.Brand></Link>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav
@@ -39,7 +39,6 @@ const NavbarComponent = () => {
               <Link to="/" className="nav-link text-light fw-semibold">ACCUEIL</Link>
               <Link to="/events" className="nav-link text-light fw-semibold">EVENEMENTS</Link>
               <Link to="/calendar" className="nav-link text-light fw-semibold">CALENDRIER</Link>
-              {/* <Link to="/reservations" className="nav-link text-light fw-semibold">RESERVATIONS (A SUPPRIMER)</Link> */}
               {!userState && <Link to="/login" className="nav-link text-light fw-semibold">CONNEXION</Link>}
               {userState && (
                 <React.Fragment> 

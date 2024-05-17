@@ -19,7 +19,7 @@ function Admin() {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/eventss");
+      const response = await axios.get("http://127.0.0.1:8000/api/eventss");
       console.log(response.data["hydra:member"]);
       setEvents(response.data["hydra:member"]);
     } catch (error) {
@@ -56,32 +56,24 @@ function Admin() {
       if (modalType === "create") {
         // Créer l'événement principal sans les dates
         eventDetails.minimumAge = parseInt(eventDetails.minimumAge);
-        const eventResponse = await axios.post(
-          "http://localhost:8000/api/eventss",
-          eventDetails
-        );
+        const eventResponse = await axios.post("http://127.0.0.1:8000/api/eventss", eventDetails);
         savedEvent = eventResponse.data;
         console.log("Event response", eventResponse);
       } else {
         // Mettre à jour l'événement principal sans les dates
-        const eventResponse = await axios.put(
-          `http://localhost:8000/api/eventss/${eventDetails.id}`,
-          eventDetails
-        );
+        const eventResponse = await axios.put(`http://127.0.0.1:8000/api/eventss/{id}`, eventDetails);
         savedEvent = eventResponse.data;
       }
 
       // Enregistrer les dates dans l'endpoint /api/events_date
       if (savedEvent && savedEvent.id) {
-        await Promise.all(
-          dates.map((date) =>
-            axios.post("http://localhost:8000/api/events_datess", {
-              event: "/api/events/" + savedEvent.id,
-              date: date,
-              tickets: 7000,
-            })
-          )
-        );
+        await Promise.all(dates.map(date => 
+          axios.post("http://127.0.0.1:8000/api/events_datess", {
+            event: "/api/eventss/"+savedEvent.id,
+            date: date,
+            tickets: 7000
+          })
+        ));
       }
 
       fetchEvents();
@@ -94,7 +86,7 @@ function Admin() {
   const handleCancellationFormSubmit = async (reason) => {
     try {
       await axios.patch(
-        `http://localhost:8000/api/events_datess/${currentEvent.id}`,
+        `http://127.0.0.1:8000/api/events_datess/${currentEvent.id}`,
         { cancellationReason: reason,
            isCancelled: true }
       );

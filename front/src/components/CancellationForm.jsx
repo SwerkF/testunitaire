@@ -10,8 +10,8 @@ function CancellationForm({ show, handleClose, handleCancel, event }) {
         </Modal.Header>
         <Modal.Body>
           <Form.Group>
-            <Form.Label>Raison d'annulation</Form.Label>
-            <Form.Control as="textarea" name="cancellationReason" required />
+            <Form.Label htmlFor="cancellationReason">Raison d'annulation</Form.Label>
+            <Form.Control as="textarea" name="cancellationReason" id="cancellationReason" required />
           </Form.Group>
           <Form.Control type="hidden" name="isCancelled" value="true" />
         </Modal.Body>
