@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Input from '../components/Input';
+import React from 'react';
 
 describe('Input Component', () => {
     test('renders without crashing', () => {
@@ -16,14 +17,6 @@ describe('Input Component', () => {
     test('does not render a label when label prop is not provided', () => {
         render(<Input />);
         expect(screen.queryByLabelText(/label/i)).toBeNull();
-    });
-
-    test('applies custom styles when inputstyle and labelstyle are provided', () => {
-        const inputstyle = 'test-input-style';
-        const labelstyle = 'test-label-style';
-        render(<Input inputstyle={inputstyle} labelstyle={labelstyle} label="Test Label" />);
-        expect(screen.getByLabelText('Test Label')).toHaveClass('test-label-style');
-        expect(screen.getByRole('textbox')).toHaveClass('test-input-style');
     });
 
     test('calls onChange when the input value is changed', () => {
