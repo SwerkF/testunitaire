@@ -1,6 +1,6 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import Connexion from '../pages/Connexion';
+import React from "react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import Connexion from "../pages/Connexion";
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -42,12 +42,12 @@ describe('Connexion', () => {
         fireEvent.click(createAccountButton);
     });
 
-    // Test d'affichage d'une erreur de validation lors de la saisie d'un email invalide
-    it('should display validation error when entering invalid email', async () => {
-        render(<Connexion />);
+  // Test d'affichage d'une erreur de validation lors de la saisie d'un email invalide
+  it("should display validation error when entering invalid email", async () => {
+    render(<Connexion />);
 
-        const emailInput = screen.getByLabelText('Email');
-        fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
+    const emailInput = screen.getByLabelText("Email");
+    fireEvent.change(emailInput, { target: { value: "invalid-email" } });
 
         const createAccountButton = screen.getByText('Créer votre compte');
         fireEvent.click(createAccountButton);

@@ -10,19 +10,19 @@ describe("Admin component", () => {
     const mockEvents = [
       {
         id: 1,
-        name: "Concert",
+        title: "Concert",
         description: "A great concert",
         type: "concert",
-        ageMinimum: 18,
-        imageUrl: "path/to/image1.jpg",
+        minimumAge: 18,
+        imageUrl: "www.example.com/image.jpg",
       },
       {
         id: 2,
-        name: "Festival",
+        title: "Festival",
         description: "A fun festival",
         type: "festival",
-        ageMinimum: 16,
-        imageUrl: "path/to/image2.jpg",
+        minimumAge: 16,
+        imageUrl: "www.example.com/festival.jpg",
       },
     ];
 
@@ -36,8 +36,7 @@ describe("Admin component", () => {
     expect(concertName).toBeInTheDocument();
     expect(festivalName).toBeInTheDocument();
 
-    expect(axios.get).toHaveBeenCalledWith("http://localhost:8000/api/events ");
+    expect(axios.get).toHaveBeenCalledWith("http://127.0.0.1:8000/api/eventss");
   });
 });
-
 

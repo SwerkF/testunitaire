@@ -11,9 +11,9 @@ function CancellationForm({ show, handleClose, handleCancel, event }) {
         <Modal.Body>
           <Form.Group>
             <Form.Label>Raison d'annulation</Form.Label>
-            <Form.Control as="textarea" name="cancellation_reason" required />
+            <Form.Control as="textarea" name="cancellationReason" required />
           </Form.Group>
-          <Form.Control type="hidden" name="is_cancelled" value="true" />
+          <Form.Control type="hidden" name="isCancelled" value="true" />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>Fermer</Button>

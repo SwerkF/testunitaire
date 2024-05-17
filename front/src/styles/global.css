@@ -6,16 +6,28 @@
   color: #E1BE40 !important;
 }
 
+.btn-primary {
+  background-color: #1A173B !important;
+  color: #E1BE40 !important;
+  border: #1A173B !important;
+}
+
 .btn-color {
-  background-color: #1A173B;
-  color: #E1BE40;
-  border: #1A173B;
+  background-color: #1A173B !important;
+  color: #E1BE40 !important;
+  border: #1A173B !important;
 }
 
 .btn-color:hover {
-  background-color: #E1BE40;
-  color: #1A173B;
-  border: #E1BE40;
+  background-color: #E1BE40 !important;
+  color: #1A173B !important;
+  border: #E1BE40 !important;
+}
+
+.btn-primary:hover {
+  background-color: #E1BE40 !important;
+  color: #1A173B !important;
+  border: #E1BE40 !important;
 }
 
 .bg-blue {

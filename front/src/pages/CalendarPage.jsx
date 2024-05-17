@@ -3,23 +3,28 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import CardComponent from "../components/CardComponent";
 import "../styles/calendar.css";
 import axios from "axios";
+import Modal from "../components/ModalComponent";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({});
 
+ 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const [eventsResponse, eventsDatesResponse, reservationsResponse] = await Promise.all([
-            axios.get("http://127.0.0.1:8000/api/events"),
-            axios.get("http://127.0.0.1:8000/api/events_dates"),
-            axios.get("http://127.0.0.1:8000/api/reservations"),
-          ]);
+          axios.get("http://127.0.0.1:8000/api/eventss"),
+          axios.get("http://127.0.0.1:8000/api/events_datess"),
+          axios.get("http://127.0.0.1:8000/api/reservations"),
+        ]);
 
-        const eventsData = eventsResponse.data["hydra:member"] || "Aucun événement disponible";
+        const eventsData = eventsResponse.data["hydra:member"] || [];
         const eventsDatesData = eventsDatesResponse.data["hydra:member"];
         const reservationsData = reservationsResponse.data;
 
@@ -53,11 +58,12 @@ const CalendarPage = () => {
                 date: eventDate.date,
                 totalTickets,
                 reservedTickets,
-                status: eventDate.is_cancelled
+                status: eventDate.isCancelled
                   ? "Annulé"
                   : isSoldOut
                   ? "Complet"
                   : "Disponible",
+                event_date_id: eventDate.id,  // Include event_date_id here
               };
             });
           })
@@ -65,13 +71,14 @@ const CalendarPage = () => {
 
         setEvents(mergedData);
       } catch (err) {
-        console.log(err)
+        console.log(err);
         setError("Une erreur s'est produite. Veuillez réessayer.");
-      } 
+      }
     };
 
     fetchEvents();
   }, []);
+
 
   useEffect(() => {
     const formattedEvents =
@@ -85,6 +92,8 @@ const CalendarPage = () => {
           image_url: event.image_url,
           age: event.minimum_age,
           type: event.type,
+          event_id: event.id,
+          event_date_id: event.event_date_id,
           reservedTickets: event.reservedTickets,
           totalTickets: event.totalTickets,
         },
@@ -98,14 +107,17 @@ const CalendarPage = () => {
 
   const handleEventClick = (clickInfo) => {
     const { title, extendedProps, start } = clickInfo.event;
-    const { description, image_url, age } = extendedProps;
-
-    console.log(`Title: ${title}
-Description: ${description}
-Date: ${start.toISOString()}
-Age: ${age}
-Image URL: ${image_url}`);
+    setModalContent({
+      title,
+      description: extendedProps.description,
+      imageUrl: extendedProps.image_url,
+      eventAge: extendedProps.age,
+      date: start,
+      event_date_id: extendedProps.event_date_id,
+    });
+    setModalOpen(true);
   };
+
 
   return (
     <div className="calendar-page mb-5">
@@ -124,6 +136,18 @@ Image URL: ${image_url}`);
         locale="fr"
       />
       {error && <div className="alert alert-danger">{error}</div>}
+      {isModalOpen && (
+        <Modal
+          title={modalContent.title}
+          description={modalContent.description}
+          onClose={() => setModalOpen(false)}
+          imageUrl={modalContent.imageUrl}
+          id={modalContent.event_id}
+          eventAge={modalContent.eventAge}
+          date={modalContent.date}
+          event_date_id={modalContent.event_date_id}
+        />
+      )}
     </div>
   );
 };

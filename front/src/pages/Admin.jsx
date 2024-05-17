@@ -11,7 +11,7 @@ function Admin() {
   const [showEventModal, setShowEventModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
-  const [modalType, setModalType] = useState("create"); // 'create' or 'edit'
+  const [modalType, setModalType] = useState("create"); 
 
   useEffect(() => {
     fetchEvents();
@@ -19,7 +19,8 @@ function Admin() {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/eventss "); // http://localhost:8000/api/events
+      const response = await axios.get("http://127.0.0.1:8000/api/eventss");
+      console.log(response.data["hydra:member"]);
       setEvents(response.data["hydra:member"]);
     } catch (error) {
       console.error("Error fetching events:", error);
@@ -45,35 +46,50 @@ function Admin() {
     setShowCancelModal(false);
   };
 
-  const handleEventFormSubmit = async (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const eventData = Object.fromEntries(formData.entries());
-   console.log(eventData);
-    try { 
+  const handleEventFormSubmit = async (eventData) => {
+    const { dates, ...eventDetails } = eventData; // Séparer les dates des autres détails de l'événement
+    console.log(eventData);
+    try {
+      let savedEvent = null;
+      console.log("Event details", eventDetails);
+      console.log("modal type", modalType);
       if (modalType === "create") {
-        await axios.post("http://localhost:8000/api/eventss", eventData); //api
+        // Créer l'événement principal sans les dates
+        eventDetails.minimumAge = parseInt(eventDetails.minimumAge);
+        const eventResponse = await axios.post("http://127.0.0.1:8000/api/eventss", eventDetails);
+        savedEvent = eventResponse.data;
+        console.log("Event response", eventResponse);
       } else {
-        await axios.put(
-          `http://localhost:8000/api/eventss/{id}${currentEvent.id}`,
-          eventData
-        ); //api
+        // Mettre à jour l'événement principal sans les dates
+        const eventResponse = await axios.put(`http://127.0.0.1:8000/api/eventss/{id}`, eventDetails);
+        savedEvent = eventResponse.data;
       }
+  
+      // Enregistrer les dates dans l'endpoint /api/events_date
+      if (savedEvent && savedEvent.id) {
+        await Promise.all(dates.map(date => 
+          axios.post("http://127.0.0.1:8000/api/events_datess", {
+            event: "/api/eventss/"+savedEvent.id,
+            date: date,
+            tickets: 7000
+          })
+        ));
+      }
+  
       fetchEvents();
     } catch (error) {
-      console.error("Error saving event:", error);
+      console.error("Error saving event and dates:", error);
     }
     setShowEventModal(false);
   };
+  
 
-  const handleCancellationFormSubmit = async (event) => {
-    event.preventDefault();
-    const reason = event.target.elements.cancelReason.value;
+  const handleCancellationFormSubmit = async (reason) => {
     try {
       await axios.patch(
-        `http://localhost:8000/api/events_datess/{id}/${currentEvent.id}/cancel`,
-        { reason }
-      ); 
+        `http://localhost:8000/api/events_datess/{id}`,
+        { cancellationReason: reason, isCancelled: true }
+      );
       fetchEvents();
     } catch (error) {
       console.error("Error cancelling event:", error);
@@ -83,23 +99,15 @@ function Admin() {
 
   return (
     <div className="container-admin">
-      <div
-        className="d-flex justify-content-center"
-        style={{ paddingTop: "20px", width: "100%" }}
-      >
+      <div className="d-flex justify-content-center" style={{ paddingTop: "20px", width: "100%" }}>
         <h1>Admin Dashboard</h1>
       </div>
-      <div
-        className="d-flex justify-content-center"
-        style={{ paddingTop: "20px", width: "100%" }}
-      >
-        <Button
-          onClick={() => {
-            setModalType("create");
-            setCurrentEvent(null);
-            setShowEventModal(true);
-          }}
-        >
+      <div className="d-flex justify-content-center" style={{ paddingTop: "20px", width: "100%" }}>
+        <Button onClick={() => {
+          setModalType("create");
+          setCurrentEvent(null);
+          setShowEventModal(true);
+        }}>
           Ajoutez un nouveau événement
         </Button>{" "}
       </div>
@@ -124,7 +132,7 @@ function Admin() {
         <CancellationForm
           show={showCancelModal}
           handleClose={handleCloseCancelModal}
-          handleCancel={handleCancellationFormSubmit}
+          handleSubmit={handleCancellationFormSubmit}
           event={currentEvent}
         />
       )}
