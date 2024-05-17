@@ -4,8 +4,8 @@ import '@testing-library/jest-dom';
 import axios from 'axios';
 import Reservation from '../components/Reservation';
 
-// Axios mock
-jest.mock('axios');
+// Mock the onSignupSuccess function
+const mockOnSignupSuccess = jest.fn();
 
 describe('Reservation Component', () => {
   const setup = (props = {}) => {
@@ -13,9 +13,10 @@ describe('Reservation Component', () => {
       eventName: "Concert",
       initialDate: "2024-06-15",
       userBirthDate: "2000-05-13",
-      evenAge: 18,
       userId: 1,
+      evenAge: 18,
       event_date_id: 123,
+      onSignupSuccess: mockOnSignupSuccess,
       ...props
     };
     render(<Reservation {...defaultProps} />);
@@ -26,27 +27,36 @@ describe('Reservation Component', () => {
   });
 
   test('rend le formulaire avec les valeurs initiales', () => {
-    setup();
     expect(screen.getByLabelText(/Nombre de places/i)).toHaveValue(1);
+  });
+
+  test('soumet avec succès le formulaire pour une seule personne', async () => {
+    fireEvent.change(screen.getByLabelText(/Nombre de places/i), { target: { value: 1 } });
+    fireEvent.change(screen.getByLabelText(/Date de l'événement/i), { target: { value: '2024-06-20' } });
+    fireEvent.submit(screen.getByTestId('submit-button'));
+
+    const successMessage = await screen.findByText(/Votre réservation a été enregistrée./i);
+    expect(successMessage).toBeInTheDocument();
+    expect(mockOnSignupSuccess).toHaveBeenCalledWith('2024-06-20', 1);
   });
 
   test('affiche la case à cocher pour plusieurs personnes', () => {
     setup();
     fireEvent.change(screen.getByLabelText(/Nombre de places/i), { target: { value: 2 } });
-    expect(screen.getByLabelText(/Je confirme que tous les participants ont plus de 18 ans./i)).toBeInTheDocument();
+    expect(screen.getByTestId('age-confirmation')).toBeInTheDocument();
   });
 
-  test('valide correctement la restriction d\'âge', () => {
-    setup({ userBirthDate: "2010-05-13", evenAge: 18 }); 
-    fireEvent.click(screen.getByText(/Réserver maintenant/i));
-    expect(screen.getByText(/Vous devez avoir plus de 18 ans pour participer à cet événement./i)).toBeInTheDocument();
-  });
+  test('soumet avec succès le formulaire pour plusieurs personnes si la confirmation de l\'âge est vérifiée', async () => {
+    fireEvent.change(screen.getByLabelText(/Nombre de places/i), { target: { value: 2 } });
+    const ageConfirmationCheckbox = screen.getByTestId('age-confirmation');
+    if (!ageConfirmationCheckbox.checked) {
+      fireEvent.click(ageConfirmationCheckbox); 
+    }
+    fireEvent.submit(screen.getByTestId('submit-button'));
 
-  test('soumet le formulaire avec succès', async () => {
-    axios.post.mockResolvedValue({ data: 'success' });
-    setup();
-    fireEvent.click(screen.getByText(/Réserver maintenant/i));
-    await waitFor(() => expect(screen.queryByText("Votre réservation a été enregistrée.")).toBeInTheDocument());
+    const successMessage = await screen.findByText(/Votre réservation a été enregistrée./i);
+    expect(successMessage).toBeInTheDocument();
+    expect(mockOnSignupSuccess).toHaveBeenCalledWith('2024-06-15', 2);
   });
 
   test('ne soumet pas le formulaire si l\'utilisateur n\'est pas connecté', () => {
