@@ -1,60 +1,60 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import MyPDF from '../components/MyPDF';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import axios from 'axios';
+import CardReservation from '../components/CardReservation';
+import { UserContext } from '../App';
+import { useNavigate } from 'react-router-dom';
 
 const Reservations = () => {
 
+    const { user } = useContext(UserContext);
+    const navigate = useNavigate();
+
     const [reservations, setReservations] = useState([])
-    const [selectedReservation, setSelectedReservation] = useState(null)
+    const [selectedReservation, setSelectedReservation] = useState()
+    const [filteredReservations, setFilteredReservations] = useState(null)
 
     const [show, setShow] = useState(false);
 
     useEffect(() => {
-        setReservations([
-            {
-                uuid: "1",
-                name: "John Doe",
-                date: "2021-12-31",
-                time: "12:00",
-                guests: 2
-            },
-            {
-                uuid: "2",
-                name: "Jane Doe",
-                date: "2021-12-31",
-                time: "12:00",
-                guests: 2
-            }
+        if (!user) {
+           return navigate('/login')
+        } 
+        axios.get('http://localhost:8000/api/reservations/users/'+user.id)
+            .then((response) => {
+                setReservations(response.data)
+                setFilteredReservations(response.data)
+            })
+            .catch((error) => {
+            })
 
-        
-        ])
     }, [])
 
+    const handleSelectReservation = (reservation, event, eventDates) => {
+        setSelectedReservation({ reservation, event, eventDates })
+    }
+
     return (
-        <div>
+        <div className='container d-flex flex-column min-vh-100'>
             <h1>Reservations</h1>
-            <ul>
-                {reservations.map((reservation, index) => (
-                    <li key={index}>
-                        <h2>{reservation.name}</h2>
-                        <p>{reservation.date} at {reservation.time}</p>
-                        <p>Guests: {reservation.guests}</p>
-                        <button onClick={() => setSelectedReservation(reservation)}>View QR Code</button>
-                    </li>
+            <div className="d-flex flex-wrap gap-4 mt-5">
+                {filteredReservations && filteredReservations.map((reservation) => (
+                    <CardReservation key={reservation.id} reservation={reservation} onClick={handleSelectReservation} />
                 ))}
-            </ul>
+            </div>
             {selectedReservation && (
                 <Modal show={selectedReservation !== null} onHide={() => setSelectedReservation(null)} size='xl'>
                     <Modal.Header closeButton>
-                        <Modal.Title>Reservation for {selectedReservation?.name}</Modal.Title>
+                        <Modal.Title>Votre réservation</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <MyPDF uuid={selectedReservation.uuid} />
+                        <MyPDF data={selectedReservation} />
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => setSelectedReservation(null)}>
-                            Close
+                            Fermer
                         </Button>
                     </Modal.Footer>
                 </Modal>

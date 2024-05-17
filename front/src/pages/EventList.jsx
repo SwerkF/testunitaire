@@ -1,27 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-
+import CardComponent from "../components/CardComponent";
+import "../styles/EventList.css";
 const EventList = () => {
-    const [events, setEvents] = useState([]);
-    const { id } = useParams();
+  const [events, setEvents] = useState([]);
     
-    useEffect(() => {
-        axios.get(`http://localhost:3001/events/${id}`)
+useEffect(() => {
+    axios.get('http://localhost:8000/api/events_datess')
         .then((response) => {
-            setEvents(response.data);
+            setEvents(response.data['hydra:member']);
+        })
+        .catch((error) => {
+            console.error('There was an error fetching the events!', error);
         });
-    }, [id]);
-    
+        
+}, []);
+
     return (
-        <div>
-        <h1>Event List</h1>
-        <ul>
-            {events.map((event) => (
-            <li key={event.id}>{event.name}</li>
-            ))}
-        </ul>
-        </div>
+            <div>
+            <h1 class="title-h1">Liste des évènements</h1>
+            <ul class= "event-container">
+                    {events.map((event) => (
+                            <CardComponent event_date_id={event.id} event_id={event.event} ticket={event.tickets} date={event.date}/>
+                    ))}
+            </ul>
+            </div>
     );
 }
 
