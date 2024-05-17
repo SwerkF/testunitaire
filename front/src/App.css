@@ -1,0 +1,9 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1; /* Fait en sorte que le contenu prenne tout l'espace disponible */
+}

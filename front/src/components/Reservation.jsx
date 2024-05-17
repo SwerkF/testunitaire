@@ -41,9 +41,6 @@ const Reservation = ({
           setError(
             `Vous devez avoir plus de ${evenAge} ans pour participer à cet événement.`
           );
-          throw new Error(
-            `Vous devez avoir plus de ${evenAge} ans pour participer à cet événement.`
-          );
         }
       } else {
         if (ageConfirmation) {
@@ -53,15 +50,11 @@ const Reservation = ({
           setError(
             `Vous devez confirmer que tous les participants ont plus de 18 ans.`
           );
-          throw new Error(
-            `Vous devez confirmer que tous les participants ont plus de 18 ans.`
-          );
         }
       }
     } catch (error) {
       console.error(error.message);
     }
-console.log("userId", userId);
     if (!userId) {
       setError("Vous devez être connecté pour réserver un événement.");
       return;
@@ -138,14 +131,15 @@ console.log("userId", userId);
           </div>
         )}
         <div>
-          <Button
-            type="submit"
-            disabled={succesSend ? true : false}
-            className="btn-color btn-block"
-            data-testid="submit-button"
-          >
-            Réserver maintenant <i class="bi bi-cash-stack"></i>
-          </Button>
+        <Button
+  type="submit"
+  disabled={succesSend ? true : false}
+  className="btn-color btn-block"
+>
+  Réserver maintenant <i className="bi bi-cash-stack"></i>
+</Button>
+
+
         </div>
         {error && <div className="text-danger mt-4">{error}</div>}
       </form>

@@ -7,18 +7,19 @@ import { UserContext } from '../App';
 const NavbarComponent = () => {
 
     const { user } = useContext(UserContext);
-
     const [userState, setUserState] = useState(null);
 
     useEffect(() => {
-      const user = localStorage.getItem('user');
+      const user =JSON.parse(localStorage.getItem('user'));
       if (user) {
         setUserState(user);
       } else {
         setUserState(null);
       }
     }
-    , [user]);
+    , []);
+    
+    console.log(userState);
 
     const handleLogout = () => {
       localStorage.removeItem('user');
@@ -43,10 +44,11 @@ const NavbarComponent = () => {
               {userState && (
                 <React.Fragment> 
                   <Link to="/reservations" className="nav-link text-light fw-semibold">RESERVATIONS</Link>
-                  <a onClick={() => handleLogout()} className="nav-link text-light fw-semibold">DECONNEXION</a>
+                  <button onClick={() => handleLogout()} className="fw-semibold btn btn-danger ms-4"><i className="bi bi-box-arrow-right"></i></button>
                 </React.Fragment>
               )}
               {userState && user.role == "admin" && <Link to="/admin" className="nav-link text-light fw-semibold">ADMIN</Link>}
+
             </Nav>
 
           </Navbar.Collapse>
