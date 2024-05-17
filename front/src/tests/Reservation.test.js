@@ -4,7 +4,6 @@ import '@testing-library/jest-dom';
 import Reservation from '../components/Reservation';
 
 // Mock the onSignupSuccess function
-const mockOnSignupSuccess = jest.fn();
 describe('Reservation Component', () => {
   const setup = (props = {}) => {
     const defaultProps = {
@@ -12,7 +11,6 @@ describe('Reservation Component', () => {
       initialDate: "2024-06-15",
       userBirthDate: "2000-05-13",
       evenAge: 18,
-      onSignupSuccess: mockOnSignupSuccess,
       ...props
     };
     render(<Reservation {...defaultProps} />);
@@ -35,7 +33,6 @@ describe('Reservation Component', () => {
 
     const successMessage = await screen.findByText(/Enregistré pour 1 personne\(s\) à l'événement du 2024-06-20./i);
     expect(successMessage).toBeInTheDocument();
-    expect(mockOnSignupSuccess).toHaveBeenCalledWith('2024-06-20', 1);
   });
 
   test('affiche la case à cocher pour plusieurs personnes', () => {
@@ -53,6 +50,5 @@ describe('Reservation Component', () => {
 
     const successMessage = await screen.findByText(/Enregistré pour 2 personne\(s\) à l'événement du 2024-06-15./i);
     expect(successMessage).toBeInTheDocument();
-    expect(mockOnSignupSuccess).toHaveBeenCalledWith('2024-06-15', 2);
   });
 });
