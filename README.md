@@ -46,8 +46,6 @@ symfony console --env=test doctrine:database:create
 symfony console --env=test doctrine:schema:update --force
 ```
 
-## OU
-
 Installez le fichier ```bdd.sql``` sur votre serveur.
 
 Vous pouvez lancer votre application avec la commande suivante:
