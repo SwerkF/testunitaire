@@ -19,12 +19,13 @@ const MyPDF = ({data}) => {
   return qrCodeImage ? (
     <PDFViewer style={{ width: '100%', height: '100vh' }}>
       <Document>
-        // container page
         <Page size="A4" style={{ padding: "30px" }}>
           <div style={{display: "flex", justifyContent: "center", flexDirection: "row", justifyContent: "space-between"}}>
             <div>
               <Text>Nom: {data.event.title}</Text>
-              <Text style={{marginTop: "30px"}}>Nombre de place: {data.reservation.number_of_tickets}</Text>
+              <Text style={{marginTop: "30px"}}>
+                Nombre de place: {data.reservation.number_of_tickets}
+              </Text>
               <Text style={{marginTop: "30px"}}>Date: {data.eventDates.date.split('T')[0]}</Text>
             </div>
             <Image src={qrCodeImage} style={{width: "150px"}} />

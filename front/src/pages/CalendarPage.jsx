@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import FullCalendar from '@fullcalendar/react';
+import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -7,6 +7,8 @@ import CardComponent from "../components/CardComponent";
 import "../styles/calendar.css";
 import axios from "axios";
 import Modal from "../components/ModalComponent";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState([]);
@@ -14,21 +16,19 @@ const CalendarPage = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState({});
 
- 
   useEffect(() => {
-    const fetchEvents = async () => {
+    const fetchAndFormatEvents = async () => {
       try {
-        const [eventsResponse, eventsDatesResponse, reservationsResponse] = await Promise.all([
-          axios.get("http://127.0.0.1:8000/api/eventss"),
-          axios.get("http://127.0.0.1:8000/api/events_datess"),
-          axios.get("http://127.0.0.1:8000/api/reservations"),
-        ]);
+        const [eventsResponse, eventsDatesResponse, reservationsResponse] =
+          await Promise.all([
+            axios.get("http://127.0.0.1:8000/api/eventss"),
+            axios.get("http://127.0.0.1:8000/api/events_datess"),
+            axios.get("http://127.0.0.1:8000/api/reservations"),
+          ]);
 
         const eventsData = eventsResponse.data["hydra:member"] || [];
         const eventsDatesData = eventsDatesResponse.data["hydra:member"];
         const reservationsData = reservationsResponse.data;
-
-        console.log(eventsData, eventsDatesData, reservationsData);
 
         const ticketsReservedPerEventDate = reservationsData.reduce(
           (acc, reservation) => {
@@ -40,45 +40,49 @@ const CalendarPage = () => {
           {}
         );
 
-        const mergedData = eventsData
-          .map((event) => {
-            const eventDates = eventsDatesData.filter((date) => {
+        const mergedData = eventsData.flatMap((event) => {
+          return eventsDatesData
+            .filter((date) => {
               const eventId = date.event.split("/").pop();
               return parseInt(eventId) === event.id;
-            });
-
-            return eventDates.map((eventDate) => {
+            })
+            .map((eventDate) => {
               const totalTickets = eventDate.tickets;
               const reservedTickets =
                 ticketsReservedPerEventDate[eventDate.id] || 0;
               const isSoldOut = reservedTickets >= totalTickets;
+              const status = eventDate.isCancelled
+                ? "Annulé"
+                : isSoldOut
+                ? "Complet"
+                : "Disponible";
 
               return {
-                ...event,
-                date: eventDate.date,
-                totalTickets,
-                reservedTickets,
-                status: eventDate.isCancelled
-                  ? "Annulé"
-                  : isSoldOut
-                  ? "Complet"
-                  : "Disponible",
-                event_date_id: eventDate.id,  // Include event_date_id here
+                title: event.title,
+                start: eventDate.date,
+                end: eventDate.date,
+                classNames: [`fc-event-${status.toLowerCase()}`],
+                extendedProps: {
+                  ...event,
+                  totalTickets,
+                  reservedTickets,
+                  status,
+                  event_date_id: eventDate.id,
+                },
+                id: event.id,
               };
             });
-          })
-          .flat();
+        });
 
         setEvents(mergedData);
       } catch (err) {
-        console.log(err);
+        console.error("Error fetching events:", err);
         setError("Une erreur s'est produite. Veuillez réessayer.");
       }
     };
 
-    fetchEvents();
+    fetchAndFormatEvents();
   }, []);
-
 
   useEffect(() => {
     const formattedEvents =
@@ -106,6 +110,16 @@ const CalendarPage = () => {
   }, []);
 
   const handleEventClick = (clickInfo) => {
+    const statusMessages = {
+      "Annulé": "Cette évenement est annulé.",
+      "Complet": "Cette évenement est complet."
+    };
+    
+    const message = statusMessages[clickInfo.event.extendedProps.status];
+    if (message) {
+      return toast.info(message);
+    }
+
     const { title, extendedProps, start } = clickInfo.event;
     setModalContent({
       title,
@@ -117,7 +131,6 @@ const CalendarPage = () => {
     });
     setModalOpen(true);
   };
-
 
   return (
     <div className="calendar-page mb-5">
@@ -153,6 +166,7 @@ const CalendarPage = () => {
 };
 
 function renderEventContent(eventInfo) {
+  console.log(eventInfo);
   return (
     <div className="d-flex">
       <div className="ms-auto">
@@ -162,15 +176,16 @@ function renderEventContent(eventInfo) {
             {eventInfo.event.extendedProps.type}
           </span>
         </i>
+        <span className="fw-bold">{eventInfo.event.extendedProps.status}</span>
         <br />
 
         {eventInfo.event.extendedProps.image_url ? (
           <img
-          src={eventInfo.event.extendedProps.image_url}
-          alt={eventInfo.event.title}
-          className="rounded-2"
-          style={{ width: "100%" }}
-        />
+            src={eventInfo.event.extendedProps.image_url}
+            alt={eventInfo.event.title}
+            className="rounded-2"
+            style={{ width: "100%" }}
+          />
         ) : (
           <img
             src="https://placehold.co/600x400"
@@ -186,14 +201,15 @@ function renderEventContent(eventInfo) {
 
           <div className="d-flex">
             <span className="me-3">{eventInfo.event.extendedProps.age}</span>
-            <span className="ms-5">
+            <span className="">
               {eventInfo.event.extendedProps.totalTickets -
                 eventInfo.event.extendedProps.reservedTickets}{" "}
-              Restant(s)
+              Pace(s) restante(s)
             </span>
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

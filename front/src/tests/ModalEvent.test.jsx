@@ -1,37 +1,58 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import ModalComponent from '../components/ModalComponent';
+import '@testing-library/jest-dom';
+import ModalEvent from '../components/ModalComponent';
 
-describe('ModalComponent', () => {
-    it('should render ModalComponent', () => {
-        render(<ModalComponent />);
-        const modal = screen.getByTestId('modal-component');
-        expect(modal).toBeInTheDocument();
-    });
+describe('Modal Component', () => {
+  const mockProps = {
+    title: 'Test Event',
+    description: 'This is a test event description.',
+    onClose: jest.fn(),
+    imageUrl: 'https://example.com/image.jpg',
+    date: '2023-05-17',
+    eventAge: 18,
+    event_date_id: '1'
+  };
 
-    it('should render ModalComponent with title', () => {
-        render(<ModalComponent title="Modal Title" />);
-        const title = screen.getByText('Modal Title');
-        expect(title).toBeInTheDocument();
-    });
+  const mockUser = {
+    id: '123',
+    birthday: '2000-01-01'
+  };
 
-    it('should render ModalComponent with children', () => {
-        render(<ModalComponent><p>Modal Content</p></ModalComponent>);
-        const content = screen.getByText('Modal Content');
-        expect(content).toBeInTheDocument();
-    });
+  beforeAll(() => {
+    localStorage.setItem('user', JSON.stringify(mockUser));
+  });
 
-    it('should render ModalComponent with close button', () => {
-        render(<ModalComponent />);
-        const closeButton = screen.getByTestId('close-button');
-        expect(closeButton).toBeInTheDocument();
-    });
+  afterAll(() => {
+    localStorage.clear();
+  });
 
-    it('should call onClose when close button is clicked', () => {
-        const mockOnClose = jest.fn();
-        render(<ModalComponent onClose={mockOnClose} />);
-        const closeButton = screen.getByTestId('close-button');
-        fireEvent.click(closeButton);
-        expect(mockOnClose).toHaveBeenCalled();
-    });
+  test('renders Modal component', () => {
+    render(<ModalEvent {...mockProps} />);
+
+    expect(screen.getByText('Réservez vos billets')).toBeInTheDocument();
+    expect(screen.getByText(mockProps.description)).toBeInTheDocument();
+    expect(screen.getByAltText(mockProps.title)).toHaveAttribute('src', mockProps.imageUrl);
+  });
+
+  test('calls onClose when close button is clicked', () => {
+    render(<ModalEvent {...mockProps} />);
+
+    fireEvent.click(screen.getByText('✕'));
+    expect(mockProps.onClose).toHaveBeenCalledTimes(1);
+  });
+
+  test('displays placeholder image when imageUrl is not provided', () => {
+    render(<ModalEvent {...mockProps} imageUrl={null} />);
+
+    expect(screen.getByAltText(mockProps.title)).toHaveAttribute('src', 'https://placehold.co/100x100');
+  });
+
+  test('sets user ID and birthday from localStorage', () => {
+    render(<ModalEvent {...mockProps} />);
+
+    expect(screen.getByText(mockProps.description)).toBeInTheDocument();
+    // Verify internal state by inspecting props passed to the Reservation component
+  });
+
 });

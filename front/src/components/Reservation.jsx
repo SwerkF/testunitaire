@@ -12,6 +12,7 @@ const Reservation = ({
   userId,
   evenAge,
   event_date_id,
+  ticketRestant
 }) => {
   const [numberOfPeople, setNumberOfPeople] = React.useState(1);
   const [ageConfirmation, setAgeConfirmation] = React.useState(false);
@@ -67,6 +68,7 @@ console.log("userId", userId);
     }
 
     try {
+      if(numberOfPeople > ticketRestant){ return setError("Il n'y a pas assez de places disponibles.")}
       const date = new Date();
       const response = await axios.post(
         "http://localhost:8000/api/reservations",
@@ -109,7 +111,8 @@ console.log("userId", userId);
         className="border p-4 shadow-sm rounded"
       >
         <div className="form-group mb-3">
-          <label htmlFor="number-of-people">Nombre de places:</label>
+          <p className="text-black">Nombres de places {ticketRestant}</p>
+          <label htmlFor="number-of-people">Nombre de places</label>
           <input
             type="number"
             id="number-of-people"
@@ -141,7 +144,7 @@ console.log("userId", userId);
             className="btn-color btn-block"
             data-testid="submit-button"
           >
-            Réserver maintenant <i class="bi bi-cash-stack"></i>
+            Réserver maintenant <i className="bi bi-cash-stack"></i>
           </Button>
         </div>
         {error && <div className="text-danger mt-4">{error}</div>}

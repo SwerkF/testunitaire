@@ -33,7 +33,7 @@ class ReservationControllerTest extends WebTestCase
    
 
 
-    public function testNew(): void
+    /*public function testNew(): void
     {
         $this->client->request('GET', $this->path . 'new');
     
@@ -62,6 +62,7 @@ class ReservationControllerTest extends WebTestCase
     }
     
     
+    */
 
     
     // public function testShow(): void

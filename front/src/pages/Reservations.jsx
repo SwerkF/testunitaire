@@ -5,12 +5,10 @@ import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import CardReservation from '../components/CardReservation';
 import { UserContext } from '../App';
-import { useNavigate } from 'react-router-dom';
 
 const Reservations = () => {
 
     const { user } = useContext(UserContext);
-    const navigate = useNavigate();
 
     const [reservations, setReservations] = useState([])
     const [selectedReservation, setSelectedReservation] = useState()
@@ -19,9 +17,7 @@ const Reservations = () => {
     const [show, setShow] = useState(false);
 
     useEffect(() => {
-        if (!user) {
-           return navigate('/login')
-        } 
+        console.log(user)
         axios.get('http://localhost:8000/api/reservations/users/'+user.id)
             .then((response) => {
                 setReservations(response.data)

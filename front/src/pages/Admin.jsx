@@ -1,19 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Button } from "react-bootstrap";
 import EventForm from "../components/EventForm";
 import EventTable from "../components/EventTable";
 import CancellationForm from "../components/CancellationForm";
 import "../styles/AdminStyle.css";
+import { UserContext } from "../App";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Admin() {
+
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+
   const [events, setEvents] = useState([]);
   const [showEventModal, setShowEventModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
-  const [modalType, setModalType] = useState("create"); 
+  const [modalType, setModalType] = useState("create");
 
   useEffect(() => {
+    if (!user || !user.role == "admin") { return navigate("/");}
     fetchEvents();
   }, []);
 
@@ -64,7 +71,7 @@ function Admin() {
         const eventResponse = await axios.put(`http://127.0.0.1:8000/api/eventss/{id}`, eventDetails);
         savedEvent = eventResponse.data;
       }
-  
+
       // Enregistrer les dates dans l'endpoint /api/events_date
       if (savedEvent && savedEvent.id) {
         await Promise.all(dates.map(date => 
@@ -75,21 +82,22 @@ function Admin() {
           })
         ));
       }
-  
+
       fetchEvents();
     } catch (error) {
       console.error("Error saving event and dates:", error);
     }
     setShowEventModal(false);
   };
-  
 
   const handleCancellationFormSubmit = async (reason) => {
     try {
       await axios.patch(
-        `http://localhost:8000/api/events_datess/{id}`,
-        { cancellationReason: reason, isCancelled: true }
+        `http://127.0.0.1:8000/api/events_datess/${currentEvent.id}`,
+        { cancellationReason: reason,
+           isCancelled: true }
       );
+
       fetchEvents();
     } catch (error) {
       console.error("Error cancelling event:", error);
@@ -99,15 +107,23 @@ function Admin() {
 
   return (
     <div className="container-admin">
-      <div className="d-flex justify-content-center" style={{ paddingTop: "20px", width: "100%" }}>
+      <div
+        className="d-flex justify-content-center"
+        style={{ paddingTop: "20px", width: "100%" }}
+      >
         <h1>Admin Dashboard</h1>
       </div>
-      <div className="d-flex justify-content-center" style={{ paddingTop: "20px", width: "100%" }}>
-        <Button onClick={() => {
-          setModalType("create");
-          setCurrentEvent(null);
-          setShowEventModal(true);
-        }}>
+      <div
+        className="d-flex justify-content-center"
+        style={{ paddingTop: "20px", width: "100%" }}
+      >
+        <Button
+          onClick={() => {
+            setModalType("create");
+            setCurrentEvent(null);
+            setShowEventModal(true);
+          }}
+        >
           Ajoutez un nouveau événement
         </Button>{" "}
       </div>

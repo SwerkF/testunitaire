@@ -56,7 +56,6 @@ export default function Connexion() {
 
       const response = await axios.post('http://localhost:8000/api/users', userData);
 
-      console.log("Signup successful:", response.data);
 
       // Mettre à jour le contexte utilisateur avec les informations de l'utilisateur enregistré
 
@@ -70,10 +69,11 @@ export default function Connexion() {
       }));
 
       navigate("/");
+      window.location.reload();
 
     } catch (error) {
-      console.error("Error signing up:", error);
-      setError("Erreur lors de la création du compte");
+      console.log("Error signing up:", error);
+      setError(error.response && error.response.data && error.response.data.status === 422 ? error.response.data.detail : "Erreur lors de la création du compte");
     }
   };
 
@@ -110,6 +110,7 @@ export default function Connexion() {
         }));
 
         navigate("/");
+        window.location.reload();
       } else {
         console.error("Email ou mot de passe invalide");
         setError("Email ou mot de passe invalide");
@@ -117,7 +118,7 @@ export default function Connexion() {
      
     } catch (error) {
       console.error("Error logging in:", error);
-      setError("Erreur lors de la connexion");
+      setError( "Erreur lors de la connexion");
     }
   };
 
@@ -150,7 +151,7 @@ export default function Connexion() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <Button htmlFor="Connection" type="submit" className="mt-3 w-100 btn-color-yellow">Créer votre compte</Button>
+          <Button htmlFor="Connection" type="submit" className="mt-3 w-100 btn-color-yellow">Se connecter</Button>
           <p>
             <a href="#" onClick={toggleForm} className="fs-6 pb-3 text-color-yellow">
               Vous n'avez pas de compte ? Inscrivez-vous ici

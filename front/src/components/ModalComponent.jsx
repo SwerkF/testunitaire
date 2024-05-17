@@ -6,7 +6,7 @@ import Reservation from './Reservation';
 
 
 
-  const Modal = ({ title, onClose, imageUrl, description, date, eventAge, event_date_id}) => {
+  const Modal = ({ title, onClose, imageUrl, description, date, eventAge, ticketRestant, event_date_id}) => {
 
     const [userId, setUserId] = useState(null);
     const [userBirthday, setUserBirthday] = useState(null);
@@ -17,9 +17,8 @@ import Reservation from './Reservation';
     console.log(eventAge);
       
     useEffect(() => {
-      setUserBirthday(user.birthday);
-      setUserId(user.id);
-      console.log(user.birthday, user.id);
+      setUserBirthday(user && user.birthday);
+      setUserId(user && user.id);
     }, []);
 
 
@@ -35,13 +34,14 @@ import Reservation from './Reservation';
               <p className='description'>{description}</p>
             </div>
             <Reservation
-                eventName={title}
-                userId={userId}
-                initialDate={date}
-                userBirthDate={userBirthday}
-                evenAge={eventAge}
-                event_date_id={event_date_id}
-              />
+                  eventName={title}
+                  userId={userId}
+                  initialDate={date}
+                  userBirthDate={userBirthday}
+                  evenAge={eventAge}
+                  event_date_id={event_date_id}
+                  ticketRestant={ticketRestant}
+                />
           </div>
         </div>
       </div>

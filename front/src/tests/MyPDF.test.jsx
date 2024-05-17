@@ -31,7 +31,6 @@ describe('MyPDF Render', () => {
             container = render(<MyPDF data={data}/>);
         })  
 
-        // expect qrCodeImage to be set
         await waitFor(() => {
             expect(container.getByText('Nom: Event title')).toBeInTheDocument();
             expect(container.getByText('Nombre de place: 3')).toBeInTheDocument();

@@ -76,15 +76,15 @@
   padding: 2px 5px;
 }
 
-.fc-event.fc-event-complet {
+.fc-event-complet {
   background-color: #dc3545;
 }
 
-.fc-event.fc-event-annulé {
+.fc-event-annulé {
   background-color: #6c757d;
 }
 
-.fc-event.fc-event-disponible {
+.fc-event-disponible {
   background-color: #10b92d;
 }
 
