@@ -6,7 +6,7 @@ import Reservation from './Reservation';
 
 
 
-  const Modal = ({ title, onClose, imageUrl, description, date, eventAge, event_date_id}) => {
+  const Modal = ({ title, onClose, imageUrl, description, date, eventAge, ticketRestant, event_date_id}) => {
 
     const [userId, setUserId] = useState(null);
     const [userBirthday, setUserBirthday] = useState(null);
@@ -41,6 +41,7 @@ import Reservation from './Reservation';
                 userBirthDate={userBirthday}
                 evenAge={eventAge}
                 event_date_id={event_date_id}
+                ticketRestant={ticketRestant}
               />
           </div>
         </div>

@@ -37,6 +37,21 @@ main {
     filter: brightness(50%);
 }
 
+// img-card-home-cancelled
+.img-card-home-cancelled {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.9;
+  transition: opacity 0.2s ease-out;
+  object-fit: cover;
+  object-position: center;
+  // reddish filter
+  filter: brightness(10%) sepia(100%) saturate(1000%) hue-rotate(330deg);
+}
+
   .h2-home {
     position: relative;
     bottom: -400px;
@@ -55,6 +70,13 @@ main {
     max-width: 100%;
     background: none;
     border: none;
+    transition-delay: 0.3s;
+    
+  }
+
+  .a-home:hover {
+    background-color: #1A173B;
+    color: #E1BE40;
   }
 
   .p-home {

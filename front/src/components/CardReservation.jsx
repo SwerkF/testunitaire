@@ -74,7 +74,7 @@ const CardReservation = ({ reservation, onClick }) => {
                             {event.imageUrl !== 'string' && event.imageUrl !== '' ? (
                                 <img src={event.imageUrl} alt={event.title} style={{ objectFit: 'cover', width: '100px', height: '100px' }} />
                             ) : (
-                                <img src='https://picsum.photos/100/100' alt={event.title} style={{ objectFit: 'cover', width: '100px', height: '100px' }} />
+                                <img src='https://picsum.photos/200/300' alt={event.title} style={{ objectFit: 'cover', width: '100px', height: '100px' }} />
                             )}
                             <div className='d-flex flex-column'>
                                 <h5 className="card-title">{event.title} - <span className='fs-6'>{handleDate(eventDates.date)}</span></h5>

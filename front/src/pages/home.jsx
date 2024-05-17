@@ -1,41 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Form, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "../styles/home.css";
 import "../styles/global.css";
 import EventCard from "../components/EvenCard";
+import axios from "axios";
 
 const Home = () => {
-  const events = [
-    {
-      title: "Armada 2024",
-      image:
-        "https://france3-regions.francetvinfo.fr/image/UU3js63ZnuylOsaeJO3GgtqIs1w/1200x900/regions/2023/06/14/6489820804105_off-armada-bateaux.jpg",
-      date: "24/08/2024 - 18h00",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam, reprehenderit aperiam impedit illo commodi?",
-      buttonText: "Réserver",
-      footerText: "En savoir plus ...",
-    },
-    {
-      title: "Festival de Musique",
-      image:
-        "https://leclaireur.fnac.com/wp-content/uploads/2023/05/photo-solidays-bricedelamarche-1256x826.jpg",
-      date: "15/09/2024 - 20h00",
-      description: "Un festival de musique avec des artistes du monde entier.",
-      buttonText: "Réserver",
-      footerText: "En savoir plus ...",
-    },
-    {
-      title: "Festival de Cinéma",
-      image:
-        "https://cdn.sortiraparis.com/images/80/77153/422736-festival-de-films-courts-de-maisons-laffitte-2019.jpg",
-      date: "30/09/2024 - 20h00",
-      description: "Un festival de cinéma avec des films du monde entier.",
-      buttonText: "Réserver",
-      footerText: "En savoir plus ...",
-    },
-  ];
+
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => { 
+    axios.get("http://localhost:8000/api/eventss")
+    .then((response) => {
+      // 3 first events
+      setEvents(response.data["hydra:member"].slice(0, 3));
+      console.log(response.data["hydra:member"].slice(0, 3));
+    })
+  }, []);
 
   return (
     <div>
@@ -70,6 +52,7 @@ const Home = () => {
                 image={event.image}
                 date={event.date}
                 description={event.description}
+                minimumAge={event.minimumAge}
                 buttonText={event.buttonText}
                 footerText={event.footerText}
               />
