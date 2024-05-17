@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import Admin from "../pages/Admin";
 import axios from "axios";
 
@@ -7,36 +7,36 @@ jest.mock("axios");
 
 describe("Admin component", () => {
   it("fetches and displays events", async () => {
-    const mockEvents = [
-      {
-        id: 1,
-        title: "Concert",
-        description: "A great concert",
-        type: "concert",
-        minimumAge: 18,
-        imageUrl: "www.example.com/image.jpg",
+    axios.get.mockResolvedValueOnce({
+      data: {
+        "hydra:member": [
+          {
+            id: 1,
+            title: "Concert",
+            description: "A great concert",
+            type: "concert",
+            minimumAge: 18,
+            imageUrl: "www.example.com/image.jpg",
+          },
+          {
+            id: 2,
+            title: "Festival",
+            description: "A fun festival",
+            type: "festival",
+            minimumAge: 16,
+            imageUrl: "www.example.com/festival.jpg",
+          },
+        ],
       },
-      {
-        id: 2,
-        title: "Festival",
-        description: "A fun festival",
-        type: "festival",
-        minimumAge: 16,
-        imageUrl: "www.example.com/festival.jpg",
-      },
-    ];
-
-    axios.get.mockResolvedValueOnce({ data: mockEvents });
+    });
 
     render(<Admin />);
 
-    const concertName = await screen.findByText("A great concert");
-    const festivalName = await screen.findByText("A fun festival");
+    await waitFor(() => {
+      expect(screen.getByText("A great concert")).toBeInTheDocument();
+      expect(screen.getByText("A fun festival")).toBeInTheDocument();
+    });
 
-    expect(concertName).toBeInTheDocument();
-    expect(festivalName).toBeInTheDocument();
-
-    expect(axios.get).toHaveBeenCalledWith("http://127.0.0.1:8000/api/eventss");
+    expect(axios.get).toHaveBeenCalledWith("http://localhost:8000/api/eventss");
   });
 });
-

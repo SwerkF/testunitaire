@@ -3,7 +3,8 @@ import { Modal, Button, Form } from 'react-bootstrap';
 
 function EventForm({ show, handleClose, handleSubmit, event, mode }) {
   // État pour gérer les dates de l'événement
-  const [dates, setDates] = useState(event ? event.dates : ['']);
+ // const [dates, setDates] = useState(event ? event.dates : ['']);
+ const [dates, setDates] = useState(event && Array.isArray(event.dates) ? event.dates : ['']);
 
   // Gérer le changement de chaque date individuelle
   const handleDateChange = (index, value) => {
